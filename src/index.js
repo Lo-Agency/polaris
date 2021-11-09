@@ -4,6 +4,7 @@ import './index.css';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 Sentry.init({
 	dsn: process.env.REACT_APP_DSN_URL,
 	integrations: [new Integrations.BrowserTracing()],
@@ -12,7 +13,9 @@ Sentry.init({
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App />
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
 	</React.StrictMode>,
 	document.getElementById('root')
 );
