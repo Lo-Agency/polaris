@@ -1,22 +1,35 @@
-import React from 'react';
-import { Route, Routes } from 'react-router';
-import Home from './pages/home';
-import Login from './pages/login';
-import NewLearning from './pages/newlearning';
-import NewPhase from './pages/newphase';
-import NewProject from './pages/newproject';
-import Admin from './pages/admin';
+import { Route, Routes } from "react-router";
+import config from "./util/config";
+import AuthProvider from "./components/providers/auth.provider";
+import CustomRoute from "./components/auth/customRoutes";
+import React, { lazy, Suspense } from "react";
+
+
 function App() {
-	return (
-		<Routes>
-			<Route path="/" element={<Home />} />
-			<Route path="/admin" element={<Admin />} />
-			<Route path="/login" element={<Login />} />
-			<Route path="/newlearning" element={<NewLearning />} />
-			<Route path="/newphase" element={<NewPhase />} />
-			<Route path="/newproject" element={<NewProject />} />
-		</Routes>
-	);
+  return (
+    <>
+      <AuthProvider>
+        <Routes>
+          {
+            Object.keys(config.routes).map(routeConfig => {
+
+              const route = config.routes[routeConfig];
+              const Component = lazy(() => import(`./pages/${routeConfig}`));
+              return <Route key={routeConfig} path={route.pathname} element={
+                <CustomRoute isProtected={route.isProtected}>
+                  <Suspense fallback={<p>Loading...</p>}>
+                    <Component />
+                  </Suspense>
+                </CustomRoute>
+              }>
+              </Route>
+            })
+
+          }
+        </Routes>
+      </AuthProvider>
+    </>
+  );
 }
 
 export default App;
