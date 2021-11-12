@@ -32,7 +32,7 @@ function Login() {
 	};
 
 	return (
-		<div>
+		<div className="center-content">
 			<p>You must log in to view the page at {from}</p>
 
 			<form onSubmit={handleSubmit}>
