@@ -26,7 +26,7 @@ const AuthProvider = ({ children }) =>
 		callback();
 	};
 
-	const SignUp = async (email, password ) =>
+	const SignUp = async (email, password) =>
 	{
 		await createUserWithEmailAndPassword(auth, email, password);
 		
