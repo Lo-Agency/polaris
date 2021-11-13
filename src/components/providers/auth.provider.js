@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "firebase/auth";
+import { signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../../util/firebase";
 
@@ -26,22 +26,24 @@ const AuthProvider = ({ children }) =>
 		callback();
 	};
 
-	const SignUp = async (email, password , callback) =>
+	const SignUp = async (email, password) =>
 	{
 		await createUserWithEmailAndPassword(auth, email, password);
-		callback();
+		
 	};
 
-	const SignOut = () =>
+	const LogOut = async (callback) =>
 	{
+		await signOut(auth);
 		setUser(null);
+		callback();
 	};
 
 	return <AuthContext.Provider value={{
 		User: user,
 		SignIn,
 		SignUp,
-		SignOut
+		LogOut
 	}}>
 		{children}
 	</AuthContext.Provider>;

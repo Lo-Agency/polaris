@@ -26,17 +26,17 @@ export default {
 		newlearning: {
 			pathname: "/newlearning",
 			isCaseSensitive: false,
-			isProtected: true
+			isProtected: false
 		},
         newphase: {
 			pathname: "/newphase",
 			isCaseSensitive: false,
-			isProtected: true
+			isProtected: false
 		},
         newproject: {
 			pathname: "/newproject",
 			isCaseSensitive: false,
-			isProtected: true
+			isProtected: false
 		},
 	
 	}

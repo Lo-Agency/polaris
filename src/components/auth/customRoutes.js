@@ -14,8 +14,8 @@ const CustomRoute = ({ children, isProtected }) => {
         if(from != '/admin') return <Navigate to={config.routes.admin.pathname} state={{ from: location }} />;
     }
     if (User && from != '/admin' ) return <Navigate to={config.routes.admin.pathname} state={{ from: location }} />;
-
     return children;
+
    
 };
 
