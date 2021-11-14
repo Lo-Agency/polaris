@@ -18,26 +18,77 @@ export default {
 			isCaseSensitive: false,
 			isProtected: false
 		},
-		admin: {
-			pathname: "/admin",
-			isCaseSensitive: false,
+		entity: {
+			pathname: '/admin/:entityName/:actionName',
+			isCaseSensitive: true,
 			isProtected: true
 		},
-		newlearning: {
-			pathname: "/newlearning",
-			isCaseSensitive: false,
-			isProtected: false
+		// admin: {
+		// 	pathname: '/admin/roadmap/list',
+		// 	isCaseSensitive: true,
+		// 	isProtected: true
+		// }
+
+	},
+
+	entities: {
+		phase: {
+			fields: {
+				title :{
+					type: "text",
+					required: true
+				},
+
+				learning: {
+					type: "ref",
+					isArray: true,
+					reference: "learning.title"
+				},
+				project: {
+					type: "ref",
+					isArray: true,
+					reference: "project.title"
+				}
+			},
+			list : ["title", "learning", "project"]
 		},
-        newphase: {
-			pathname: "/newphase",
-			isCaseSensitive: false,
-			isProtected: false
+
+		learning: {
+			fields: {
+				title: {
+					type: "text"
+				},
+				category: {
+					type: "text"
+				},
+				resources: {
+					type: "text"
+				},
+				learningtype: {
+					type: "text"
+				}
+			}
 		},
-        newproject: {
-			pathname: "/newproject",
-			isCaseSensitive: false,
-			isProtected: false
+
+		project: {
+			fields: {
+				title: {
+					type: "text"
+				},
+				days: {
+					type: "number"
+				},
+				projecttype: {
+					type: "text"
+				}
+			}
 		},
-	
+		roadmap: {
+			fields: {
+				title :{
+					type : "text"
+				}
+			}
+		}
 	}
 };

@@ -3,9 +3,9 @@ import config from "./util/config";
 import AuthProvider from "./components/providers/auth.provider";
 import CustomRoute from "./components/auth/customRoutes";
 import React, { lazy, Suspense } from "react";
-import NewLearning from "./pages/newlearning";
-import NewPhase from "./pages/newphase";
-import NewProject from "./pages/newproject";
+import NewLearning from "./pages/learning";
+import NewPhase from "./pages/phase";
+import NewProject from "./pages/project";
 
 
 function App() {
@@ -15,7 +15,6 @@ function App() {
         <Routes>
           {
             Object.keys(config.routes).map(routeConfig => {
-
               const route = config.routes[routeConfig];
               const Component = lazy(() => import(`./pages/${routeConfig}`));
               return <Route key={routeConfig} path={route.pathname} element={
@@ -29,9 +28,8 @@ function App() {
 
             })
           }
-          <Route path="admin/newlearning" element={<NewLearning />} />
-          <Route path="admin/newphase" element={<NewPhase />} />
-          <Route path="admin/newproject" element={<NewProject />} />
+					<Route path="*" element={<p>Not found</p>} />
+
         </Routes>
       </AuthProvider>
     </>
