@@ -23,11 +23,11 @@ export default {
 			isCaseSensitive: true,
 			isProtected: true
 		},
-		// admin: {
-		// 	pathname: '/admin/roadmap/list',
-		// 	isCaseSensitive: true,
-		// 	isProtected: true
-		// }
+		admin: {
+			pathname: "/admin",
+			isCaseSensitive: true,
+			isProtected: true
+		}
 
 	},
 

@@ -3,9 +3,7 @@ import config from "./util/config";
 import AuthProvider from "./components/providers/auth.provider";
 import CustomRoute from "./components/auth/customRoutes";
 import React, { lazy, Suspense } from "react";
-import NewLearning from "./pages/learning";
-import NewPhase from "./pages/phase";
-import NewProject from "./pages/project";
+
 
 
 function App() {

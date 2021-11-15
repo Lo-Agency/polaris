@@ -16,7 +16,7 @@ const CustomRoute = ({ children, isProtected }) => {
 
         if (from && !from.startsWith('/admin') ) 
             return <Navigate to={config.routes.admin.pathname} state={{ from: location }} />;
-        
+               
         return <Adminlayout>{children}</Adminlayout>
     }
 
