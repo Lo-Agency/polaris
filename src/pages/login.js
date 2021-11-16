@@ -23,6 +23,9 @@ function Login() {
 				email,
 				password
 				, () => {
+					if (from == "/")
+					navigate("/admin")
+					else
 					navigate(from, { replace: true });
 				})
 		} catch (e) {
@@ -52,7 +55,7 @@ function Login() {
 							</label>
 							<input className="py-2 px-3 rounded-lg xsm:w-48 sm:w-60 w-80" name="password" type="password" />
 						</div>
-						<button className="focus:scale-50 hover:bg-blue-600  animate-bounce py-2 mt-6 sm:mt-4 xsm:mt-2 rounded-lg text-white bg-blue-400 xsm:w-48 sm:w-60 w-80" type="submit">Login</button>
+						<button className="focus:scale-50 bg-lightblue animate-bounce py-2 mt-6 sm:mt-4 xsm:mt-2 rounded-lg text-white bg-blue-400 xsm:w-48 sm:w-60 w-80" type="submit">Login</button>
 					</div>
 					
 				</form>

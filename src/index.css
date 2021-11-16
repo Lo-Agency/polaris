@@ -4,7 +4,7 @@
 
  
   .center-content {
-    @apply flex flex-col justify-center items-center bg-white h-screen py-40;
+    @apply flex flex-col justify-center items-center h-screen py-40;
   }
 
  
