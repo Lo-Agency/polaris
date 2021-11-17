@@ -1,16 +1,21 @@
 import config from "../../util/config";
+import { useAuth } from "../providers/auth.provider";
+import { useCrud } from "../providers/crud.provider";
+
+
 const EntittyForm = ({ entityName }) => {
-
+    
+    const crud = useCrud();
+    //const auth = useAuth();
     const fields = Object.keys(config.entities[entityName].fields).map(field => {
-
         const { type, reference } = config.entities[entityName].fields[field];
 
         switch (type) {
             case "text":
                 return <div className="w-full flex flex-col justify-center px-8">
-                        <label className="mx-2" key={field}>{field}:
-                        </label>
-                        <input className="m-2 rounded-lg p-2 w-3/4" name={field} type="text" />
+                    <label className="mx-2" key={field}>{field}:
+                    </label>
+                    <input className="m-2 rounded-lg p-2 w-3/4" name={field} type="text" />
                 </div>
             case "number":
                 return <div className=" w-full flex flex-col justify-center px-8">
@@ -22,6 +27,8 @@ const EntittyForm = ({ entityName }) => {
                 return <p key={field}>field {field} is referencing to {reference}</p>
 
             default:
+                return <p key={field}>field type for &quot;{field}&quot; not recognized</p>;
+
 
         }
     });
@@ -35,7 +42,13 @@ const EntittyForm = ({ entityName }) => {
             return form.get(field)
         })
 
+        crud.Create(values, entityName);
+
+
+
+
         console.log({ values })
+        //console.log(crud.Createe(2));
     }
 
     return (

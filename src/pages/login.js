@@ -2,7 +2,6 @@ import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
 
-
 function Login() {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -17,7 +16,7 @@ function Login() {
 		const email = formData.get("email");
 		const password = formData.get("password");
 
-
+		
 		try {
 			await auth.SignIn(
 				email,
