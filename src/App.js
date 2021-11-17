@@ -10,7 +10,7 @@ import CrudProvider from "./components/providers/crud.provider";
 function App() {
   return (
     <>
-    <CrudProvider>
+
       <AuthProvider>
         <Routes>
           {
@@ -18,20 +18,21 @@ function App() {
               const route = config.routes[routeConfig];
               const Component = lazy(() => import(`./pages/${routeConfig}`));
               return <Route key={routeConfig} path={route.pathname} element={
-                <CustomRoute isProtected={route.isProtected}>
-                  <Suspense fallback={<p>Loading...</p>}>
-                    <Component />  
-                  </Suspense>
-                </CustomRoute>
+                <CrudProvider>
+                  <CustomRoute isProtected={route.isProtected}>
+                    <Suspense fallback={<p>Loading...</p>}>
+                      <Component />
+                    </Suspense>
+                  </CustomRoute>
+                </CrudProvider>
               }>
               </Route>
 
             })
           }
-					<Route path="*" element={<p>Not found</p>} />
+          <Route path="*" element={<p>Not found</p>} />
         </Routes>
       </AuthProvider>
-      </CrudProvider>
     </>
   );
 }

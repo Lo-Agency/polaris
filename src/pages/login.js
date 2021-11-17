@@ -10,7 +10,7 @@ function Login() {
 	const from = location.state?.from?.pathname || "/";
 	const handleSubmit = async (event) => {
 
-		console.log({ from })
+		//console.log({ from })
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const email = formData.get("email");

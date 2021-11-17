@@ -40,16 +40,6 @@ const AuthProvider = ({ children }) =>
 		callback();
 	};
 
-	// const Create = async (values) => {
-	// 	await push(ref(database, `roadmap/frontend/project`), {
-	// 	    title: values[0],
-	// 	    days: values[1],
-	// 	    projecttype: values[2]
-	// 	                });
-	// };
-
-	
-
 	return <AuthContext.Provider value={{
 		User: user,
 		SignIn,
