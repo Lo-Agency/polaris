@@ -1,4 +1,4 @@
-  import { push, ref, onValue, child, getDatabase, get, firebase, remove } from "@firebase/database";
+  import { push, ref, child, getDatabase, get, remove, set } from "@firebase/database";
   import { useState, createContext, useContext, useEffect } from "react";
   import { useParams } from "react-router";
   import config from "../../util/config";
@@ -10,6 +10,7 @@
   const CrudProvider = ({ children }) => {
     const [mydata, setmydata] = useState(null)
     const [change, setChange] = useState(false)
+    const [editData, setEditData] = useState(null)
     const { entityName } = useParams();
 
 
@@ -37,19 +38,57 @@
       });
       //console.log(object);
       await push(ref(database, `roadmap/frontend/${entity}`), object);
+      setChange(!change)
+      
     };
 
 
     const Delete = async (item) => {
       await remove(ref(database, `roadmap/frontend/${entityName}/${item}`));
       setChange(!change)
-    
     }
+
+    const Read = async (item) => {
+    setEditData(null)
+    const dbRef = ref(getDatabase());
+    await get(child(dbRef, `roadmap/frontend/${entityName}/${item}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+       setEditData(snapshot.val())
+       console.log(editData, "editData");
+
+      } else {
+        console.log("peida nakardam");
+        setEditData(null)
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+
+  const Update = async (values, entityName, editID) => {
+    const items = Object.keys(config.entities[entityName].fields);
+    let object = {};
+    items.forEach((key, index) => {
+      object[key] = values[index]
+    });
+    await set(ref(database, `roadmap/frontend/${entityName}/${editID}`), object)
+    setChange(!change)
+    console.log(values, "values");
+
+
+
+
+
+  }
     
     return <CrudContext.Provider value={{
       Create,
       mydata,
-      Delete
+      Delete,
+      Read,
+      editData,
+      Update
 
     }}>
       {children}
