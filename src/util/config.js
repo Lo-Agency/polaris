@@ -80,6 +80,9 @@ export default {
 				},
 				projecttype: {
 					type: "text"
+				},
+				learningday: {
+					type:"number"
 				}
 			}
 		},

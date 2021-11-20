@@ -3,12 +3,14 @@ import config from "./util/config";
 import AuthProvider from "./components/providers/auth.provider";
 import CustomRoute from "./components/auth/customRoutes";
 import React, { lazy, Suspense } from "react";
+import CrudProvider from "./components/providers/crud.provider";
 
 
 
 function App() {
   return (
     <>
+
       <AuthProvider>
         <Routes>
           {
@@ -16,18 +18,19 @@ function App() {
               const route = config.routes[routeConfig];
               const Component = lazy(() => import(`./pages/${routeConfig}`));
               return <Route key={routeConfig} path={route.pathname} element={
-                <CustomRoute isProtected={route.isProtected}>
-                  <Suspense fallback={<p>Loading...</p>}>
-                    <Component />
-                  </Suspense>
-                </CustomRoute>
+                <CrudProvider>
+                  <CustomRoute isProtected={route.isProtected}>
+                    <Suspense fallback={<p>Loading...</p>}>
+                      <Component />
+                    </Suspense>
+                  </CustomRoute>
+                </CrudProvider>
               }>
               </Route>
 
             })
           }
-					<Route path="*" element={<p>Not found</p>} />
-
+          <Route path="*" element={<p>Not found</p>} />
         </Routes>
       </AuthProvider>
     </>

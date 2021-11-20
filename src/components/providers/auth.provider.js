@@ -1,6 +1,7 @@
+import { push, ref } from "@firebase/database";
 import { signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../../util/firebase";
+import { auth, database } from "../../util/firebase";
 
 const AuthContext = createContext(null);
 
@@ -44,6 +45,7 @@ const AuthProvider = ({ children }) =>
 		SignIn,
 		SignUp,
 		LogOut
+		
 	}}>
 		{children}
 	</AuthContext.Provider>;

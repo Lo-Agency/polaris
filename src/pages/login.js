@@ -2,7 +2,6 @@ import { useNavigate, useLocation } from "react-router";
 import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
 
-
 function Login() {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -24,9 +23,9 @@ function Login() {
 				password
 				, () => {
 					if (from == "/")
-					navigate("/admin")
+						navigate("/admin")
 					else
-					navigate(from, { replace: true });
+						navigate(from, { replace: true });
 				})
 		} catch (e) {
 			setError(e.message)
@@ -57,7 +56,7 @@ function Login() {
 						</div>
 						<button className="focus:scale-50 bg-lightblue animate-bounce py-2 mt-6 sm:mt-4 xsm:mt-2 rounded-lg text-white bg-blue-400 xsm:w-48 sm:w-60 w-80" type="submit">Login</button>
 					</div>
-					
+
 				</form>
 			</div>
 		</div>
