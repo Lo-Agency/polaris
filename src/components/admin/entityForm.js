@@ -3,12 +3,17 @@ import config from "../../util/config";
 import { useCrud } from "../providers/crud.provider";
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
-
+import { useEffect } from "react";
 
 const EntittyForm = ({ entityName, actionName, editID, editData }) => {
     const navigate = useNavigate();
     const animatedComponents = makeAnimated();
     const crud = useCrud();
+    useEffect(() => {
+        crud.ReadRef("learning")
+        crud.ReadRef("project")
+
+    }, [])
     const fields = Object.keys(config.entities[entityName].fields).map(field => {
         const { type, reference } = config.entities[entityName].fields[field];
 
@@ -29,12 +34,13 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
                 let value = [];
                 let label = [];
                 let options = [];
-                console.log(crud[reference], "crud.reference")
 
                 crud[reference] && Object.values(crud[reference]).map((item, index) => {
                     value.push(Object.keys(crud[reference])[index]), label.push(item.title)
 
                 })
+                console.log(value, "value")
+
 
                 for (let i = 0; i < value.length; i++) {
                     options.push({ "value": value[i], "label": label[i] })
