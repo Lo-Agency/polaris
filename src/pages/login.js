@@ -9,8 +9,6 @@ function Login() {
 	const [error, setError] = useState(null);
 	const from = location.state?.from?.pathname || "/";
 	const handleSubmit = async (event) => {
-
-		console.log({ from })
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const email = formData.get("email");

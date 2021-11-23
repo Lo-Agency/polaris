@@ -13,14 +13,14 @@ const Entity = () => {
 
     const { entityName, actionName } = useParams();
     const crud = useCrud();
-    let data = crud.mydata;
+    let data = crud.tableData;
     let myArr = []
     let entityContent = []
     let configFields = Object.keys(config.entities[entityName].fields);
 
     const [editID, setEditId] = useState(null);
 
-    const myFun = () => {
+    const sortData = () => {
         if (data) {
             const dataVal = Object.values(data)
             for (let i = 0; i < dataVal.length; i++) {
@@ -32,13 +32,11 @@ const Entity = () => {
                 }
                 entityContent[i] = myArr;
                 myArr = []
-
-                console.log(myArr, entityContent)
             }
         }
-        return console.log(entityContent, "ok")
+        return console.log(entityContent)
     }
-    myFun();
+    sortData();
 
     let arr = []
     data && Object.keys(data).map(elem => arr.push(elem))
@@ -77,8 +75,6 @@ const Entity = () => {
                             })}
                             <td className="bg-chineseSilver p-4 border-2 border-black">tools</td>
                         </tr>
-                        {data && console.log(data)}
-                        {data && console.log(Object.values(data))}
                         {data? entityContent.map((item,index)=>{
                              return <tr className="p-4 border-2 border-black" key={item}>{item.map(elem=>{
                                 return <td  className="p-4 border-2 border-black" key={elem}>{elem}</td>
