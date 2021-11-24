@@ -1,7 +1,7 @@
 
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EntittyForm from "../components/admin/entityForm";
 import { useCrud } from "../components/providers/crud.provider";
 import config from "../util/config";
@@ -17,6 +17,13 @@ const Entity = () => {
     let entityContent = []
     let configFields = Object.keys(config.entities[entityName].fields);
     const [editID, setEditId] = useState(null);
+
+    useEffect(() => {
+        crud.ReadRef("learning")
+        crud.ReadRef("project")
+
+    }, [])
+
     const sortData = () => {
         if (data) {
             const dataVal = Object.values(data)
@@ -32,20 +39,32 @@ const Entity = () => {
     }
     sortData();
     const convertor = (item) => {
-        let titles = [];
-        let projects = [];
-        // crud.learningTitle = [];
-        // crud.projectTitle = []
-        item[1] && (item[1]).map(elem => crud.readById("learning", elem));
-        item[2] && (item[2]).map(elem => crud.readById("project", elem));
-        titles = crud.learningTitle && (crud.learningTitle).map(item => item.title);
-        projects = crud.projectTitle && (crud.projectTitle).map(item => item.title);
+        let lTitles = [];
+        let pTitles = [];
+        console.log(crud.learning,"crud.learning")
+        if(crud.learning && item[1]){
+            for (let i = 0; i < (item[1]).length; i++) {
+                let learnId = Object.keys(crud.learning).filter(e => e===item[1][i])
+                lTitles.push(crud.learning[learnId]["title"])
+                console.log(lTitles,"learning titles")
+             }
+     
+       }
+       if(crud.project && item[2]){
+        for (let i = 0; i < (item[2]).length; i++) {
+            let projectId = Object.keys(crud.project).filter(e => e===item[2][i])
+            pTitles.push(crud.project[projectId]["title"])
+            console.log(pTitles,"project titles")
+         }
+ 
+   }
+
 
         return (
             <>
                 <td className=" border-2 border-black">{item[0]}</td>
-                <td className=" border-2 border-black">{titles}</td>
-                <td className=" border-2 border-black">{projects}</td>
+                <td className=" border-2 border-black">{lTitles.join(', ')}</td>
+                <td className=" border-2 border-black">{pTitles.join(', ')}</td>
             </>
         )
     }

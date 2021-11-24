@@ -14,9 +14,6 @@
     const { entityName } = useParams();
     const [learning, setLearning] = useState(null);
     const [project, setProject] = useState(null);
-    let learningTitle=[];
-    let projectTitle=[];
-
 
 
     useEffect(() => {
@@ -76,8 +73,7 @@
     await set(ref(database, `roadmap/frontend/${entityName}/${editID}`), object)
     setChange(!change)
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     const ReadRef = async (entity) => {
       const dbRef = ref(getDatabase());
       if (entity === "learning") {
@@ -109,43 +105,6 @@
   
     }
 
-    const readById = (entity, id) =>{
-      const dbRef = ref(getDatabase());
-      if (entity === "learning") {
-       get(child(dbRef, `roadmap/frontend/learning/${id}`)).then((snapshot) => {
-        if (snapshot.exists()) {
-          learningTitle.push(snapshot.val())
-          return
-          // console.log(learningTitle,"crudtitle")
-        }else{
-          console.log('peyda nakardam')
-        }
-      }).catch((error) => {
-        console.error(error);
-       
-      });
-    }
-    else if (entity === "project") {
-      get(child(dbRef, `roadmap/frontend/project/${id}`)).then((snapshot) => {
-        if (snapshot.exists()) {
-          projectTitle.push(snapshot.val())
-          // console.log(projectTitle,"crudtitle")
-          return
-        }else{
-          console.log('peyda nakardam')
-        }
-      }).catch((error) => {
-        console.error(error);
-       
-      });
-    }
-
-    }
-  
-
-
-
-
     return <CrudContext.Provider value={{
       Create,
       tableData,
@@ -156,9 +115,6 @@
       learning,
       project,
       ReadRef,
-      readById,
-      learningTitle,
-      projectTitle
 
     }}>
       {children}
