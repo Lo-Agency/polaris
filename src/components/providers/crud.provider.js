@@ -14,6 +14,9 @@
     const { entityName } = useParams();
     const [learning, setLearning] = useState(null);
     const [project, setProject] = useState(null);
+    let learningTitle=[];
+    let projectTitle=[];
+
 
 
     useEffect(() => {
@@ -106,6 +109,39 @@
   
     }
 
+    const readById = (entity, id) =>{
+      const dbRef = ref(getDatabase());
+      if (entity === "learning") {
+       get(child(dbRef, `roadmap/frontend/learning/${id}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          learningTitle.push(snapshot.val())
+          return
+          // console.log(learningTitle,"crudtitle")
+        }else{
+          console.log('peyda nakardam')
+        }
+      }).catch((error) => {
+        console.error(error);
+       
+      });
+    }
+    else if (entity === "project") {
+      get(child(dbRef, `roadmap/frontend/project/${id}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          projectTitle.push(snapshot.val())
+          // console.log(projectTitle,"crudtitle")
+          return
+        }else{
+          console.log('peyda nakardam')
+        }
+      }).catch((error) => {
+        console.error(error);
+       
+      });
+    }
+
+    }
+  
 
 
 
@@ -119,7 +155,10 @@
       Update,
       learning,
       project,
-      ReadRef
+      ReadRef,
+      readById,
+      learningTitle,
+      projectTitle
 
     }}>
       {children}
