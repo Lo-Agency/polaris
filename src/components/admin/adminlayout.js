@@ -9,10 +9,6 @@ const Adminlayout = ({ children }) => {
         <>
             <div className="bg-myBlue flex w-screen h-screen">
                 <div className="bg-yellow w-40 px-4 ">
-                    {/* <ul>
-                    <li>{entityName} : {actionName}</li>
-                </ul> */}
-
                     <aside className=" h-screen" >
                         <ul className="flex justify-end flex-col p-4 text-xl" >
                             {

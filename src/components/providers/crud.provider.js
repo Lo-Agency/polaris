@@ -8,21 +8,22 @@
   const CrudContext = createContext(null);
 
   const CrudProvider = ({ children }) => {
-    const [mydata, setmydata] = useState(null)
+    const [tableData, settableData] = useState(null)
     const [change, setChange] = useState(false)
     const [editData, setEditData] = useState(null)
     const { entityName } = useParams();
+    const [learning, setLearning] = useState(null);
+    const [project, setProject] = useState(null);
 
 
     useEffect(() => {
       const dbRef = ref(getDatabase());
       get(child(dbRef, `roadmap/frontend/${entityName}`)).then((snapshot) => {
         if (snapshot.exists()) {
-          let mydata = snapshot.val();
-          setmydata(mydata);
+          let tableData = snapshot.val();
+          settableData(tableData);
         } else {
-          console.log(mydata);
-          setmydata(null)
+          settableData(null)
         }
       }).catch((error) => {
         console.error(error);
@@ -36,7 +37,6 @@
       items.forEach((key, index) => {
         object[key] = values[index]
       });
-      //console.log(object);
       await push(ref(database, `roadmap/frontend/${entity}`), object);
       setChange(!change)
       
@@ -54,10 +54,7 @@
     await get(child(dbRef, `roadmap/frontend/${entityName}/${item}`)).then((snapshot) => {
       if (snapshot.exists()) {
        setEditData(snapshot.val())
-       console.log(editData, "editData");
-
-      } else {
-        console.log("peida nakardam");
+       } else {
         setEditData(null)
       }
     }).catch((error) => {
@@ -74,21 +71,49 @@
     });
     await set(ref(database, `roadmap/frontend/${entityName}/${editID}`), object)
     setChange(!change)
-    console.log(values, "values");
-
-
-
-
-
-  }
+    }
     
+    const ReadRef = async (entity) => {
+      const dbRef = ref(getDatabase());
+      if (entity === "learning") {
+         get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+          if (snapshot.exists(snapshot.val())) {
+            setLearning(snapshot.val())
+            return snapshot.val()
+          }
+          else {
+            return null
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+      }
+      else if (entity === "project") {
+         get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+          if (snapshot.exists(snapshot.val())) {
+            setProject(snapshot.val())
+            return snapshot.val()
+          }
+          else {
+            return null
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+      }
+  
+    }
+
     return <CrudContext.Provider value={{
       Create,
-      mydata,
+      tableData,
       Delete,
       Read,
       editData,
-      Update
+      Update,
+      learning,
+      project,
+      ReadRef,
 
     }}>
       {children}

@@ -42,12 +42,15 @@ export default {
 				learning: {
 					type: "ref",
 					isArray: true,
-					reference: "learning.title"
+					reference: "learning"
 				},
 				project: {
 					type: "ref",
 					isArray: true,
-					reference: "project.title"
+					reference: "project"
+				},
+				label :{
+					type : "text"
 				}
 			},
 			list : ["title", "learning", "project"]
