@@ -41,12 +41,10 @@ const Entity = () => {
     const convertor = (item) => {
         let lTitles = [];
         let pTitles = [];
-        console.log(crud.learning,"crud.learning")
         if(crud.learning && item[1]){
             for (let i = 0; i < (item[1]).length; i++) {
                 let learnId = Object.keys(crud.learning).filter(e => e===item[1][i])
                 lTitles.push(crud.learning[learnId]["title"])
-                console.log(lTitles,"learning titles")
              }
      
        }
@@ -54,22 +52,34 @@ const Entity = () => {
         for (let i = 0; i < (item[2]).length; i++) {
             let projectId = Object.keys(crud.project).filter(e => e===item[2][i])
             pTitles.push(crud.project[projectId]["title"])
-            console.log(pTitles,"project titles")
          }
  
    }
-
+   
+   
 
         return (
             <>
                 <td className=" border-2 border-black">{item[0]}</td>
                 <td className=" border-2 border-black">{lTitles.join(', ')}</td>
                 <td className=" border-2 border-black">{pTitles.join(', ')}</td>
+                <td className=" border-2 border-black">{item[3]}</td>
             </>
         )
     }
 
-
+    const duration =(item) => {
+        if(crud.project && item[2]){
+            let phaseDuration=0;
+            for (let i = 0; i < (item[2]).length; i++) {
+                let projectId = Object.keys(crud.project).filter(e => e===item[2][i]);
+                phaseDuration +=( Number(crud.project[projectId]["learningday"]) + Number(crud.project[projectId]["days"]));
+               
+                
+             }
+             return phaseDuration;
+       }
+    }
 
 
     let arr = []
@@ -104,14 +114,18 @@ const Entity = () => {
                     </thead>
                     <tbody>
                         <tr>
-                            {Object.keys(config.entities[entityName].fields).map(field => {
+                            {Object.keys(config.entities[entityName].fields)
+                            .map(field => {
                                 return <td className="bg-chineseSilver p-4 border-2 border-black" key={field}>{field}</td>
                             })}
+                               {entityName==="phase" && <td className="bg-chineseSilver p-4 border-2 border-black">Duration</td>}
                             <td className="bg-chineseSilver p-4 border-2 border-black">tools</td>
+                         
                         </tr>
                         {data ? entityContent.map((item, index) => {
                             return <tr className="p-4 border-2 border-black" key={item}>{!(entityName == "phase") ? item
                                 .map(elem => { return <td className="p-4 border-2 border-black" key={elem}>{elem}</td> }) : convertor(item)}
+                                {entityName=="phase" && <td className=" p-4 border-2 border-black">{duration(item)} </td>}
                                 <td className="flex p-4">
                                     <svg onClick={() => handleDelete(arr[index])} className="w-6 h-6 mr-2 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                     <Link to={`/admin/${entityName}/edit`}>

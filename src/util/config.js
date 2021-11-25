@@ -48,6 +48,9 @@ export default {
 					type: "ref",
 					isArray: true,
 					reference: "project"
+				},
+				label :{
+					type : "text"
 				}
 			},
 			list : ["title", "learning", "project"]

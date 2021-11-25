@@ -23,7 +23,6 @@
           let tableData = snapshot.val();
           settableData(tableData);
         } else {
-          console.log(tableData);
           settableData(null)
         }
       }).catch((error) => {
