@@ -2,6 +2,7 @@ import { useParams } from "react-router"
 import { Link } from "react-router-dom"
 import config from "../../util/config";
 
+
 const Adminlayout = ({ children }) => {
     const { entityName, actionName } = useParams()
 
