@@ -12,6 +12,9 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
     useEffect(() => {
         crud.ReadRef("learning")
         crud.ReadRef("project")
+        crud.ReadRef("phase")
+        crud.ReadRef("roadmap")
+
 
     }, [])
     const fields = Object.keys(config.entities[entityName].fields).map(field => {
@@ -36,7 +39,9 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
                 let options = [];
 
                 crud[reference] && Object.values(crud[reference]).map((item, index) => {
-                    value.push(Object.keys(crud[reference])[index]), label.push(item.title)
+                     (reference=="phase") ? (value.push(Object.keys(crud[reference])[index]), label.push(item.label))
+                    : (value.push(Object.keys(crud[reference])[index]), label.push(item.title))
+                
 
                 })
                 console.log(value, "value")

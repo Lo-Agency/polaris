@@ -14,6 +14,9 @@
     const { entityName } = useParams();
     const [learning, setLearning] = useState(null);
     const [project, setProject] = useState(null);
+    const [phase, setPhase] = useState(null);
+    const [roadmap, setRoadmap] = useState(null);
+
 
 
     useEffect(() => {
@@ -101,6 +104,32 @@
           console.error(error);
         });
       }
+      else if (entity === "phase") {
+        get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+         if (snapshot.exists(snapshot.val())) {
+           setPhase(snapshot.val())
+           return snapshot.val()
+         }
+         else {
+           return null
+         }
+       }).catch((error) => {
+         console.error(error);
+       });
+     }
+     else if (entity === "roadmap") {
+      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+       if (snapshot.exists(snapshot.val())) {
+         setRoadmap(snapshot.val())
+         return snapshot.val()
+       }
+       else {
+         return null
+       }
+     }).catch((error) => {
+       console.error(error);
+     });
+   }
   
     }
 
@@ -114,6 +143,8 @@
       learning,
       project,
       ReadRef,
+      phase,
+      roadmap
 
     }}>
       {children}

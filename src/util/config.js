@@ -91,10 +91,33 @@ export default {
 		},
 		roadmap: {
 			fields: {
-				title :{
+				title:{
 					type : "text"
+				},
+				phase: {
+					type:"ref",
+					reference: "phase"
+				}
+
+			},
+			readfields:{
+				duration: {
+					type: "text"
+				},
+				topic: {
+					type: "text"
+				},
+				category: {
+					type: "text"
+				},
+				resources: {
+					type: "text"
+				},
+				projects: {
+					type: "text"
 				}
 			}
+
 		}
 	}
 };
