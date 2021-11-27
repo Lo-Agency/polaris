@@ -1,3 +1,4 @@
+import { title } from "case";
 import { useParams } from "react-router"
 import { Link } from "react-router-dom"
 import config from "../../util/config";
@@ -14,8 +15,8 @@ const Adminlayout = ({ children }) => {
                         <ul className="flex justify-end flex-col text-xl" >
                             {
                                 Object.keys(config.entities)
-                                    .map(key => <li className="w-full hover:bg-lightblue py-4 transition-colors text-left pl-8" key={key}><Link to={`/admin/${key.toLowerCase()}/list`}>
-                                        {key} <img src="../../../public/online-learning.png"></img>
+                                    .map(key =><li className="w-full hover:bg-lightblue py-4 transition-colors text-left pl-8" key={key}><Link to={`/admin/${key.toLowerCase()}/list`}>
+                                        {title(key)} 
                                         </Link></li>)
                             }
                         </ul>

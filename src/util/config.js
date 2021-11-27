@@ -67,7 +67,7 @@ export default {
 				resources: {
 					type: "text"
 				},
-				learningtype: {
+				learningType: {
 					type: "text"
 				}
 			}
@@ -81,10 +81,10 @@ export default {
 				days: {
 					type: "number"
 				},
-				projecttype: {
+				projectType: {
 					type: "text"
 				},
-				learningday: {
+				learningDay: {
 					type:"number"
 				}
 			}

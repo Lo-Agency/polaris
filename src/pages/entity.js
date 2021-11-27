@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import EntittyForm from "../components/admin/entityForm";
 import { useCrud } from "../components/providers/crud.provider";
 import config from "../util/config";
+import { title } from "case";
 
 
 
@@ -27,14 +28,16 @@ const Entity = () => {
     }, [])
 
     const duration = (item) => {
+
         if (crud.project && item[2]) {
             let phaseDuration = 0;
             for (let i = 0; i < (item[2]).length; i++) {
                 let projectId = Object.keys(crud.project).filter(e => e === item[2][i]);
-                phaseDuration += (Number(crud.project[projectId]["learningday"]) + Number(crud.project[projectId]["days"]));
+                phaseDuration += (Number(crud.project[projectId]["learningDay"]) + Number(crud.project[projectId]["days"]));
 
 
             }
+            console.log(phaseDuration, "phaseDuration")
             return phaseDuration;
         }
     }
@@ -84,24 +87,28 @@ const Entity = () => {
 
     const phaseConvertor = (item) => {
         if (crud.phase && item && crud.learning) {
-            console.log(crud.phase, "crud.phase")
             let phaseId = Object.keys(crud.phase).filter(phaseId => phaseId === item)
-            console.log(crud.learning, "crud.learning")
             return (
-                crud.phase[phaseId]["learning"]).map(learning => <tr className="bg-white" key={learning}>{
-                    <>
-                        <td className="border-2 border-gray-400">{((crud.learning)[learning]).title}</td>
-                        <td className="border-2 border-gray-400">{((crud.learning)[learning]).category}</td>
-                        <td className="border-2 border-gray-400">{((crud.learning)[learning]).resources}</td>
-                    </>
-                }
+               <>
+                <tr className="text-center bg-white border-2 p-2 border-gray-400">
+                    <td className=" bg-white border-2 p-2 border-gray-400">{duration(Object.values(crud.phase[phaseId]))} Days</td>
+                    <td className=" bg-white border-2 p-2 border-gray-400"> {crud.phase[phaseId]["learning"].map(learning => <tr key={learning} >{((crud.learning)[learning]).title}</tr>)}</td>
+                    <td className=" bg-white border-2 p-2 border-gray-400"> {crud.phase[phaseId]["learning"].map(learning => <tr key={learning} >{((crud.learning)[learning]).category}</tr>)}</td>
+                    <td className=" bg-white border-2 p-2 border-gray-400"> {crud.phase[phaseId]["learning"].map(learning => <tr key={learning} >{((crud.learning)[learning]).resources}</tr>)}</td>
+                    <td className=" justify-center bg-white border-2 p-2 border-gray-400"> {crud.phase[phaseId]["project"].map(project => <tr key={project} >{((crud.project)[project]).title}</tr>)}</td>
+                    
+                </tr>
+                <td className="bg-blue py-2 w-24 border-gray-400 border-l-2 border-b-2">Ending Date</td>
+                <td className="bg-blue py-2 w-24 "></td>
+                <td className="bg-blue py-2 w-24 "></td>
+                <td className="bg-blue py-2 w-24 "></td>
+                <td className="bg-blue py-2 w-24 border-gray-400 border-r-2 border-b-2"></td>
 
-                </tr>)
+
+                </>
+            )
         }
     }
-
-
-
 
     let arr = []
     data && Object.keys(data).map(elem => arr.push(elem))
@@ -132,16 +139,17 @@ const Entity = () => {
                     <table>
                         <thead>
                             <tr>
-                                <th className="p-2" colSpan="5">{entityName}</th>
+                                <th className="p-2" colSpan="5">{title(entityName)}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 {(Object.keys(config.entities[entityName].readfields))
-                                    .map(item => { return <td className=" bg-yellow p-4 border-2 border-gray-400 rounded-lg" key={item}>{item}</td> })}
+                                    .map(item => { return <td className=" bg-green p-4 border-2 border-gray-400 text-center" key={item}>{item}</td> })}
                             </tr>
                             {crud.roadmap && (((Object.values(crud.roadmap))[0].phase))
-                                .map(item => { return <tr className="p-4 border-2 border-gray-400" key={item}>{phaseConvertor(item)}</tr> })}
+                                .map(item => { return phaseConvertor(item) })}
+                                
                         </tbody>
                     </table>
                     <div className="flex w-2/3 p-4 ">
@@ -164,10 +172,10 @@ const Entity = () => {
                             <tr>
                                 {Object.keys(config.entities[entityName].fields)
                                     .map(field => {
-                                        return <td className=" bg-grass-green p-4 border-2 border-gray-400" key={field}>{field}</td>
+                                        return <td className=" bg-grass-green p-4 border-2 border-gray-400" key={field}>{title(field)}</td>
                                     })}
-                                {entityName === "phase" && <td className=" text-center bg-grass-green p-4 border-2 border-gray-400">Duration</td>}
-                                <td className=" bg-grass-green p-4 border-2 border-gray-400">tools</td>
+                                {entityName === "phase" && <td className="text-center justify-center bg-grass-green p-4 border-2 border-gray-400">Duration</td>}
+                                <td className=" bg-grass-green p-4 border-2 border-gray-400">Tools</td>
                             </tr>
 
                             {data ? entityContent.map((item, index) => {
@@ -187,7 +195,7 @@ const Entity = () => {
                     </table>
                 </div>
                 <div className="flex w-2/3 p-4 ">
-                    <Link className="px-2 py-2 m-2 rounded-lg bg-lightblue" to={`/admin/${entityName}/create`}>Create new {entityName}</Link>
+                    <Link className="px-2 py-2 m-2 rounded-lg bg-lightblue transition-colors hover:bg-cyan" to={`/admin/${entityName}/create`}>Create new {entityName}</Link>
                 </div>
             </div>
 

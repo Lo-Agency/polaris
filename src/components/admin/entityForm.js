@@ -4,6 +4,8 @@ import { useCrud } from "../providers/crud.provider";
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
 import { useEffect } from "react";
+import {title} from 'case';
+
 
 const EntittyForm = ({ entityName, actionName, editID, editData }) => {
     const navigate = useNavigate();
@@ -23,13 +25,13 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
         switch (type) {
             case "text":
                 return <div key={field} className="w-full flex flex-col justify-center px-8">
-                    <label className="mx-2">{field}:
+                    <label className="mx-2">{title(field)}:
                     </label>
                     <input className="m-2 rounded-lg p-2 w-3/4" name={field} type="text" defaultValue={editData && editData[field]} />
                 </div>
             case "number":
                 return <div key={field} className=" w-full flex flex-col justify-center px-8">
-                    <label className="mx-2">{field}:
+                    <label className="mx-2">{title(field)}:
                     </label>
                     <input className="m-2 rounded-lg p-2 w-3/4" name={field} type="number" defaultValue={editData && editData[field]} />
                 </div>
@@ -53,7 +55,7 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
                 console.log(options, "options");
 
 
-                return <Select className="basic-multi-select"
+                return <Select className="basic-multi-select p-2 max-w-lg"
                     classNamePrefix="select"
                     isMulti
                     closeMenuOnSelect={false}
@@ -82,7 +84,7 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
         <>
             <form className="flex flex-col w-1/2" onSubmit={handleSubmit}>
                 {fields}
-                <button className="bg-lightblue w-2/3 rounded-lg text-white m-2 mx-10 py-2" type="submit">{actionName}</button>
+                <button className="bg-lightblue w-2/3 rounded-lg transition-colors text-white m-2 mx-10 py-2 hover:bg-cyan" type="submit">{title(actionName)}</button>
 
             </form>
         </>
