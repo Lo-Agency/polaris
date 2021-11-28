@@ -47,8 +47,7 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
                 let options = [];
 
                 crud[reference] && Object.values(crud[reference]).map((item, index) => {
-                    (reference == "phase") ? (value.push(Object.keys(crud[reference])[index]), label.push(item.label))
-                        : (value.push(Object.keys(crud[reference])[index]), label.push(item.title))
+                     (value.push(Object.keys(crud[reference])[index]), label.push(item.title))
                 })
 
                 for (let i = 0; i < value.length; i++) {

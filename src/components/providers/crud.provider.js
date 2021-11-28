@@ -12,20 +12,42 @@ const CrudProvider = ({ children }) => {
   const [change, setChange] = useState(false)
   const [editData, setEditData] = useState(null)
   const { entityName } = useParams();
-  const [learning, setLearning] = useState(null);
-  const [project, setProject] = useState(null);
-  const [phase, setPhase] = useState(null);
-  const [roadmap, setRoadmap] = useState(null);
+  let mainData=[]
+  // const [learning, setLearning] = useState(null);
+  // const [project, setProject] = useState(null);
+  // const [phase, setPhase] = useState(null);
+  // const [roadmap, setRoadmap] = useState(null);
+  useEffect( () =>{
+    
+    Object.keys(config.entities).map(entity =>{
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        mainData.push({[entity]: snapshot.val()})
+      } else {
+        settableData(null)
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  })
+   console.log(mainData)
+},[])
+
+
   
 
 
 
   useEffect(() => {
+ 
     const dbRef = ref(getDatabase());
     get(child(dbRef, `roadmap/frontend/${entityName}`)).then((snapshot) => {
       if (snapshot.exists()) {
         let tableData = snapshot.val();
         settableData(tableData);
+        // entityData.push({[entityName]:snapshot.val()})
+        //  console.log(entityData, "ent data")
       } else {
         settableData(null)
       }
@@ -84,10 +106,11 @@ const CrudProvider = ({ children }) => {
 
   const ReadRef = async (entity) => {
     const dbRef = ref(getDatabase());
-    if (entity === "learning") {
-      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+       get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
         if (snapshot.exists(snapshot.val())) {
-          setLearning(snapshot.val())
+         
+          // entityData.push({[entityName] : snapshot.val()})
+          // console.log(entityData, "ent data")
           return snapshot.val()
         }
         else {
@@ -96,46 +119,58 @@ const CrudProvider = ({ children }) => {
       }).catch((error) => {
         console.error(error);
       });
-    }
-    else if (entity === "project") {
-      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-        if (snapshot.exists(snapshot.val())) {
-          setProject(snapshot.val())
-          return snapshot.val()
-        }
-        else {
-          return null
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-    else if (entity === "phase") {
-      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-        if (snapshot.exists(snapshot.val())) {
-          setPhase(snapshot.val())
-          return snapshot.val()
-        }
-        else {
-          return null
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-    else if (entity === "roadmap") {
-      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-        if (snapshot.exists(snapshot.val())) {
-          setRoadmap(snapshot.val())
-          return snapshot.val()
-        }
-        else {
-          return null
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
+    // if (entity === "learning") {
+    //   get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+    //     if (snapshot.exists(snapshot.val())) {
+    //       setLearning(snapshot.val())
+    //       return snapshot.val()
+    //     }
+    //     else {
+    //       return null
+    //     }
+    //   }).catch((error) => {
+    //     console.error(error);
+    //   });
+    // }
+    // else if (entity === "project") {
+    //   get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+    //     if (snapshot.exists(snapshot.val())) {
+    //       setProject(snapshot.val())
+    //       return snapshot.val()
+    //     }
+    //     else {
+    //       return null
+    //     }
+    //   }).catch((error) => {
+    //     console.error(error);
+    //   });
+    // }
+    // else if (entity === "phase") {
+    //   get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+    //     if (snapshot.exists(snapshot.val())) {
+    //       setPhase(snapshot.val())
+    //       return snapshot.val()
+    //     }
+    //     else {
+    //       return null
+    //     }
+    //   }).catch((error) => {
+    //     console.error(error);
+    //   });
+    // }
+    // else if (entity === "roadmap") {
+    //   get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+    //     if (snapshot.exists(snapshot.val())) {
+    //       setRoadmap(snapshot.val())
+    //       return snapshot.val()
+    //     }
+    //     else {
+    //       return null
+    //     }
+    //   }).catch((error) => {
+    //     console.error(error);
+    //   });
+    // }
 
   }
 
@@ -146,12 +181,13 @@ const CrudProvider = ({ children }) => {
     Read,
     editData,
     Update,
-    learning,
-    project,
+    // learning,
+    // project,
     ReadRef,
-    phase,
-    roadmap,
-    change
+    // phase,
+    // roadmap,
+    change,
+    mainData
   }}>
     {children}
   </CrudContext.Provider>
