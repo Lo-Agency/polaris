@@ -12,14 +12,16 @@ module.exports = {
 		},
 		backgroundColor: theme => ({
 			'gray': '#565c5e',
-			'myBlue': '#d1e4e3',
-			'orang': '#e3342f',
-			'white': '#FFF',
+			'green': '#a8c83c',
+			'cyan': '#24a6a7',
+			'grass-green': '#88c67e',
 			'yellow': '#FFD218',
-			'lightblue': '#18B9FF',
-			'chineseSilver': '#D7C1C7',
-			'pastelGray': '#C7D7C1',
-			'jetStream': '#C1D7C6',
+			'lightblue': '#b0e3e7',
+			'lightGray': '#f0f2f1',
+			'blue': '#90d7dc',
+			'grainsboro': '#d4cbd4',
+			'lemon': '#fff88a',
+			'greenLemon': '#f8ffd8',
 			
 
 

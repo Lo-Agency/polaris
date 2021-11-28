@@ -67,7 +67,7 @@ export default {
 				resources: {
 					type: "text"
 				},
-				learningtype: {
+				learningType: {
 					type: "text"
 				}
 			}
@@ -81,20 +81,47 @@ export default {
 				days: {
 					type: "number"
 				},
-				projecttype: {
+				projectType: {
 					type: "text"
 				},
-				learningday: {
+				learningDay: {
 					type:"number"
 				}
 			}
 		},
 		roadmap: {
 			fields: {
-				title :{
+				title:{
 					type : "text"
+				},
+				phase: {
+					type:"ref",
+					reference: "phase"
+				},
+				startingDate: {
+					type:"date"
 				}
+
+			},
+			readfields:{
+				duration: {
+					type: "text"
+				},
+				topic: {
+					type: "text"
+				},
+				category: {
+					type: "text"
+				},
+				resources: {
+					type: "text"
+				},
+				projects: {
+					type: "text"
+				},
+				
 			}
+
 		}
 	}
 };
