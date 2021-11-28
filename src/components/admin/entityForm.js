@@ -4,7 +4,7 @@ import { useCrud } from "../providers/crud.provider";
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
 import { useEffect } from "react";
-import {title} from 'case';
+import { title } from 'case';
 
 
 const EntittyForm = ({ entityName, actionName, editID, editData }) => {
@@ -35,26 +35,25 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
                     </label>
                     <input className="m-2 rounded-lg p-2 w-3/4" name={field} type="number" defaultValue={editData && editData[field]} />
                 </div>
+            case "date":
+                return <div key={field} className=" w-full flex flex-col justify-center px-8">
+                    <label className="mx-2">{title(field)}:
+                    </label>
+                    <input className="m-2 rounded-lg p-2 w-3/4" name={field} type="date" defaultValue={editData && editData[field]}  />
+                </div>
             case "ref":
                 let value = [];
                 let label = [];
                 let options = [];
 
                 crud[reference] && Object.values(crud[reference]).map((item, index) => {
-                     (reference=="phase") ? (value.push(Object.keys(crud[reference])[index]), label.push(item.label))
-                    : (value.push(Object.keys(crud[reference])[index]), label.push(item.title))
-                
-
+                    (reference == "phase") ? (value.push(Object.keys(crud[reference])[index]), label.push(item.label))
+                        : (value.push(Object.keys(crud[reference])[index]), label.push(item.title))
                 })
-                console.log(value, "value")
-
 
                 for (let i = 0; i < value.length; i++) {
                     options.push({ "value": value[i], "label": label[i] })
                 }
-                console.log(options, "options");
-
-
                 return <Select className="basic-multi-select p-2 max-w-lg"
                     classNamePrefix="select"
                     isMulti
@@ -85,7 +84,6 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
             <form className="flex flex-col w-1/2" onSubmit={handleSubmit}>
                 {fields}
                 <button className="bg-lightblue w-2/3 rounded-lg transition-colors text-white m-2 mx-10 py-2 hover:bg-cyan" type="submit">{title(actionName)}</button>
-
             </form>
         </>
     )

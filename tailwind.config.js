@@ -19,7 +19,9 @@ module.exports = {
 			'lightblue': '#b0e3e7',
 			'lightGray': '#f0f2f1',
 			'blue': '#90d7dc',
-			'grainsboro': '#d4cbd4'
+			'grainsboro': '#d4cbd4',
+			'lemon': '#fff88a',
+			'greenLemon': '#f8ffd8',
 			
 
 

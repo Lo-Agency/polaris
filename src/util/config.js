@@ -97,6 +97,9 @@ export default {
 				phase: {
 					type:"ref",
 					reference: "phase"
+				},
+				startingDate: {
+					type:"date"
 				}
 
 			},
@@ -115,7 +118,8 @@ export default {
 				},
 				projects: {
 					type: "text"
-				}
+				},
+				
 			}
 
 		}
