@@ -1,3 +1,5 @@
+
+
 export default {
 	firebase: {
 		apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -50,9 +52,9 @@ export default {
 					isArray: true,
 					reference: "project"
 				},
-				label :{
-					type : "text",
-					isArray: false,
+				label:{
+					type:"text",
+					isArray: false
 				}
 			},
 			list : ["title", "learning", "project"]
