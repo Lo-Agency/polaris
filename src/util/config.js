@@ -1,3 +1,5 @@
+
+
 export default {
 	firebase: {
 		apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -36,7 +38,8 @@ export default {
 			fields: {
 				title :{
 					type: "text",
-					required: true
+					required: true,
+					isArray: false,
 				},
 
 				learning: {
@@ -49,8 +52,9 @@ export default {
 					isArray: true,
 					reference: "project"
 				},
-				label :{
-					type : "text"
+				label:{
+					type:"text",
+					isArray: false
 				}
 			},
 			list : ["title", "learning", "project"]
@@ -59,16 +63,20 @@ export default {
 		learning: {
 			fields: {
 				title: {
-					type: "text"
+					type: "text",
+					isArray: false,
 				},
 				category: {
-					type: "text"
+					type: "text",
+					isArray: false,
 				},
 				resources: {
-					type: "text"
+					type: "text",
+					isArray: false,
 				},
 				learningType: {
-					type: "text"
+					type: "text",
+					isArray: false,
 				}
 			}
 		},
@@ -76,30 +84,37 @@ export default {
 		project: {
 			fields: {
 				title: {
-					type: "text"
+					type: "text",
+					isArray: false,
 				},
 				days: {
-					type: "number"
+					type: "number",
+					isArray: false,
 				},
 				projectType: {
-					type: "text"
+					type: "text",
+					isArray: false,
 				},
 				learningDay: {
-					type:"number"
+					type:"number",
+					isArray: false,
 				}
 			}
 		},
 		roadmap: {
 			fields: {
 				title:{
-					type : "text"
+					type : "text",
+					isArray: false,
 				},
 				phase: {
 					type:"ref",
-					reference: "phase"
+					reference: "phase",
+					isArray: true,
 				},
 				startingDate: {
-					type:"date"
+					type:"date",
+					isArray: false,
 				}
 
 			},

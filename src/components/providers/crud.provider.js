@@ -8,46 +8,44 @@ import { database } from "../../util/firebase";
 const CrudContext = createContext(null);
 
 const CrudProvider = ({ children }) => {
-  const [tableData, settableData] = useState(null)
   const [change, setChange] = useState(false)
   const [editData, setEditData] = useState(null)
   const { entityName } = useParams();
-  const [learning, setLearning] = useState(null);
-  const [project, setProject] = useState(null);
-  const [phase, setPhase] = useState(null);
-  const [roadmap, setRoadmap] = useState(null);
-  
-
+  const [dataState, setDataState] = useState();
 
 
   useEffect(() => {
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `roadmap/frontend/${entityName}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        let tableData = snapshot.val();
-        settableData(tableData);
-      } else {
-        settableData(null)
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-  }, [entityName, change])
+    getAllData().then((data)=>{
+      setDataState(data)
+    })
+ 
+  }, [change])
+
+  const getAllData = async() => {
+    const allPromises = Object.keys(config.entities).map(entity => {
+      return new Promise((resolve, reject) => {
+        const dbRef = ref(getDatabase());
+        get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+          resolve({ [entity]: snapshot.val() })
+        }).catch((error) => {
+          reject(error);
+        })
+      })
+
+    })
+    return await Promise.all(allPromises);
+  }
+  
+
 
   const Create = async (values, entity) => {
     const items = Object.keys(config.entities[entity].fields);
-    // let object = {};
-    // //creating object dynamically to be entered into firebase
-    // items.forEach((key, index) => {
-    //   object[key] = values[index]
-    // });
-
-    var result =  values.reduce(function(result, field,index) {
+    let result = values.reduce(function (result, field, index) {
       result[items[index]] = field;
       return result;
-    }, {}) 
-     await push(ref(database, `roadmap/frontend/${entity}`), result);
-     setChange(!change)
+    }, {})
+    await push(ref(database, `roadmap/frontend/${entity}`), result);
+    setChange(!change)
 
   };
 
@@ -74,7 +72,7 @@ const CrudProvider = ({ children }) => {
 
   const Update = async (values, entityName, editID) => {
     const items = Object.keys(config.entities[entityName].fields);
-    var result =  values.reduce(function(result, field,index) {
+    var result = values.reduce(function (result, field, index) {
       result[items[index]] = field;
       return result;
     }, {})
@@ -82,76 +80,15 @@ const CrudProvider = ({ children }) => {
     setChange(!change)
   }
 
-  const ReadRef = async (entity) => {
-    const dbRef = ref(getDatabase());
-    if (entity === "learning") {
-      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-        if (snapshot.exists(snapshot.val())) {
-          setLearning(snapshot.val())
-          return snapshot.val()
-        }
-        else {
-          return null
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-    else if (entity === "project") {
-      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-        if (snapshot.exists(snapshot.val())) {
-          setProject(snapshot.val())
-          return snapshot.val()
-        }
-        else {
-          return null
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-    else if (entity === "phase") {
-      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-        if (snapshot.exists(snapshot.val())) {
-          setPhase(snapshot.val())
-          return snapshot.val()
-        }
-        else {
-          return null
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-    else if (entity === "roadmap") {
-      get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-        if (snapshot.exists(snapshot.val())) {
-          setRoadmap(snapshot.val())
-          return snapshot.val()
-        }
-        else {
-          return null
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-
-  }
 
   return <CrudContext.Provider value={{
     Create,
-    tableData,
     Delete,
     Read,
     editData,
     Update,
-    learning,
-    project,
-    ReadRef,
-    phase,
-    roadmap,
-    change
+    change,
+    dataState
   }}>
     {children}
   </CrudContext.Provider>

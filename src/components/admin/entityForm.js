@@ -3,7 +3,6 @@ import config from "../../util/config";
 import { useCrud } from "../providers/crud.provider";
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
-import { useEffect } from "react";
 import { title } from 'case';
 
 
@@ -11,14 +10,7 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
     const navigate = useNavigate();
     const animatedComponents = makeAnimated();
     const crud = useCrud();
-    useEffect(() => {
-        crud.ReadRef("learning")
-        crud.ReadRef("project")
-        crud.ReadRef("phase")
-        crud.ReadRef("roadmap")
-
-
-    }, [])
+    
     const fields = Object.keys(config.entities[entityName].fields).map(field => {
         const { type, reference } = config.entities[entityName].fields[field];
 
@@ -39,18 +31,20 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
                 return <div key={field} className=" w-full flex flex-col justify-center px-8">
                     <label className="mx-2">{title(field)}:
                     </label>
-                    <input className="m-2 rounded-lg p-2 w-3/4" name={field} type="date" defaultValue={editData && editData[field]}  />
+                    <input className="m-2 rounded-lg p-2 w-3/4" name={field} type="date" defaultValue={editData && editData[field]} />
                 </div>
             case "ref":
                 let value = [];
                 let label = [];
                 let options = [];
 
-                crud[reference] && Object.values(crud[reference]).map((item, index) => {
-                    (reference == "phase") ? (value.push(Object.keys(crud[reference])[index]), label.push(item.label))
-                        : (value.push(Object.keys(crud[reference])[index]), label.push(item.title))
-                })
+                let tempLabel = Object.values((Object.values(crud.dataState)).filter(item => (Object.keys(item)) == field)[0][field])
 
+                tempLabel.map((item) => label.push(item.title))
+
+                Object.keys((Object.values(crud.dataState)).filter(item => (Object.keys(item)) == field)[0][field]).map(item => value.push(item))
+
+         
                 for (let i = 0; i < value.length; i++) {
                     options.push({ "value": value[i], "label": label[i] })
                 }
