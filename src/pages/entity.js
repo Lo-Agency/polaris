@@ -11,38 +11,38 @@ const Entity = () => {
 
     const { entityName, actionName } = useParams();
     const crud = useCrud();
-    let data = crud.tableData;
-    let myArr = []
+    let tempContainer = []
     let entityContent = []
     let configFields = Object.keys(config.entities[entityName].fields);
     const [editID, setEditId] = useState(null);
     let entityData;
-  
+    crud.dataState && (entityData = crud.dataState.filter(elem => Object.keys(elem) == entityName))
     const sortData = () => {
         if (crud.dataState) {
-            entityData = crud.dataState.filter(elem => Object.keys(elem) == entityName)
+            
             entityData[0] && Object.values((Object.values(entityData[0]))[0]).map((item, index) => {
 
                 configFields.map(field => {
 
                     if (config.entities[entityName].fields[field].isArray && (crud.dataState != [])) {
                         let fieldData = crud.dataState.filter(i => Object.keys(i) == field)
-                        fieldData = fieldData.map(item => (Object.values(item)))
-                        myArr.push((item[field]).map(id => fieldData[0][0][id].title).join(", "))
+                        fieldData = fieldData.map(item => (Object.values(item))) 
+                        tempContainer.push((item[field]).map(id => fieldData[0][0][id].title).join(", "))
                     } else {
-                        myArr.push(item[field]);
+                        tempContainer.push(item[field]);
                     }
                 })
-                entityContent[index] = myArr;
-                myArr = [];
+                entityContent[index] = tempContainer;
+                tempContainer = [];
 
             })
         }
     }
 
     sortData();
-    let arr = []
-    data && Object.keys(data).map(elem => arr.push(elem))
+    let deleteId = []
+    Object.keys(Object.values( entityData[0])[0]).map(elem => deleteId.push(elem))
+   
 
     const handleDelete = (item) => {
         crud.Delete(item);
@@ -89,9 +89,9 @@ const Entity = () => {
                                 return <tr className=" text-center p-4 border-2 border-gray-400" key={index}>{item
                                     .map((elem, index) => { return <td className="p-4 border-2 border-gray-400" key={index}>{elem}</td> })}
                                     <td className="flex p-4">
-                                        <svg onClick={() => handleDelete(arr[index])} className="w-6 h-6 mr-2 cursor-pointer" fill="none" stroke="Gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                        <svg onClick={() => handleDelete(deleteId[index])} className="w-6 h-6 mr-2 cursor-pointer" fill="none" stroke="Gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                         <Link to={`/admin/${entityName}/edit`}>
-                                            <svg onClick={() => handleEdit(arr[index])} className="w-6 h-6 cursor-pointer" stroke="Gray" fill="gray" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
+                                            <svg onClick={() => handleEdit(deleteId[index])} className="w-6 h-6 cursor-pointer" stroke="Gray" fill="gray" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
                                         </Link>
                                     </td>
                                 </tr>

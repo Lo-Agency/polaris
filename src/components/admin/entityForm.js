@@ -3,7 +3,6 @@ import config from "../../util/config";
 import { useCrud } from "../providers/crud.provider";
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
-import { useEffect } from "react";
 import { title } from 'case';
 
 

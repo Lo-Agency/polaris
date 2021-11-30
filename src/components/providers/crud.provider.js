@@ -8,10 +8,9 @@ import { database } from "../../util/firebase";
 const CrudContext = createContext(null);
 
 const CrudProvider = ({ children }) => {
-  const [tableData, settableData] = useState(null)
   const [change, setChange] = useState(false)
   const [editData, setEditData] = useState(null)
-  const { entityName, actionName } = useParams();
+  const { entityName } = useParams();
   const [dataState, setDataState] = useState();
 
 
@@ -38,31 +37,10 @@ const CrudProvider = ({ children }) => {
   }
   
 
-  useEffect(() => {
-
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `roadmap/frontend/${entityName}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        let tableData = snapshot.val();
-        settableData(tableData);
-
-      } else {
-        settableData(null)
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-  }, [entityName])
 
   const Create = async (values, entity) => {
     const items = Object.keys(config.entities[entity].fields);
-    // let object = {};
-    // //creating object dynamically to be entered into firebase
-    // items.forEach((key, index) => {
-    //   object[key] = values[index]
-    // });
-
-    var result = values.reduce(function (result, field, index) {
+    let result = values.reduce(function (result, field, index) {
       result[items[index]] = field;
       return result;
     }, {})
@@ -102,88 +80,13 @@ const CrudProvider = ({ children }) => {
     setChange(!change)
   }
 
-  const ReadRef = async (entity) => {
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-      if (snapshot.exists(snapshot.val())) {
-
-        // entityData.push({[entityName] : snapshot.val()})
-        // console.log(entityData, "ent data")
-        return snapshot.val()
-      }
-      else {
-        return null
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-    // if (entity === "learning") {
-    //   get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-    //     if (snapshot.exists(snapshot.val())) {
-    //       setLearning(snapshot.val())
-    //       return snapshot.val()
-    //     }
-    //     else {
-    //       return null
-    //     }
-    //   }).catch((error) => {
-    //     console.error(error);
-    //   });
-    // }
-    // else if (entity === "project") {
-    //   get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-    //     if (snapshot.exists(snapshot.val())) {
-    //       setProject(snapshot.val())
-    //       return snapshot.val()
-    //     }
-    //     else {
-    //       return null
-    //     }
-    //   }).catch((error) => {
-    //     console.error(error);
-    //   });
-    // }
-    // else if (entity === "phase") {
-    //   get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-    //     if (snapshot.exists(snapshot.val())) {
-    //       setPhase(snapshot.val())
-    //       return snapshot.val()
-    //     }
-    //     else {
-    //       return null
-    //     }
-    //   }).catch((error) => {
-    //     console.error(error);
-    //   });
-    // }
-    // else if (entity === "roadmap") {
-    //   get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
-    //     if (snapshot.exists(snapshot.val())) {
-    //       setRoadmap(snapshot.val())
-    //       return snapshot.val()
-    //     }
-    //     else {
-    //       return null
-    //     }
-    //   }).catch((error) => {
-    //     console.error(error);
-    //   });
-    // }
-
-  }
 
   return <CrudContext.Provider value={{
     Create,
-    tableData,
     Delete,
     Read,
     editData,
     Update,
-    // learning,
-    // project,
-    ReadRef,
-    // phase,
-    // roadmap,
     change,
     dataState
   }}>
