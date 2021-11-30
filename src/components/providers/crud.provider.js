@@ -15,13 +15,13 @@ const CrudProvider = ({ children }) => {
 
 
   useEffect(() => {
-    getAllData().then((data)=>{
+    getAllData().then((data) => {
       setDataState(data)
     })
- 
+
   }, [change])
 
-  const getAllData = async() => {
+  const getAllData = async () => {
     const allPromises = Object.keys(config.entities).map(entity => {
       return new Promise((resolve, reject) => {
         const dbRef = ref(getDatabase());
@@ -33,9 +33,10 @@ const CrudProvider = ({ children }) => {
       })
 
     })
+
     return await Promise.all(allPromises);
   }
-  
+
 
 
   const Create = async (values, entity) => {
@@ -49,11 +50,20 @@ const CrudProvider = ({ children }) => {
 
   };
 
-
+  //let references =(Object.values((config.entities.phase.fields)).filter(field => field.type === "ref")).map(item => item.reference) 
+  
   const Delete = async (item) => {
     await remove(ref(database, `roadmap/frontend/${entityName}/${item}`));
+    await set(ref(database, `roadmap/frontend/phase/${phasekey}/${entityName}/0`));
     setChange(!change)
   }
+
+  // let phases = dataState && dataState.filter(entity => Object.keys(entity) == "phase")
+  // phases && console.log(phases[0], "sefr")
+  // phases && console.log(Object.values(phases[0]))
+  // phases && console.log((Object.values(phases[0]).filter(phase =>(Object.values(phase)).map(phaseValue => phaseValue.learning))==='-MoxxVctzO7JE2_YKxB_' ),"console.log")
+  // //phases && console.log((Object.values(phases[0]).filter(phaseId => (Object.entries(phaseId)).map( item => item[entityName] == '-MoxxVctzO7JE2_YKxB_') )))
+  // //console.log((dataState && dataState.filter(elem => Object.keys(elem) == "phase")).filter,"phase")
 
   const Read = async (item) => {
     setEditData(null)
@@ -68,7 +78,6 @@ const CrudProvider = ({ children }) => {
       console.error(error);
     });
   }
-
 
   const Update = async (values, entityName, editID) => {
     const items = Object.keys(config.entities[entityName].fields);

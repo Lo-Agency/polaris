@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
 function Home() {
+
+        //let phases = dataState && dataState.filter(entity => Object.keys(entity) == "phase")
 	return <h1 className="bg-blue p-2">Today is {format(new Date(),"EEEE d MMMM yyyy")}</h1>;
 }
 
