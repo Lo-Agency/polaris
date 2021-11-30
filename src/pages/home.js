@@ -5,6 +5,7 @@ import Select from 'react-select'
 import { useState, useEffect } from 'react';
 import config from '../util/config';
 import addDays from 'date-fns/addDays';
+import { Link } from 'react-router-dom';
 
 
 function Home() {
@@ -28,14 +29,10 @@ function Home() {
        crud.dataState && (phaseData = crud.dataState.filter(elem => Object.keys(elem) == "phase"))
        crud.dataState && (learningData = crud.dataState.filter(elem => Object.keys(elem) == "learning"))
        crud.dataState && (projectData = crud.dataState.filter(elem => Object.keys(elem) == "project"))
-       crud.dataState && console.log((Object.values(entityData[0])[0]), "rntityData")
        crud.dataState && (roadmap = (Object.values(entityData[0])[0]));
        crud.dataState && (phase = (Object.values(phaseData[0])[0]));
        crud.dataState && (learn = (Object.values(learningData[0])[0]))
        crud.dataState && (project = (Object.values(projectData[0])[0]))
-
-
-       // ------------------
 
        const duration = (item) => {
               if (project && item[2]) {
@@ -78,7 +75,6 @@ function Home() {
                      )
               }
        }
-       //    -----------------------
 
        crud.dataState && (Object.values(roadmap)).map(item => {
               label.push(item.title)
@@ -96,60 +92,55 @@ function Home() {
               event.preventDefault()
               const form = new FormData(event.target)
               setResult(form.get("roadmap"))
-              //result && (roadmap && console.log(roadmap,result, "roadmapresult"))
-              //result && (roadmap && console.log(roadmap[result], "rr"))
-
               return result
        }
 
        return <>
-              <h1 className="bg-blue p-2">Today is {format(new Date(), "EEEE d MMMM yyyy")}</h1>
+              <div className="bg-blue p-2 flex justify-between">
+                     <h1 className="bg-blue p-2">Today is {format(new Date(), "EEEE d MMMM yyyy")}</h1>
+                     <Link to="/login">
+                            <div className="bg-cyan text-white p-2 rounded-lg flex">
+                                   <button className="px-2">Log in as Admin</button>
+                                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                   </svg>
+                            </div></Link>
+              </div>
               <form onSubmit={handleSubmit}>
                      <Select className="p-2 max-w-lg"
                             classNamePrefix="select"
                             closeMenuOnSelect={false}
                             name={"roadmap"} options={options}>
                      </Select>
-                     <button className="bg-cyan p-2" type="submit">Submit</button>
+                     <button className="bg-cyan p-2" type="submit">Show Roadmap</button>
               </form>
               {result ?
                      <div>
-                            {roadmap && console.log(roadmap, result, "roadmapresult")}
-                            {roadmap && console.log(roadmap[result], "rr")}
-
-                            {/* //       roadmap && (roadmapId =  Object.keys(roadmap).filter(id => id === result)) */}
-                           
-                                   { starting = null }
-                                   <div>
-                                          <table className="border-2 border-gray-400 bg-white p-2 mb-10">
-                                                 <thead>
-                                                        <tr>
-                                                               <th className="p-2 bg-green w-full " colSpan="5"><div className="flex w-full justify-between">
-                                                                      <span>Starting Date  {(Object.values(roadmap[result]))[1]} </span>
-                                                                      <span>{(Object.values(roadmap))[2]} </span>
-
-                                                               </div>
-                                                               </th>
-                                                        </tr>
-                                                 </thead>
-                                                 <tbody>
-                                                        <tr>
-                                                               {(Object.keys(config.entities["roadmap"].readfields))
-                                                                      .map(item => { return <td className=" bg-blue p-4 border-2 border-gray-400 text-center" key={item}>{title(item)}</td> })}
-                                                        </tr>
-                                                        {roadmap && (((Object.values(roadmap[result]))[0]))
-                                                               .map(item => { return phaseConvertor(item, roadmap[result]) })}
-
-                                                 </tbody>
-                                          </table>
-                                   </div>
-                            
+                            {starting = null}
+                            <div>
+                                   <table className="border-2 border-gray-400 bg-white p-2 mb-10">
+                                          <thead>
+                                                 <tr>
+                                                        <th className="p-2 bg-green w-full " colSpan="5"><div className="flex w-full justify-between">
+                                                               <span>Starting Date  {(Object.values(roadmap[result]))[1]} </span>
+                                                               <span>{(Object.values(roadmap))[2]} </span>
+                                                        </div>
+                                                        </th>
+                                                 </tr>
+                                          </thead>
+                                          <tbody>
+                                                 <tr>
+                                                        {(Object.keys(config.entities["roadmap"].readfields))
+                                                               .map(item => { return <td className=" bg-blue p-4 border-2 border-gray-400 text-center" key={item}>{title(item)}</td> })}
+                                                 </tr>
+                                                 {roadmap && (((Object.values(roadmap[result]))[0]))
+                                                        .map(item => { return phaseConvertor(item, roadmap[result]) })}
+                                          </tbody>
+                                   </table>
+                            </div>
                      </div>
                      : <p>select ur roadmap</p>}
-
        </>
-
-
 }
 
 export default Home;

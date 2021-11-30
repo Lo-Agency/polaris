@@ -18,7 +18,6 @@ const CrudProvider = ({ children }) => {
     getAllData().then((data) => {
       setDataState(data)
     })
-
   }, [change])
 
   const getAllData = async () => {
@@ -31,13 +30,9 @@ const CrudProvider = ({ children }) => {
           reject(error);
         })
       })
-
     })
-
     return await Promise.all(allPromises);
   }
-
-
 
   const Create = async (values, entity) => {
     const items = Object.keys(config.entities[entity].fields);
@@ -47,7 +42,6 @@ const CrudProvider = ({ children }) => {
     }, {})
     await push(ref(database, `roadmap/frontend/${entity}`), result);
     setChange(!change)
-
   };
 
   //let references =(Object.values((config.entities.phase.fields)).filter(field => field.type === "ref")).map(item => item.reference) 
@@ -58,6 +52,7 @@ const CrudProvider = ({ children }) => {
     setChange(!change)
   }
 
+  //codes related to delete bug
   // let phases = dataState && dataState.filter(entity => Object.keys(entity) == "phase")
   // phases && console.log(phases[0], "sefr")
   // phases && console.log(Object.values(phases[0]))

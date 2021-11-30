@@ -1,7 +1,7 @@
 
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { useState} from 'react';
+import { useState } from 'react';
 import EntittyForm from "../components/admin/entityForm";
 import { useCrud } from "../components/providers/crud.provider";
 import config from "../util/config";
@@ -17,17 +17,15 @@ const Entity = () => {
     const [editID, setEditId] = useState(null);
     let entityData;
     crud.dataState && (entityData = crud.dataState.filter(elem => Object.keys(elem) == entityName))
-    console.log(((entityData[0]).phase!==null))
+    console.log(((entityData[0]).phase !== null))
     const sortData = () => {
-         if (crud.dataState && ((entityData[0]).entityName)!==null) {
-            
+        if (crud.dataState && ((entityData[0]).entityName) !== null) {
+
             entityData[0] && Object.values((Object.values(entityData[0]))[0]).map((item, index) => {
-
                 configFields.map(field => {
-
                     if (config.entities[entityName].fields[field].isArray && (crud.dataState != [])) {
                         let fieldData = crud.dataState.filter(i => Object.keys(i) == field)
-                        fieldData = fieldData.map(item => (Object.values(item))) 
+                        fieldData = fieldData.map(item => (Object.values(item)))
                         tempContainer.push((item[field]).map(id => fieldData[0][0][id].title).join(", "))
                     } else {
                         tempContainer.push(item[field]);
@@ -35,15 +33,13 @@ const Entity = () => {
                 })
                 entityContent[index] = tempContainer;
                 tempContainer = [];
-
-           })
-         }
+            })
+        }
     }
 
     sortData();
-      let deleteId = []
-      Object.keys(Object.values( entityData[0])[0]).map(elem => deleteId.push(elem))
-   
+    let deleteId = []
+    Object.keys(Object.values(entityData[0])[0]).map(elem => deleteId.push(elem))
 
     const handleDelete = (item) => {
         crud.Delete(item);
@@ -52,21 +48,16 @@ const Entity = () => {
     const handleEdit = (item) => {
         setEditId(item);
         crud.Read(item);
-
     }
-    
+
     switch (actionName) {
         case "create":
             return <><EntittyForm entityName={entityName} actionName={actionName} editData={null} /> </>
         case "edit":
             return <><EntittyForm entityName={entityName} actionName={actionName} editData={crud.editData} editID={editID} /> </>
-
         case "remove":
             return <> <EntittyForm entityName={entityName} actionName={actionName} /> </>
-
-
         default:
-
             return <div className="flex h-auto justify-between items-start w-11/12  flex-col" >
                 <div className="flex w-full justify-center h-5/6 items-center" >
                     <table className="shadow-lg">
@@ -81,12 +72,9 @@ const Entity = () => {
                                     .map(field => {
                                         return <td className=" bg-grass-green p-4 border-2 border-gray-400" key={field}>{title(field)}</td>
                                     })}
-
                                 <td className=" bg-grass-green p-4 border-2 border-gray-400">Tools</td>
                             </tr>
-
                             {crud.dataState ? entityContent.map((item, index) => {
-
                                 return <tr className=" text-center p-4 border-2 border-gray-400" key={index}>{item
                                     .map((elem, index) => { return <td className="p-4 border-2 border-gray-400" key={index}>{elem}</td> })}
                                     <td className="flex p-4">
@@ -105,10 +93,6 @@ const Entity = () => {
                     <Link className="px-2 py-2 m-2 rounded-lg bg-lightblue transition-colors hover:bg-cyan" to={`/admin/${entityName}/create`}>Create new {entityName}</Link>
                 </div>
             </div>
-
     }
-
-
 }
-
 export default Entity;
