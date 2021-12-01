@@ -9,7 +9,7 @@ export default {
 		messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 		appId: process.env.REACT_APP_FIREBASE_APP_ID
 	},
-    routes: {
+	routes: {
 		home: {
 			pathname: "/",
 			isCaseSensitive: false,
@@ -36,7 +36,7 @@ export default {
 	entities: {
 		phase: {
 			fields: {
-				title :{
+				title: {
 					type: "text",
 					required: true,
 					isArray: false,
@@ -52,12 +52,12 @@ export default {
 					isArray: true,
 					reference: "project"
 				},
-				label:{
-					type:"text",
+				label: {
+					type: "text",
 					isArray: false
 				}
 			},
-			list : ["title", "learning", "project"]
+			list: ["learning", "project"]
 		},
 
 		learning: {
@@ -96,29 +96,29 @@ export default {
 					isArray: false,
 				},
 				learningDay: {
-					type:"number",
+					type: "number",
 					isArray: false,
 				}
 			}
 		},
 		roadmap: {
 			fields: {
-				title:{
-					type : "text",
+				title: {
+					type: "text",
 					isArray: false,
 				},
 				phase: {
-					type:"ref",
+					type: "ref",
 					reference: "phase",
 					isArray: true,
 				},
 				startingDate: {
-					type:"date",
+					type: "date",
 					isArray: false,
-				}
-
+				},
 			},
-			readfields:{
+			list: ["phase"],
+			readfields: {
 				duration: {
 					type: "text"
 				},
@@ -134,7 +134,7 @@ export default {
 				projects: {
 					type: "text"
 				},
-				
+
 			}
 
 		}
