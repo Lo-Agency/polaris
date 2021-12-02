@@ -10,23 +10,19 @@ module.exports = {
 			'xl': { 'min': '1280px', 'max': '1535px' },
 			'2xl': { 'min': '1536px' },
 		},
-		backgroundColor: theme => ({
-			'gray': '#565c5e',
-			'green': '#a8c83c',
-			'cyan': '#24a6a7',
-			'grass-green': '#88c67e',
-			'yellow': '#FFD218',
-			'lightblue': '#b0e3e7',
-			'lightGray': '#f0f2f1',
-			'blue': '#90d7dc',
-			'grainsboro': '#d4cbd4',
-			'lemon': '#fff88a',
-			'greenLemon': '#f8ffd8',
-			
-
-
-
-		}),
+		// backgroundColor: theme => ({
+		// 	'gray': '#565c5e',
+		// 	'green': '#a8c83c',
+		// 	'cyan': '#24a6a7',
+		// 	'grass-green': '#88c67e',
+		// 	'yellow': '#FFD218',
+		// 	'lightblue': '#b0e3e7',
+		// 	'lightGray': '#f0f2f1',
+		// 	'blue': '#90d7dc',
+		// 	'grainsboro': '#d4cbd4',
+		// 	'lemon': '#fff88a',
+		// 	'greenLemon': '#f8ffd8',
+		// }),
 		variants: {
 			extend: {
 				backgroundColor: ['active'],

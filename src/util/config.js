@@ -34,73 +34,6 @@ export default {
 	},
 
 	entities: {
-		phase: {
-			fields: {
-				title: {
-					type: "text",
-					required: true,
-					isArray: false,
-				},
-
-				learning: {
-					type: "ref",
-					isArray: true,
-					reference: "learning"
-				},
-				project: {
-					type: "ref",
-					isArray: true,
-					reference: "project"
-				},
-				label: {
-					type: "text",
-					isArray: false
-				}
-			},
-			list: ["learning", "project"]
-		},
-
-		learning: {
-			fields: {
-				title: {
-					type: "text",
-					isArray: false,
-				},
-				category: {
-					type: "text",
-					isArray: false,
-				},
-				resources: {
-					type: "text",
-					isArray: false,
-				},
-				learningType: {
-					type: "text",
-					isArray: false,
-				}
-			}
-		},
-
-		project: {
-			fields: {
-				title: {
-					type: "text",
-					isArray: false,
-				},
-				days: {
-					type: "number",
-					isArray: false,
-				},
-				projectType: {
-					type: "text",
-					isArray: false,
-				},
-				learningDay: {
-					type: "number",
-					isArray: false,
-				}
-			}
-		},
 		roadmap: {
 			fields: {
 				title: {
@@ -137,6 +70,78 @@ export default {
 
 			}
 
+		},
+		phase: {
+			fields: {
+				title: {
+					type: "text",
+					required: true,
+					isArray: false,
+				},
+
+				learning: {
+					type: "ref",
+					isArray: true,
+					reference: "learning"
+				},
+				project: {
+					type: "ref",
+					isArray: true,
+					reference: "project"
+				},
+				label: {
+					type: "text",
+					isArray: false
+				}
+			},
+			list: ["learning", "project"]
+		},
+
+		learning: {
+			fields: {
+				title: {
+					type: "text",
+					isArray: false,
+				},
+				category: {
+					type: "select",
+					isArray: false,
+					value: ["Frontend", "Backend", "General", "Soft Skills"]
+				},
+				resources: {
+					type: "text",
+					isArray: false,
+				},
+				priority: {
+					type: "select",
+					isArray: false,
+					value: ["Low","Medium","High"]
+				}
+			}
+		},
+
+		project: {
+			fields: {
+				title: {
+					type: "text",
+					isArray: false,
+				},
+				days: {
+					type: "number",
+					isArray: false,
+				},
+				projectType: {
+					type: "select",
+					isArray: false,
+					value: ["Real","Team", "Personal","Optional"]
+				},
+				learningDay: {
+					type: "number",
+					isArray: false,
+					
+				}
+			}
 		}
+		
 	}
 };

@@ -4,28 +4,32 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const charts = () => {
+const Charts = (phaseProjects) => {
+	let projectLabels =[];
+	phaseProjects && (Object.values(phaseProjects)).forEach(elem =>{
+		elem.map(item => item.map(each => {
+			projectLabels.push(each)
+		}))
+	})
+	phaseProjects && console.log(phaseProjects, "intaraf")
+	phaseProjects && console.log(projectLabels, "intaraflab")
+
 	const data = {
-		labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+		labels: projectLabels,
 		datasets: [
 		  {
 			label: '# of Votes',
 			data: [12, 19, 3, 5, 2, 3],
 			backgroundColor: [
-			  'rgba(255, 99, 132, 0.2)',
-			  'rgba(54, 162, 235, 0.2)',
-			  'rgba(255, 206, 86, 0.2)',
-			  'rgba(75, 192, 192, 0.2)',
-			  'rgba(153, 102, 255, 0.2)',
-			  'rgba(255, 159, 64, 0.2)',
+			  'rgb(220,220,220)',
+			  'rgb(211,211,211)',
+			  'rgb(192,192,192)',
+			  'rgb(169,169,169)',
+			  'rgb(128,128,128)',
+			  'rgb(105,105,105)',
 			],
 			borderColor: [
-			  'rgba(255, 99, 132, 1)',
-			  'rgba(54, 162, 235, 1)',
-			  'rgba(255, 206, 86, 1)',
-			  'rgba(75, 192, 192, 1)',
-			  'rgba(153, 102, 255, 1)',
-			  'rgba(255, 159, 64, 1)',
+			  'rgb(0,0,0)'
 			],
 			borderWidth: 1,
 		  },
@@ -36,10 +40,12 @@ const charts = () => {
 
   return (
   <>
-  <div>
-  <Doughnut  />
+  <div className="flex items-center justify-center">
+  <div className="w-9/12">
+ 		 <Doughnut  data={data}/>
+  </div>
   </div>
   </>
   )
 }
-export default charts;
+export default Charts;
