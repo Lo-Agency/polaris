@@ -17,7 +17,6 @@ const Entity = () => {
     const [editID, setEditId] = useState(null);
     let entityData;
     crud.dataState && (entityData = crud.dataState.filter(elem => Object.keys(elem) == entityName))
-    console.log(((entityData[0]).phase !== null))
     const sortData = () => {
         if (crud.dataState && ((entityData[0]).entityName) !== null) {
 

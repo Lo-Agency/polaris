@@ -88,10 +88,6 @@ export default {
 					type: "ref",
 					isArray: true,
 					reference: "project"
-				},
-				label: {
-					type: "text",
-					isArray: false
 				}
 			},
 			list: ["learning", "project"]
