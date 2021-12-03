@@ -9,7 +9,7 @@ export default {
 		messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 		appId: process.env.REACT_APP_FIREBASE_APP_ID
 	},
-    routes: {
+	routes: {
 		home: {
 			pathname: "/",
 			isCaseSensitive: false,
@@ -34,91 +34,24 @@ export default {
 	},
 
 	entities: {
-		phase: {
-			fields: {
-				title :{
-					type: "text",
-					required: true,
-					isArray: false,
-				},
-
-				learning: {
-					type: "ref",
-					isArray: true,
-					reference: "learning"
-				},
-				project: {
-					type: "ref",
-					isArray: true,
-					reference: "project"
-				},
-				label:{
-					type:"text",
-					isArray: false
-				}
-			},
-			list : ["title", "learning", "project"]
-		},
-
-		learning: {
-			fields: {
-				title: {
-					type: "text",
-					isArray: false,
-				},
-				category: {
-					type: "text",
-					isArray: false,
-				},
-				resources: {
-					type: "text",
-					isArray: false,
-				},
-				learningType: {
-					type: "text",
-					isArray: false,
-				}
-			}
-		},
-
-		project: {
-			fields: {
-				title: {
-					type: "text",
-					isArray: false,
-				},
-				days: {
-					type: "number",
-					isArray: false,
-				},
-				projectType: {
-					type: "text",
-					isArray: false,
-				},
-				learningDay: {
-					type:"number",
-					isArray: false,
-				}
-			}
-		},
 		roadmap: {
 			fields: {
-				title:{
-					type : "text",
+				title: {
+					type: "text",
 					isArray: false,
 				},
 				phase: {
-					type:"ref",
+					type: "ref",
 					reference: "phase",
 					isArray: true,
 				},
 				startingDate: {
-					type:"date",
+					type: "date",
 					isArray: false,
-				}
-
+				},
 			},
-			readfields:{
+			list: ["phase"],
+			readfields: {
 				duration: {
 					type: "text"
 				},
@@ -134,9 +67,77 @@ export default {
 				projects: {
 					type: "text"
 				},
-				
+
 			}
 
+		},
+		phase: {
+			fields: {
+				title: {
+					type: "text",
+					required: true,
+					isArray: false,
+				},
+
+				learning: {
+					type: "ref",
+					isArray: true,
+					reference: "learning"
+				},
+				project: {
+					type: "ref",
+					isArray: true,
+					reference: "project"
+				}
+			},
+			list: ["learning", "project"]
+		},
+
+		learning: {
+			fields: {
+				title: {
+					type: "text",
+					isArray: false,
+				},
+				category: {
+					type: "select",
+					isArray: false,
+					value: ["Frontend", "Backend", "General", "Soft Skills"]
+				},
+				resources: {
+					type: "text",
+					isArray: false,
+				},
+				priority: {
+					type: "select",
+					isArray: false,
+					value: ["Low","Medium","High"]
+				}
+			}
+		},
+
+		project: {
+			fields: {
+				title: {
+					type: "text",
+					isArray: false,
+				},
+				days: {
+					type: "number",
+					isArray: false,
+				},
+				projectType: {
+					type: "select",
+					isArray: false,
+					value: ["Real","Team", "Personal","Optional"]
+				},
+				learningDay: {
+					type: "number",
+					isArray: false,
+					
+				}
+			}
 		}
+		
 	}
 };

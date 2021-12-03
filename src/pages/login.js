@@ -21,7 +21,7 @@ function Login() {
 				password
 				, () => {
 					if (from == "/")
-						navigate("/admin")
+					navigate("/admin/roadmap/list")
 					else
 						navigate(from, { replace: true });
 				})
@@ -34,25 +34,25 @@ function Login() {
 
 
 	return (
-		<div className="center-content">
+		<div className="center-content bg-black">
 			<div className="bg-gray-50 p-10 flex flex-col justify-center items-center border-blue-40 rounded-lg border-4 xsm:text-sm">
-				<p>You must log in to view the page at {from}</p>
+				{/* <p>You must log in to view the page at {from}</p> */}
 
 				<form onSubmit={handleSubmit}>
-					<div className="flex flex-col p-3 justify-center items-center">
+					<div className="flex flex-col p-3 justify-center items-center ">
 						<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 							<label className="py-2">
 								Email:
 							</label>
-							<input className="py-2 px-3 rounded-lg xsm:w-48 sm:w-60 w-80" name="email" type="email" />
+							<input className="py-2 px-3 rounded-lg xsm:w-48 sm:w-60 w-80 border-2 border-black" name="email" type="email" />
 						</div>
 						<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 							<label className="py-2">
 								Password:
 							</label>
-							<input className="py-2 px-3 rounded-lg xsm:w-48 sm:w-60 w-80" name="password" type="password" />
+							<input className="py-2 px-3 rounded-lg xsm:w-48 sm:w-60 w-80 border-2 border-black" name="password" type="password" />
 						</div>
-						<button className="focus:scale-50 bg-lightblue animate-bounce py-2 mt-6 sm:mt-4 xsm:mt-2 rounded-lg text-white bg-blue-400 xsm:w-48 sm:w-60 w-80" type="submit">Login</button>
+						<button className="focus:scale-50 bg-lightblue animate-bounce py-2 mt-6 sm:mt-4 xsm:mt-2 rounded-lg text-white bg-black xsm:w-48 sm:w-60 w-80" type="submit">Login</button>
 					</div>
 
 				</form>

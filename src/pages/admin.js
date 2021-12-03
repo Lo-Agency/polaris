@@ -1,9 +1,18 @@
 
+import { useNavigate } from "react-router";
+
+
+
+
 function Admin() {
+	const navigate =useNavigate();
+	
 	return (
 		<>
-			<h1>Welcome</h1>
-		</>)
+			
+		</>
+
+	)
 }
 
 export default Admin;

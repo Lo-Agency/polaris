@@ -43,22 +43,36 @@ const CrudProvider = ({ children }) => {
     await push(ref(database, `roadmap/frontend/${entity}`), result);
     setChange(!change)
   };
-
-  //let references =(Object.values((config.entities.phase.fields)).filter(field => field.type === "ref")).map(item => item.reference) 
-  
-  const Delete = async (item) => {
-    await remove(ref(database, `roadmap/frontend/${entityName}/${item}`));
-    await set(ref(database, `roadmap/frontend/phase/${phasekey}/${entityName}/0`));
+  const Delete = async (id) => {
+    await remove(ref(database, `roadmap/frontend/${entityName}/${id}`));
+    let en = Object.keys(config.entities).filter(item => config.entities[item]['list'] != undefined)
+    let deleteEntity = en.filter(e => (config.entities[e]['list']).includes(entityName))
+    dataState.map(item => console.log(Object.keys(item)) )
+    let entityData = dataState.filter(elem => Object.keys(elem) == deleteEntity[0]);
+    let deleteKey = [];
+    let deleteVal =[];
+    let deleteArr =[];
+    let updateId =[];
+    Object.keys((Object.values(entityData[0]))[0]).map(item => deleteKey.push(item))
+    Object.values((Object.values(entityData[0]))[0]).map(item => deleteVal.push(item))
+    for (let i = 0; i < deleteKey.length; i++) {
+    deleteArr.push({[deleteKey[i]]: deleteVal[i]})
+      
+    }
+    deleteArr.map(item => {((Object.values(item))[0])[entityName].includes(id) && ( updateId.push(Object.keys(item))) })
+    for (let i = 0; i < updateId.length; i++) {
+    let b = updateId[i].map(item => deleteArr.filter(elem => (Object.keys(elem))[0] == item))
+    let c = Object.entries((Object.values(b[0][0]))[0])
+     let newEntityInput = (c.filter(elem => elem[0] == entityName)[0][1]).filter(item => item != id)
+    
+      
+      await set(ref(database, `roadmap/frontend/${deleteEntity}/${updateId[i]}/${entityName}`), newEntityInput);
+    }
+     
     setChange(!change)
   }
 
-  //codes related to delete bug
-  // let phases = dataState && dataState.filter(entity => Object.keys(entity) == "phase")
-  // phases && console.log(phases[0], "sefr")
-  // phases && console.log(Object.values(phases[0]))
-  // phases && console.log((Object.values(phases[0]).filter(phase =>(Object.values(phase)).map(phaseValue => phaseValue.learning))==='-MoxxVctzO7JE2_YKxB_' ),"console.log")
-  // //phases && console.log((Object.values(phases[0]).filter(phaseId => (Object.entries(phaseId)).map( item => item[entityName] == '-MoxxVctzO7JE2_YKxB_') )))
-  // //console.log((dataState && dataState.filter(elem => Object.keys(elem) == "phase")).filter,"phase")
+  
 
   const Read = async (item) => {
     setEditData(null)
