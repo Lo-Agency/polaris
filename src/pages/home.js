@@ -55,18 +55,20 @@ export function Home() {
                      { phaseProjects.push(phase[phaseId]["project"].map(proj => ((project)[proj]).title)) }
                      return (
                             <>
-                                   <tr className="text-center bg-white  p-2 ">
-                                          <td className="bg-white  p-2 ">{duration(Object.values(phase[phaseId]))} Days</td>
-                                          <td className="bg-white  p-2 ">{phase[phaseId]["learning"].map(topic => <tr key={topic} >{((learn)[topic]).title}</tr>)}</td>
-                                          <td className="bg-white  p-2 ">{phase[phaseId]["learning"].map(topic => <tr key={topic} >{((learn)[topic]).category}</tr>)}</td>
-                                          <td className="bg-white  p-2 ">{phase[phaseId]["learning"].map(topic => <tr key={topic} >{((learn)[topic]).resources}</tr>)}</td>
-                                          <td className="justify-center bg-white  p-2 "> {phase[phaseId]["project"].map(proj => <tr key={proj} >{((project)[proj]).title}</tr>)}</td>
+                                   <tr className="text-center my-10  bg-whi p-4 ">
+                                          <td className="flex-shrink-0 h-auto px-6 py-4 m-10 text-left text-s whitespace-nowrap  max-w-xs ">{duration(Object.values(phase[phaseId]))} Days</td>
+                                          <td className="flex-shrink-0  h-auto px-6 py-4   text-left text-s whitespace-nowrap  max-w-xs ">{phase[phaseId]["learning"].map(topic => <tr className="py-10" key={topic} >{((learn)[topic]).title}</tr>)}</td>
+                                          <td className="flex-shrink-0 h-auto px-6 py-4 text-left text-s whitespace-nowrap  max-w-xs ">{phase[phaseId]["learning"].map(topic => <tr  className="py-10" key={topic} >{((learn)[topic]).category}</tr>)}</td>
+                                          <td className="flex-shrink-0 h-auto px-6 py-4 text-left text-s whitespace-nowrap overflow-hidden max-w-xs ">{phase[phaseId]["learning"].map(topic => <tr  className="py-10" key={topic} ><a href={((learn)[topic]).resources}>{((learn)[topic]).resources}</a></tr>)}</td>
+                                          <td className="flex-shrink-0 h-auto px-6 py-4 text-left text-s whitespace-nowrap  max-w-xs ">{phase[phaseId]["learning"].map(topic => <tr  className="py-10" key={topic} >{((learn)[topic]).priority}</tr>)}</td>
+                                          <td className=" flex flex-col h-auto flex-shrink-0 px-6 py-3 text-left text-s whitespace-nowrap  max-w-xs "> {phase[phaseId]["project"].map(proj => <tr key={proj} >{((project)[proj]).title}</tr>)}</td>
                                    </tr>
                                    <tr>
                                           <td className="bg-gray-100 py-2 w-24">Evaluation</td>
                                           <td className="bg-gray-100 py-2 w-24"> {format(endDate(starting, duration(Object.values(phase[phaseId]))), "EEEE d MMM yyyy")}</td>
                                           <td className="bg-gray-100 py-2 w-24"></td>
                                           <td className="bg-gray-100 py-2 w-24"></td>
+                                          <td className="bg-gray-100 py-2 w-24 "></td>
                                           <td className="bg-gray-100 py-2 w-24 "></td>
                                    </tr>
                             </>
@@ -85,71 +87,69 @@ export function Home() {
        }
        //This function gives the days between two different dates
        const diffDays = (date, otherDate) => Math.ceil(Math.abs(date - otherDate) / (1000 * 60 * 60 * 24));
-       return <div className="h-screen overflow-hidden">
-              <div className="bg-black p-2 flex justify-between">
-                     <h1 className="text-white p-2">Today is {format(new Date(), "EEEE d MMMM yyyy")}</h1>
-                     <form className="flex">
+       return <div className="flex items-center justify-start ">
+              <div className="bg-black p-2 flex fixed top-0 right-0 w-screen justify-between">
+                     <form className="flex ml-6">
                             <Select onChange={
                                    (value) => {
                                           setResult(value.value)
 
                                    }}
+                                   theme={(theme) => ({
+                                          ...theme,
+                                          borderRadius: 0,
+                                          colors: {
+                                                 ...theme.colors,
+                                                 primary25: 'neutral10',
+                                                 primary: 'black',
+                                                 primary50: 'neutral20'
+                                          },
+                                   })}
                                    className="p-2 w-96 max-w-lg"
                                    classNamePrefix="select"
                                    closeMenuOnSelect={false}
                                    name={"roadmap"} options={options}>
                             </Select>
                      </form>
-                     <Link to="/login">
-                            <div className="bg-cyan text-white hover:border-gray-100 border-2 border-black p-2 rounded-lg flex">
-                                   <button className="px-2">Log in as Admin</button>
-                                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="white">
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                                   </svg>
-                            </div>
-                     </Link>
+                     <Link className="text-white p-2" to="/login">Log in</Link>
               </div>
-              <div className="flex w-screen h-full">
-                     <div className="w-9/12 bg-white h-full">
-                            {result &&
-                                   <div className="flex w-full justify-center h-5/6 items-center">
-                                          {starting = null}
-                                          <div className="flex justify-center  shadow overflow-hidden border-b border-gray-200 my-5 rounded-lg">
-                                                 <table className=" bg-white p-2 m-10">
-                                                        <thead className="bg-gray-200">
-                                                               <tr>
-                                                                      <th scope="col"
-                                                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" colSpan="5">
-                                                                             <div className="flex w-full justify-between">
-                                                                                    <span>Starting Date  {(Object.values(roadmap[result]))[1]} </span>
-                                                                                    <span>{(Object.values(roadmap[result]))[2]}</span>
-                                                                             </div>
-                                                                      </th>
-                                                               </tr>
-                                                               <tr>
-                                                                      {(Object.keys(config.entities["roadmap"].readfields))
-                                                                             .map(item => {
-                                                                                    return <th scope="col"
-                                                                                           className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" key={item}>{title(item)}</th>
-                                                                             })}
-                                                               </tr>
-                                                        </thead>
-                                                        <tbody className="bg-white divide-y divide-gray-200">
+              <div className="flex items-center  justify-start w-screen">
 
-                                                               {roadmap && (((Object.values(roadmap[result]))[0]))
-                                                                      .map(item => { return phaseConvertor(item, roadmap[result]) })}
-                                                        </tbody>
-                                                 </table>
-                                          </div>
-                                   </div>}
-                     </div>
-                     <div className="bg-gray-700 w-3/12">
-                            {!result && <p className="m-4 text-white">Please Select a Roadmap to see the data</p>}
-                            {(((endingDate.length !== 0) && (compareDesc(new Date(endingDate[(endingDate.length) - 1]), new Date())) !== 1)) && <p className="text-white m-4">This Roadmap ends on {format(new Date(endingDate[(endingDate.length) - 1]), "P")}</p>}
-                            {(((endingDate.length !== 0) && (compareDesc(new Date(endingDate[(endingDate.length) - 1]), new Date())) !== 1)) ?
-                                   <p className="text-white m-4">{diffDays(new Date(), new Date(endingDate[(endingDate.length) - 1]))} days are left</p>
-                                   : ((endingDate.length !== 0) && <p className="text-white m-4">This roadmap is finished</p>)}
+                     {result &&
+                            <div className="flex self-start w-full overflow-hidden justify-center items-center">
+                                   {starting = null}
+                                   <div className="flex justify-center w-full self-start flex-col  mt-20 m-5 ">
+                                          <p >Starting Date  {(Object.values(roadmap[result]))[1]} </p>
+                                          <table className="my-10 border-b border-gray-200 w-l self-start shadow-md ">
+                                                 <thead className="bg-black w-full">
+                                                        <tr>
+                                                               {(Object.keys(config.entities["roadmap"].readfields))
+                                                                      .map(item => {
+                                                                             return <th scope="col"
+                                                                                    className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" key={item}>{title(item)}</th>
+                                                                      })}
+                                                        </tr>
+                                                 </thead>
+                                                 <tbody className="bg-white divide-y divide-gray-200">
+
+                                                        {roadmap && (((Object.values(roadmap[result]))[0]))
+                                                               .map(item => { return phaseConvertor(item, roadmap[result]) })}
+                                                 </tbody>
+                                          </table>
+                                   </div>
+                            </div>}
+
+                     <div className="bg-black fixed top-16 right-0 h-screen w-2/12">
+                            {!result && <p className="m-4 text-xs text-white">Please Select a Roadmap to see the data</p>}
+                             <div className="mt-40">
+                                                                      
                             {(phaseProjects.length !== 0) && <Charts phaseProjects={phaseProjects} projectList={project} />}
+                            {(((endingDate.length !== 0) && (compareDesc(new Date(endingDate[(endingDate.length) - 1]), new Date())) !== 1)) && <p className="text-white text-xs text-center m-4">This Roadmap ends on {format(new Date(endingDate[(endingDate.length) - 1]), "P")}</p>}
+                            {(((endingDate.length !== 0) && (compareDesc(new Date(endingDate[(endingDate.length) - 1]), new Date())) !== 1)) ?
+                                   <p className="text-white text-xs text-center m-4">{diffDays(new Date(), new Date(endingDate[(endingDate.length) - 1]))} days are left</p>
+                                   : ((endingDate.length !== 0) && <p className="text-white m-4">This roadmap is finished</p>)}
+                             </div>
+
                      </div>
               </div>
        </div>
