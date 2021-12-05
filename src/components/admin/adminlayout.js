@@ -22,24 +22,32 @@ const Adminlayout = ({ children }) => {
 
     const selectEntity=(key)=>{
         if(key == entityName){
-            return " w-full bg-gray-50 text-black py-3 transition-colors text-left pl-8"
+            return "w-full text-2xl font-bold py-3 transition-colors text-left px-2"
         }else{
-            return  "w-full hover:text-gray-500 py-3 transition-colors text-left pl-8"
+            return  "w-full text-md hover:text-gray-500  py-3 transition-colors text-left px-2"
         }
+    }
+
+    const svgColor=(key)=>{
+        if(key== entityName) return "white"
+        else return "black"
     }
 
     return (
         <>
            
            
-                <div className="bg-black fixed h-screen text-white w-40 pb-2 ">
+                <div className="bg-black  fixed h-screen text-white w-40 pb-2 ">
                     <aside  >
-                        <ul className="flex justify-end flex-col text-xl" >
+                        <ul className="flex justify-start flex-col text-xl" >
                             {
                                 Object.keys(config.entities)
-                                    .map(key => <li className={selectEntity(key)} key={key}><Link to={`/admin/${key.toLowerCase()}/list`}>
+                                    .map(key => <li className={selectEntity(key)} key={key}><Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
+                                        <svg className="w-6 h-6" fill={svgColor(key)} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
                                         {title(key)}
-                                    </Link></li>)
+                                    </Link></li>
+                                    
+                                    )
                             }
                         </ul>
                     </aside>

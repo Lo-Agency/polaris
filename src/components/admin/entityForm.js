@@ -68,21 +68,9 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
                 let tempLabel = Object.values((Object.values(crud.dataState)).filter(item => (Object.keys(item)) == field)[0][field])
                 tempLabel.map((item) => label.push(item.title))
                 Object.keys((Object.values(crud.dataState)).filter(item => (Object.keys(item)) == field)[0][field]).map(item => value.push(item))
-                
-                
-                 if(editData && crud.dataState){                   
-                    let fieldData = crud.dataState.filter(i => Object.keys(i) == field)
-                    fieldData = fieldData.map(item => (Object.values(item)))
-                    setDefault.push((editData[field]).map(id => fieldData[0][0][id].title))
-                    for (let i = 0; i < setDefault.length; i++) {
-                     
-                        selectvalues.push({value:editData[field][i] , label:setDefault[0][i][0]})
-                   }
-                }
-                
+              
                 
               
-               console.log(selectvalues, setDefault, "okokokokoko")
 
 
                 for (let i = 0; i < value.length; i++) {
@@ -119,16 +107,34 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
         event.preventDefault()
         const form = new FormData(event.target)
         const values = Object.keys(config.entities[entityName].fields).map(field => {
-            return form.getAll(field)
+            if((form.getAll(field))==[''] || (form.getAll(field))[0].length==0 ) {
+                alert(`Please fill out ${field}` )
+                event.preventDefault()
+                return null
+            }else{
+                console.log(form.getAll(field))
+                return form.getAll(field)
+               
+            }
+           
         })
 
-        if (actionName === "create")
-            crud.Create(values, entityName);
-        else
-            crud.Update(values, entityName, editID);
-        navigate(`/admin/${entityName}/list`, { replace: true })
-    }
 
+      
+        if (!values.includes(null)){
+            if (actionName === "create"){
+            crud.Create(values, entityName);
+            }else crud.Update(values, entityName, editID);
+            navigate(`/admin/${entityName}/list`, { replace: true })
+           
+        }else return
+           
+
+       
+    
+    }
+        
+       
     return (
         <div className="min-h-screen min-w-full flex justify-center items-center">
             <form className="flex flex-col min-w-full  h-auto justify-center items-center  mx-20 my-32 rounded-lg" onSubmit={handleSubmit}>
