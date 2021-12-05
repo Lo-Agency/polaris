@@ -33,7 +33,7 @@ const CrudProvider = ({ children }) => {
     })
     return await Promise.all(allPromises);
   }
-
+console.log(dataState)
   const Create = async (values, entity) => {
     const items = Object.keys(config.entities[entity].fields);
     let result = values.reduce(function (result, field, index) {
@@ -47,7 +47,8 @@ const CrudProvider = ({ children }) => {
     await remove(ref(database, `roadmap/frontend/${entityName}/${id}`));
     let en = Object.keys(config.entities).filter(item => config.entities[item]['list'] != undefined)
     let deleteEntity = en.filter(e => (config.entities[e]['list']).includes(entityName))
-    dataState.map(item => console.log(Object.keys(item)) )
+    if(deleteEntity.length !=0){
+      dataState.map(item => console.log(Object.keys(item)) )
     let entityData = dataState.filter(elem => Object.keys(elem) == deleteEntity[0]);
     let deleteKey = [];
     let deleteVal =[];
@@ -68,6 +69,8 @@ const CrudProvider = ({ children }) => {
       
       await set(ref(database, `roadmap/frontend/${deleteEntity}/${updateId[i]}/${entityName}`), newEntityInput);
     }
+    }
+   
      
     setChange(!change)
   }

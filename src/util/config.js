@@ -64,6 +64,9 @@ export default {
 				resources: {
 					type: "text"
 				},
+				priority: {
+					type: "text"
+				},
 				projects: {
 					type: "text"
 				},

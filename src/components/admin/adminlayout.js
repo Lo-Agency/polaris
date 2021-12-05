@@ -22,34 +22,43 @@ const Adminlayout = ({ children }) => {
 
     const selectEntity=(key)=>{
         if(key == entityName){
-            return " w-full bg-gray-50 text-black py-3 transition-colors text-left pl-8"
+            return "w-full text-2xl font-bold py-3 transition-colors text-left px-2"
         }else{
-            return  "w-full hover:text-gray-500 py-3 transition-colors text-left pl-8"
+            return  "w-full text-md hover:text-gray-500  py-3 transition-colors text-left px-2"
         }
+    }
+
+    const svgColor=(key)=>{
+        if(key== entityName) return "white"
+        else return "black"
     }
 
     return (
         <>
-            <div className="bg-myBlue flex w-screen h-screen">
-            <button className=" mx-4 absolute  top-2 right-2  py-2 my-4 text-center w-56 rounded-lg bg-black text-white transition-colors hover:text-gray-500" onClick={logOut}>Log Out</button>
-                <div className="bg-black text-white w-40 pb-2 ">
+           
+           
+                <div className="bg-black  fixed h-screen text-white w-40 pb-2 ">
                     <aside  >
-                        <ul className="flex justify-end flex-col text-xl" >
+                        <ul className="flex justify-start flex-col text-xl" >
                             {
                                 Object.keys(config.entities)
-                                    .map(key => <li className={selectEntity(key)} key={key}><Link to={`/admin/${key.toLowerCase()}/list`}>
-                                        {title(key)} 
-                                        </Link></li>)
+                                    .map(key => <li className={selectEntity(key)} key={key}><Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
+                                        <svg className="w-6 h-6" fill={svgColor(key)} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
+                                        {title(key)}
+                                    </Link></li>
+                                    
+                                    )
                             }
                         </ul>
                     </aside>
                 </div>
-                <div className=" flex flex-col w-11/12 h-12/12 bg-lightGray">
-                    <div className="flex justify-center items-center w-11/12 h-auto">
+                <div className=" flex flex-col w-12/12 pl-10 h-12/12 ml-40 items-end bg-lightGray">
+                    <div className="flex justify-center items-center  self-start min-w-full h-auto">
+                         <button className=" mx-4 top-2 right-2 fixed hover:text-gray-500" onClick={logOut}>Log Out</button>
                         {children}
                     </div>
                 </div>
-            </div>
+     
         </>
     )
 }

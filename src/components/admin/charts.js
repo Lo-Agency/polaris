@@ -43,8 +43,8 @@ const Charts = ({ phaseProjects, projectList }) => {
 
 	return (
 		<>
-			<div className="flex items-center justify-center">
-				<div className="w-9/12">
+			<div className="flex items-center  min-w-full justify-center">
+				<div className="min-w-full">
 					<Doughnut data={data} />
 				</div>
 			</div>

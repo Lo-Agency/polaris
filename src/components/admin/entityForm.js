@@ -17,16 +17,16 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
 
         switch (type) {
             case "text":
-                return <div key={field} className="w-full flex flex-col justify-center px-8 ">
-                    <label className="mx-2">{title(field)}:
+                return <div key={field} className="w-6/12 flex items-center flex-col justify-center px-8 ">
+                    <label className="mx-2 self-start">{title(field)}:
                     </label>
-                    <input className="m-2 rounded-lg p-2 w-1/2 border-2 border-gray-400" name={field} type="text" defaultValue={editData && editData[field]} required/>
+                    <input className=" py-2 my-3 w-full rounded-none border-solid border-gray-300 border" name={field} type="text" defaultValue={editData && editData[field]} required/>
                 </div>
             case "number":
-                return <div key={field} className=" w-full flex flex-col justify-center px-8">
-                    <label className="mx-2">{title(field)}:
+                return <div key={field} className=" w-6/12 flex flex-col items-center justify-center px-8">
+                    <label className="mx-2 self-start">{title(field)}:
                     </label>
-                    <input className="m-2 rounded-lg p-2 w-2/4 border-2 border-gray-400" name={field} type="number" defaultValue={editData && editData[field]} required/>
+                    <input className=" py-2 my-3  w-full rounded-none border-solid border-gray-300 border" name={field} type="number" defaultValue={editData && editData[field]} required/>
                 </div>
             case "select":
                 let selectOptions = []
@@ -34,41 +34,67 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
                 for (let i = 0; i < selectvalue.length; i++) {
                     selectOptions.push({ "value": selectvalue[i], "label": [selectvalue[i]] })
                 }
-                return <div key={field} className=" w-full flex flex-col justify-center px-8">
-                    <label className="mx-2">{title(field)}:
-                    </label> <Select className="basic-multi-select w-1/2 p-2 max-w-lg"
+                return <div key={field} className=" w-6/12 flex items-center flex-col justify-center px-8">
+                    <label className="mx-2 self-start">{title(field)}:
+                    </label> <Select className="basic-multi-select my-3 rounded-lg w-full "
                         classNamePrefix="select"
                         hasValue
                         closeMenuOnSelect={false}
+                        theme={(theme) => ({
+                            ...theme,
+                            borderRadius: 0,
+                            colors: {
+                              ...theme.colors,
+                              primary25: 'neutral10',
+                              primary: 'black',
+                              primary50:'neutral20'
+                            },
+                          })}
                         components={animatedComponents} name={field} options={selectOptions}>
                     </Select>
                 </div>
             case "date":
-                return <div key={field} className=" w-full flex flex-col justify-center px-8 ">
-                    <label className="mx-2">{title(field)}:
+                return <div key={field} className=" w-6/12 flex item-center flex-col justify-center px-8 ">
+                    <label className="mx-2 self-start">{title(field)}:
                     </label>
-                    <input className="m-2 rounded-lg p-2 w-1/2 border-2 border-gray-400" name={field} type="date" defaultValue={editData && editData[field]} required/>
+                    <input className="py-2 my-3 w-full bg-white mt-2 border-solid border-gray-300 border" name={field} type="date" defaultValue={editData && editData[field]} required/>
                 </div>
             case "ref":
                 let value = [];
                 let label = [];
                 let options = [];
-
+                let setDefault=[];
+                let selectvalues=[];
                 let tempLabel = Object.values((Object.values(crud.dataState)).filter(item => (Object.keys(item)) == field)[0][field])
                 tempLabel.map((item) => label.push(item.title))
                 Object.keys((Object.values(crud.dataState)).filter(item => (Object.keys(item)) == field)[0][field]).map(item => value.push(item))
+              
+                
+              
+
 
                 for (let i = 0; i < value.length; i++) {
                     options.push({ "value": value[i], "label": label[i] })
                 }
-                return <div key={field} className=" w-full flex flex-col justify-center px-8">
-                    <label className="mx-2">{title(field)}:
+                return <div key={field} className=" w-6/12 flex flex-col justify-center px-8">
+                    <label className="mx-2 self-start">{title(field)}:
                     </label>
-                <Select className="basic-multi-select w-1/2 p-2 max-w-lg"
+                <Select className="basic-multi-select my-3 rounded-lg w-full "
                     classNamePrefix="select"
                     isMulti
                     hasValue
+                    defaultValue={selectvalues}
                     closeMenuOnSelect={false}
+                    theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 0,
+                        colors: {
+                          ...theme.colors,
+                          primary25: 'neutral10',
+                          primary: 'black',
+                          primary50:'neutral20'
+                        },
+                      })}
                     components={animatedComponents} name={reference} options={options} >
                 </Select>
                 </div>
@@ -81,23 +107,41 @@ const EntittyForm = ({ entityName, actionName, editID, editData }) => {
         event.preventDefault()
         const form = new FormData(event.target)
         const values = Object.keys(config.entities[entityName].fields).map(field => {
-            return form.getAll(field)
+            if((form.getAll(field))==[''] || (form.getAll(field))[0].length==0 ) {
+                alert(`Please fill out ${field}` )
+                event.preventDefault()
+                return null
+            }else{
+                console.log(form.getAll(field))
+                return form.getAll(field)
+               
+            }
+           
         })
 
-        if (actionName === "create")
-            crud.Create(values, entityName);
-        else
-            crud.Update(values, entityName, editID);
-        navigate(`/admin/${entityName}/list`, { replace: true })
-    }
 
+      
+        if (!values.includes(null)){
+            if (actionName === "create"){
+            crud.Create(values, entityName);
+            }else crud.Update(values, entityName, editID);
+            navigate(`/admin/${entityName}/list`, { replace: true })
+           
+        }else return
+           
+
+       
+    
+    }
+        
+       
     return (
-        <>
-            <form className="flex flex-col w-full  h-4/6  shadow overflow-hidden border-b border-gray-200 mx-20 my-32 rounded-lg" onSubmit={handleSubmit}>
+        <div className="min-h-screen min-w-full flex justify-center items-center">
+            <form className="flex flex-col min-w-full  h-auto justify-center items-center  mx-20 my-32 rounded-lg" onSubmit={handleSubmit}>
                 {fields}
-                <button className="w-2/12 rounded-lg transition-colors border-2 border-gray-400 text-white bg-black m-2 mx-10 py-2 hover:text-gray-500" type="submit">{title(actionName)}</button>
+                <button className="w-2/12 rounded-lg mt-10 transition-colors border-2 border-gray-400 text-white bg-black py-2 hover:text-gray-500" type="submit">{title(actionName)}</button>
             </form>
-        </>
+        </div>
     )
 }
 
