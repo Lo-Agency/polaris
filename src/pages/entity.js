@@ -2,7 +2,7 @@
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useState } from 'react';
-import EntittyForm from "../components/admin/entityForm";
+import EntittyForm from "../components/molecules/entity-form";
 import { useCrud } from "../components/providers/crud.provider";
 import config from "../util/config";
 import { title } from "case";

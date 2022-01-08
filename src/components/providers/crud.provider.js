@@ -33,7 +33,7 @@ const CrudProvider = ({ children }) => {
     })
     return await Promise.all(allPromises);
   }
-console.log(dataState)
+  
   const Create = async (values, entity) => {
     const items = Object.keys(config.entities[entity].fields);
     let result = values.reduce(function (result, field, index) {
