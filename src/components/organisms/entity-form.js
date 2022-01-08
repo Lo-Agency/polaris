@@ -9,7 +9,7 @@ import DateInput from "../molecules/date-input";
 import ReferenceInput from "../molecules/reference-input";
 
 
-const EntityForm = ({ entityName, actionName, editID, editData }) => {
+const EntityForm = ({ entityName, actionName, editID, formValues }) => {
     const navigate = useNavigate();
     const crud = useCrud();
 
@@ -18,15 +18,15 @@ const EntityForm = ({ entityName, actionName, editID, editData }) => {
 
         switch (type) {
             case "text":
-                return <TextInput field={field} editData={editData} />
+                return <TextInput name={field} formValues={formValues} />
             case "number":
-                return <NumberInput field={field} editData={editData} />
+                return <NumberInput name={field} formValues={formValues} />
             case "select":
-                return <SelectBox field={field} entityName={entityName} />
+                return <SelectBox name={field} entityName={entityName} />
             case "date":
-                return <DateInput field={field} editData={editData} />
+                return <DateInput name={field} formValues={formValues} />
             case "ref":
-                return <ReferenceInput field={field} reference={reference} />
+                return <ReferenceInput name={field} reference={reference} />
             default:
                 return <p key={field}>field type for &quot;{field}&quot; not recognized</p>;
         }

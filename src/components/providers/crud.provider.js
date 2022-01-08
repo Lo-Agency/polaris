@@ -9,7 +9,7 @@ const CrudContext = createContext(null);
 
 const CrudProvider = ({ children }) => {
   const [change, setChange] = useState(false)
-  const [editData, setEditData] = useState(null)
+  const [formValues, setFormValues] = useState(null)
   const { entityName } = useParams();
   const [dataState, setDataState] = useState();
 
@@ -78,13 +78,13 @@ const CrudProvider = ({ children }) => {
   
 
   const Read = async (item) => {
-    setEditData(null)
+    setFormValues(null)
     const dbRef = ref(getDatabase());
     await get(child(dbRef, `roadmap/frontend/${entityName}/${item}`)).then((snapshot) => {
       if (snapshot.exists()) {
-        setEditData(snapshot.val())
+        setFormValues(snapshot.val())
       } else {
-        setEditData(null)
+        setFormValues(null)
       }
     }).catch((error) => {
       console.error(error);
@@ -106,7 +106,7 @@ const CrudProvider = ({ children }) => {
     Create,
     Delete,
     Read,
-    editData,
+    formValues,
     Update,
     change,
     dataState

@@ -3,17 +3,17 @@ import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
 import { title } from 'case';
 
-const SelectBox = ({ field, entityName }) => {
+const SelectBox = ({ name, entityName }) => {
     const animatedComponents = makeAnimated();
 
     let selectOptions = []
-    let selectvalue = config.entities[entityName].fields[field].value
+    let selectvalue = config.entities[entityName].names[name].value
     for (let i = 0; i < selectvalue.length; i++) {
         selectOptions.push({ "value": selectvalue[i], "label": [selectvalue[i]] })
     }
     return (
-        <div key={field} className=" w-6/12 flex items-center flex-col justify-center px-8">
-            <label className="mx-2 self-start">{title(field)}:
+        <div key={name} className=" w-6/12 flex items-center flex-col justify-center px-8">
+            <label className="mx-2 self-start">{title(name)}:
             </label> <Select className="basic-multi-select my-3 rounded-lg w-full "
                 classNamePrefix="select"
                 hasValue
@@ -28,7 +28,7 @@ const SelectBox = ({ field, entityName }) => {
                         primary50: 'neutral20'
                     },
                 })}
-                components={animatedComponents} name={field} options={selectOptions}>
+                components={animatedComponents} name={name} options={selectOptions}>
             </Select>
         </div>
     )

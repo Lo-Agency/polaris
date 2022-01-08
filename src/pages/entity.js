@@ -51,9 +51,9 @@ const Entity = () => {
 
     switch (actionName) {
         case "create":
-            return <><EntityForm entityName={entityName} actionName={actionName} editData={null} /> </>
+            return <><EntityForm entityName={entityName} actionName={actionName} formValues={null} /> </>
         case "edit":
-            return <><EntityForm entityName={entityName} actionName={actionName} editData={crud.editData} editID={editID} /> </>
+            return <><EntityForm entityName={entityName} actionName={actionName} formValues={crud.formValues} editID={editID} /> </>
         case "remove":
             return <> <EntityForm entityName={entityName} actionName={actionName} /> </>
         default:
