@@ -48,7 +48,7 @@ const Entity = () => {
         setEditId(item);
         crud.Read(item);
     }
-    console.log(crud.dataState, "data")
+    
     switch (actionName) {
         case "create":
             return <><EntityForm entityName={entityName} actionName={actionName} formValues={null} /> </>
