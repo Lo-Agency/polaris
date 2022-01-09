@@ -7,9 +7,8 @@ import config from '../util/config';
 import addDays from 'date-fns/addDays';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { compareDesc } from 'date-fns'
-import charts from '../components/admin/charts';
-import Charts from '../components/admin/charts';
+import { compareDesc } from 'date-fns';
+import Charts from '../components/molecules/charts';
 
 
 export function Home() {

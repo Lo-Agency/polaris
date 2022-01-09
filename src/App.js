@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import config from "./util/config";
 import AuthProvider from "./components/providers/auth.provider";
-import CustomRoute from "./components/auth/customRoutes";
+import CustomRoute from "./components/routes/custom-routes";
 import React, { lazy, Suspense } from "react";
 import CrudProvider from "./components/providers/crud.provider";
 

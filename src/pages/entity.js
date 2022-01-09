@@ -2,7 +2,7 @@
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useState } from 'react';
-import EntittyForm from "../components/admin/entityForm";
+import EntityForm from "../components/organisms/entity-form";
 import { useCrud } from "../components/providers/crud.provider";
 import config from "../util/config";
 import { title } from "case";
@@ -48,14 +48,14 @@ const Entity = () => {
         setEditId(item);
         crud.Read(item);
     }
-
+    
     switch (actionName) {
         case "create":
-            return <><EntittyForm entityName={entityName} actionName={actionName} editData={null} /> </>
+            return <><EntityForm entityName={entityName} actionName={actionName} formValues={null} /> </>
         case "edit":
-            return <><EntittyForm entityName={entityName} actionName={actionName} editData={crud.editData} editID={editID} /> </>
+            return <><EntityForm entityName={entityName} actionName={actionName} formValues={crud.formValues} editID={editID} /> </>
         case "remove":
-            return <> <EntittyForm entityName={entityName} actionName={actionName} /> </>
+            return <> <EntityForm entityName={entityName} actionName={actionName} /> </>
         default:
             return <div className="flex h-auto overflow-hidden justify-between items-center min-w-full flex-col" >
             <div className="flex fixed self-start  py-4">
