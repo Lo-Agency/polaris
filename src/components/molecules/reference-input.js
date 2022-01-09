@@ -4,21 +4,14 @@ import { useCrud } from "../providers/crud.provider";
 
 const ReferenceInput = ({ name, reference }) => {
     const crud = useCrud();
-    let value = [];
-    let label = [];
     let options = [];
     let selectvalues = [];
 
-    let referenceData = crud.dataState.filter(item=> Object.keys(item)==reference)
+    const referenceData = crud.dataState.filter(item=> Object.keys(item)==reference)
     const selectBoxData = Object.entries(Object.values(referenceData[0])[0])
     selectBoxData.map(data=> {
-        value.push(data[0]);
-        label.push(data[1].title);
+        options.push({"value": data[0], "label":data[1].title})
     })
-  
-    for (let i = 0; i < value.length; i++) {
-        options.push({ "value": value[i], "label": label[i] })
-    }
 
     return (
         <div key={name} className=" w-6/12 flex flex-col justify-center px-8">
