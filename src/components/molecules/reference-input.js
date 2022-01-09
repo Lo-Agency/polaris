@@ -4,14 +4,10 @@ import { useCrud } from "../providers/crud.provider";
 
 const ReferenceInput = ({ name, reference }) => {
     const crud = useCrud();
-    let options = [];
-    let selectvalues = [];
 
-    const referenceData = crud.dataState.filter(item=> Object.keys(item)==reference)
-    const selectBoxData = Object.entries(Object.values(referenceData[0])[0])
-    selectBoxData.map(data=> {
-        options.push({"value": data[0], "label":data[1].title})
-    })
+    const referenceData = crud.dataState.filter(item=> Object.keys(item)==reference);
+    const selectBoxData = Object.entries(Object.values(referenceData[0])[0]);
+    const options= selectBoxData.map(data=> ({"value": data[0], "label":data[1].title}))
 
     return (
         <div key={name} className=" w-6/12 flex flex-col justify-center px-8">
@@ -21,7 +17,6 @@ const ReferenceInput = ({ name, reference }) => {
                 classNamePrefix="select"
                 isMulti
                 hasValue
-                defaultValue={selectvalues}
                 closeMenuOnSelect={false}
                 theme={(theme) => ({
                     ...theme,
