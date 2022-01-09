@@ -4,14 +4,18 @@ import { useCrud } from "../providers/crud.provider";
 
 const ReferenceInput = ({ name, reference }) => {
     const crud = useCrud();
-
     let value = [];
     let label = [];
     let options = [];
     let selectvalues = [];
-    let tempLabel = Object.values((Object.values(crud.dataState)).filter(item => (Object.keys(item)) == name)[0][name])
-    tempLabel.map((item) => label.push(item.title))
-    Object.keys((Object.values(crud.dataState)).filter(item => (Object.keys(item)) == name)[0][name]).map(item => value.push(item))
+
+    let referenceData = crud.dataState.filter(item=> Object.keys(item)==reference)
+    const selectBoxData = Object.entries(Object.values(referenceData[0])[0])
+    selectBoxData.map(data=> {
+        value.push(data[0]);
+        label.push(data[1].title);
+    })
+  
     for (let i = 0; i < value.length; i++) {
         options.push({ "value": value[i], "label": label[i] })
     }

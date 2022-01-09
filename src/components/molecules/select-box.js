@@ -5,12 +5,11 @@ import { title } from 'case';
 
 const SelectBox = ({ name, entityName }) => {
     const animatedComponents = makeAnimated();
-
+    let selectvalues = config.entities[entityName].names[name].value;
     let selectOptions = []
-    let selectvalue = config.entities[entityName].names[name].value
-    for (let i = 0; i < selectvalue.length; i++) {
-        selectOptions.push({ "value": selectvalue[i], "label": [selectvalue[i]] })
-    }
+    
+    selectvalues.map(selectValue=> selectOptions.push({ "value": selectvalues[i], "label": [selectvalues[i]] }))
+    
     return (
         <div key={name} className=" w-6/12 flex items-center flex-col justify-center px-8">
             <label className="mx-2 self-start">{title(name)}:
