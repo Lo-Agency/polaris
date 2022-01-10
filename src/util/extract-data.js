@@ -3,8 +3,8 @@ import { useCrud } from "../components/providers/crud.provider";
 
 export const extractDataFromEntity = (entityName) => {
     const crud = useCrud();
-    const entityData = crud.dataState.filter(data => Object.keys(data) == entityName);
-    return entityData[0][entityName]
+    const entityData =crud.dataState && crud.dataState.filter(data => Object.keys(data) == entityName);
+    return entityData && entityData[0][entityName]
 }
 
 export const entityConfigFiels = (entityName) => {
