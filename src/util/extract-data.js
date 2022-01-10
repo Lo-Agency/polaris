@@ -7,6 +7,6 @@ export const extractDataFromEntity = (entityName) => {
     return entityData[0][entityName]
 }
 
-export const extractEntityConfigFiels = (entityName) => {
+export const entityConfigFiels = (entityName) => {
     return Object.keys(config.entities[entityName].fields);
 }

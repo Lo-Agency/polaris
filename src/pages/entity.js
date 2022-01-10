@@ -5,7 +5,7 @@ import { useState } from 'react';
 import EntityForm from "../components/organisms/entity-form";
 import { useCrud } from "../components/providers/crud.provider";
 import { title } from "case";
-import { extractDataFromEntity, extractEntityConfigFiels } from "../util/extract-data";
+import { extractDataFromEntity, entityConfigFiels } from "../util/extract-data";
 
 const Entity = () => {
     const { entityName, actionName } = useParams();
@@ -13,16 +13,18 @@ const Entity = () => {
     const [editID, setEditId] = useState(null);
     const data = extractDataFromEntity(entityName);
     const IDs = data && Object.keys(data);
-    const configFields = extractEntityConfigFiels(entityName)
+    const configFields = entityConfigFiels(entityName)
 
     const sortData = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
-            if (config.entities[entityName].fields[field].isArray) {
-                let fieldData = extractDataFromEntity(field)
-                const titles = dataItem[field].map(id => fieldData[id]["title"])
-                return titles.join(", ")
+            if (dataItem[field]) {
+                if (config.entities[entityName].fields[field].isArray) {
+                    let fieldData = extractDataFromEntity(field)
+                    const titles = dataItem[field].map(id => fieldData[id]["title"])
+                    return titles.join(", ")
+                }
+                return dataItem[field]
             }
-            return dataItem[field]
         }
         ))
         return sortedData;
@@ -52,7 +54,7 @@ const Entity = () => {
                     <Link className=" py-2 my-2 text-center w-56 rounded-lg  bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new {entityName}</Link>
                 </div>
                 <div className="flex min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
-                    <table className="my-10 border-b w-11/12 border-gray-200 shadow-md ">
+                    {data ? <table className="my-10 border-b w-11/12 border-gray-200 shadow-md ">
                         <thead className="bg-black w-full">
 
                             <tr>
@@ -64,7 +66,7 @@ const Entity = () => {
                                     className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Tools</th>
                             </tr>
                         </thead>
-                        {data ? <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white divide-y divide-gray-200">
                             {entityContent.map((item, index) => {
                                 return <tr className=" text-center p-4" key={index}>{item
                                     .map((elem, index) => {
@@ -78,8 +80,8 @@ const Entity = () => {
                                     </td>
                                 </tr>
                             })}
-                        </tbody> : <p>no data!</p>}
-                    </table>
+                        </tbody>
+                    </table> : <p>no data!</p>}
                 </div>
 
             </div>

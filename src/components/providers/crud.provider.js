@@ -2,7 +2,6 @@ import { push, ref, child, getDatabase, get, remove, set } from "@firebase/datab
 import { useState, createContext, useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import config from "../../util/config";
-import { extractDataFromEntity } from "../../util/extract-data";
 import { database } from "../../util/firebase";
 
 const CrudContext = createContext(null);
@@ -24,7 +23,7 @@ const CrudProvider = ({ children }) => {
     const allPromises = Object.keys(config.entities).map(entity => {
       return new Promise((resolve, reject) => {
         const dbRef = ref(getDatabase());
-        get(child(dbRef, `roadmap/frontend/${entity}`)).then((snapshot) => {
+        get(child(dbRef, `${entity}`)).then((snapshot) => {
           resolve({ [entity]: snapshot.val() })
         }).catch((error) => {
           reject(error);
@@ -41,7 +40,7 @@ const CrudProvider = ({ children }) => {
       result[items[index]] = field;
       return result;
     }, {})
-    await push(ref(database, `roadmap/frontend/${entity}`), result);
+    await push(ref(database, `${entity}`), result);
     setChange(!change)
   };
 
@@ -49,26 +48,29 @@ const CrudProvider = ({ children }) => {
   const Delete = async (id) => {
     const entitiesWithList = Object.keys(config.entities).filter(item => config.entities[item]['list'] != undefined);
     const deleteEntity = entitiesWithList.filter(entity => (config.entities[entity]['list']).includes(entityName));
-
-    // await remove(ref(database, `roadmap/frontend/${entityName}/${id}`));
-
-    //delet it from others entities
     if (deleteEntity.length != 0) {
-      let entityData = extractDataFromEntity(deleteEntity[0]);
-      const a = entityData && Object.entries((Object.values(entityData[0]))[0]);
-      const deleteArr = a.map(record => ({ [record[0]]: record[1] }));
-      const updateData = deleteArr.filter(record => Object.values(record)[0][entityName].includes(id));
+      deleteEntity.map(entity => deleteDependency(entity, id))
+    }
+    await remove(ref(database, `${entityName}/${id}`));
+    setChange(!change)
+  }
 
-      if (updateData.length > 0) {
-        for (let i = 0; i < updateData.length; i++) {
-          const newEntityInput = Object.values(updateData[i])[0][entityName].filter(entityId => entityId != id);
-          const updateId = updateData.map(data => Object.keys(data))
-          // await set(ref(database, `roadmap/frontend/${deleteEntity}/${updateId[i][0]}/${entityName}`), newEntityInput);
-        }
+  //delete data from others entities
+
+  const deleteDependency = async (deleteEntity, id) => {
+    let data = dataState.filter(elem => Object.keys(elem) == deleteEntity);
+    data = Object.entries((Object.values(data[0]))[0]);
+    data = data.map(record => ({ [record[0]]: record[1] }));
+    const updateData = data.filter(record => Object.values(record)[0][entityName].includes(id));
+
+    if (updateData.length > 0) {
+      for (let i = 0; i < updateData.length; i++) {
+        const newEntityInput = Object.values(updateData[i])[0][entityName].filter(entityId => entityId != id);
+        const updateId = updateData.map(data => Object.keys(data))
+        await set(ref(database, `${deleteEntity}/${updateId[i][0]}/${entityName}`), newEntityInput);
+        setChange(!change)
       }
     }
-
-    setChange(!change)
   }
 
 
@@ -76,7 +78,7 @@ const CrudProvider = ({ children }) => {
   const Read = async (item) => {
     setFormValues(null)
     const dbRef = ref(getDatabase());
-    await get(child(dbRef, `roadmap/frontend/${entityName}/${item}`)).then((snapshot) => {
+    await get(child(dbRef, `${entityName}/${item}`)).then((snapshot) => {
       if (snapshot.exists()) {
         setFormValues(snapshot.val())
       } else {
@@ -94,7 +96,7 @@ const CrudProvider = ({ children }) => {
       result[items[index]] = field;
       return result;
     }, {})
-    await set(ref(database, `roadmap/frontend/${entityName}/${editID}`), result)
+    await set(ref(database, `${entityName}/${editID}`), result)
     setChange(!change)
   }
 
