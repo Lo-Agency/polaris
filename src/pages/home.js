@@ -27,22 +27,19 @@ export function Home() {
        const options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
 
        //learnings data for table
-       const learningData = (phaseId) => {
-              return (
-                     phases[phaseId]["learning"].map(id => {
-                            return (<>
-                                   <td className="px-6 py-4 whitespace-nowrap"><p className="py-5 h-10">{learnings[id].title}</p></td>
-                                   <td className="px-6 py-4 whitespace-nowrap"><p className="py-5 h-10" >{(learnings)[id].category}</p></td>
-                                   <td className="px-6 py-4 whitespace-nowrap"><p className="py-5 h-10 truncate max-w-xs" ><a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>{learnings[id].resources}</a></p></td>
-                                   <td className="px-6 py-4 whitespace-nowrap"><p className="py-5 h-10" >{learnings[id].priority}</p></td>
-                            </>)
-                     }
-                     )
+       const renderLearningData = (phaseId) => {
+              const phaseLearnings = phases[phaseId]["learning"]
+              return (<>
+                     <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].title}</p>)}</td>
+                     <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].category}</p>)}</td>
+                     <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10 truncate max-w-xs" ><a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>{learnings[id].resources}</a></p>)}</td>
+                     <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].priority}</p>)}</td>
+              </>
               )
        }
 
        //calculate phase duration
-       const duration = (phaseData) => {
+       const calculatePhaseDuration = (phaseData) => {
               let phaseDuration = 0;
               for (let i = 0; i < (phaseData[1]).length; i++) {
                      let projectId = Object.keys(projects).filter(id => id === phaseData[1][i]);
@@ -53,22 +50,22 @@ export function Home() {
        }
 
        //calculate ent date of phase
-       const phaseEndDate = (starting, duration) => {
+       const calculatePhaseEndDate = (starting, duration) => {
               endDate = addDays(new Date(starting), duration);
               return endDate;
        }
 
        //converting phaseData to table
-       const phaseConvertor = (id, roadmap) => {
+       const renderPhaseData = (id, roadmap) => {
               const phaseId = Object.keys(phases).filter(phaseId => phaseId === id)
               { starting == null ? starting = (Object.values(roadmap))[1] : starting = endDate }
-              endingDats.push(phaseEndDate(starting, duration(Object.values(phases[phaseId]))))
+              endingDats.push(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))))
               phaseProjects.push(phases[phaseId]["project"].map(projectId => ((projects)[projectId]).title))
               return (
-                     <>
+                     <React.Fragment key={id}>
                             <tr>
-                                   <td className="px-6 whitespace-nowrap">{duration(Object.values(phases[phaseId]))} Days</td>
-                                   {learningData(phaseId)}
+                                   <td className="px-6 whitespace-nowrap">{calculatePhaseDuration(Object.values(phases[phaseId]))} Days</td>
+                                   {renderLearningData(phaseId)}
                                    <td className="px-6 py-4 whitespace-nowrap">
                                           <ul >
                                                  {phases[phaseId]["project"].map(proj => <li className="py-5 h-20" key={proj} >{(projects[proj]).title}</li>)}
@@ -77,15 +74,16 @@ export function Home() {
                             </tr>
                             <tr>
                                    <td className="bg-gray-100 py-2 w-24">Evaluation</td>
-                                   <td colSpan="5" className="bg-gray-100 py-2 w-24"> {format(phaseEndDate(starting, duration(Object.values(phases[phaseId]))), "EEEE d MMM yyyy")}</td>
+                                   <td colSpan="5" className="bg-gray-100 py-2 w-24"> {format(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))), "EEEE d MMM yyyy")}</td>
 
                             </tr>
-                     </>
+                     </React.Fragment>
               )
        }
 
        //This function gives the days between two different dates
-       const diffDays = (date, otherDate) => Math.ceil(Math.abs(date - otherDate) / (1000 * 60 * 60 * 24));
+       const calculateRoadmapDuration = (date, otherDate) => Math.ceil(Math.abs(date - otherDate) / (1000 * 60 * 60 * 24));
+       
        return <div className="flex items-center relative min-h-screen justify-center ">
               <div className="bg-black p-2 flex fixed self-center mx-auto top-0 right-0 w-screen justify-between">
                      <form className="flex ml-6">
@@ -129,7 +127,7 @@ export function Home() {
                                                  </thead>
                                                  <tbody className="bg-white">
                                                         {Object.values(roadmaps[selectedRoadmap])[0]
-                                                               .map(phase => { return phaseConvertor(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
+                                                               .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
                                                  </tbody>
                                           </table>
                                    </div>
@@ -140,7 +138,7 @@ export function Home() {
                                           {phaseProjects.length !== 0 && <Charts phaseProjects={phaseProjects} projectList={projects} />}
                                           {((endingDats.length !== 0 && (compareDesc(new Date(endingDats[(endingDats.length) - 1]), new Date())) !== 1)) && <p className="text-white text-xs text-center m-4">This Roadmap ends on {format(new Date(endingDats[(endingDats.length) - 1]), "P")}</p>}
                                           {((endingDats.length !== 0 && (compareDesc(new Date(endingDats[(endingDats.length) - 1]), new Date())) !== 1)) ?
-                                                 <p className="text-white text-xs text-center m-4">{diffDays(new Date(), new Date(endingDats[(endingDats.length) - 1]))} days are left</p>
+                                                 <p className="text-white text-xs text-center m-4">{calculateRoadmapDuration(new Date(), new Date(endingDats[(endingDats.length) - 1]))} days are left</p>
                                                  : ((endingDats.length !== 0) && <p className="text-white m-4">This roadmap is finished</p>)}
                                    </div>
 
