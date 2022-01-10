@@ -49,8 +49,8 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 
         if (!values.includes(null)) {
             if (actionName === "create") {
-                crud.Create(values, entityName);
-            } else crud.Update(values, entityName, editID);
+                crud.insertNewItem(values, entityName);
+            } else crud.updateItem(values, entityName, editID);
             navigate(`/admin/${entityName}/list`, { replace: true })
 
         } else return

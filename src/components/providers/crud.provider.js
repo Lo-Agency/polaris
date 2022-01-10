@@ -13,13 +13,13 @@ const CrudProvider = ({ children }) => {
 
   //get all data from db
   useEffect(() => {
-    getAllData().then((data) => {
+    findAllItems().then((data) => {
       setDataState(data)
     })
   }, [change])
 
   //get all data from db
-  const getAllData = async () => {
+  const findAllItems = async () => {
     const allPromises = Object.keys(config.entities).map(entity => {
       return new Promise((resolve, reject) => {
         const dbRef = ref(getDatabase());
@@ -34,7 +34,7 @@ const CrudProvider = ({ children }) => {
   }
 
   //create new data
-  const Create = async (values, entity) => {
+  const insertNewItem = async (values, entity) => {
     const items = Object.keys(config.entities[entity].fields);
     let result = values.reduce(function (result, field, index) {
       result[items[index]] = field;
@@ -45,7 +45,7 @@ const CrudProvider = ({ children }) => {
   };
 
   //delete data
-  const Delete = async (id) => {
+  const deleteItem = async (id) => {
     const entitiesWithList = Object.keys(config.entities).filter(item => config.entities[item]['list'] != undefined);
     const deleteEntity = entitiesWithList.filter(entity => (config.entities[entity]['list']).includes(entityName));
     if (deleteEntity.length != 0) {
@@ -75,7 +75,7 @@ const CrudProvider = ({ children }) => {
 
 
   //get data for edit form
-  const Read = async (item) => {
+  const findOneItem = async (item) => {
     setFormValues(null)
     const dbRef = ref(getDatabase());
     await get(child(dbRef, `${entityName}/${item}`)).then((snapshot) => {
@@ -90,7 +90,7 @@ const CrudProvider = ({ children }) => {
   }
 
   //update
-  const Update = async (values, entityName, editID) => {
+  const updateItem = async (values, entityName, editID) => {
     const items = Object.keys(config.entities[entityName].fields);
     var result = values.reduce(function (result, field, index) {
       result[items[index]] = field;
@@ -102,11 +102,11 @@ const CrudProvider = ({ children }) => {
 
 
   return <CrudContext.Provider value={{
-    Create,
-    Delete,
-    Read,
+    insertNewItem,
+    deleteItem,
+    findOneItem,
     formValues,
-    Update,
+    updateItem,
     change,
     dataState
   }}>

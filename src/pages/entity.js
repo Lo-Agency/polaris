@@ -33,12 +33,12 @@ const Entity = () => {
     const entityContent = data && sortData();
 
     const handleDelete = (item) => {
-        crud.Delete(item);
+        crud.deleteItem(item);
     }
 
     const handleEdit = (item) => {
         setEditId(item);
-        crud.Read(item);
+        crud.findOneItem(item);
     }
 
     switch (actionName) {
