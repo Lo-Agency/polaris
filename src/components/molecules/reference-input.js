@@ -1,13 +1,11 @@
 import Select from 'react-select';
 import { title } from 'case';
-import { useCrud } from "../providers/crud.provider";
+import { extractDataFromEntity } from '../../util/extract-data';
 
 const ReferenceInput = ({ name, reference }) => {
-    const crud = useCrud();
-
-    const referenceData = crud.dataState.filter(item=> Object.keys(item)==reference);
-    const selectBoxData = Object.entries(Object.values(referenceData[0])[0]);
-    const options= selectBoxData.map(data=> ({"value": data[0], "label":data[1].title}))
+    const referenceData = extractDataFromEntity(reference);
+    const selectBoxData = Object.entries(referenceData);
+    const options = selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));
 
     return (
         <div key={name} className=" w-6/12 flex flex-col justify-center px-8">

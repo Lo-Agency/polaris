@@ -7,13 +7,14 @@ import NumberInput from "../molecules/number-input";
 import SelectBox from "../molecules/select-box";
 import DateInput from "../molecules/date-input";
 import ReferenceInput from "../molecules/reference-input";
+import { entityConfigFiels } from "../../util/extract-data";
 
 
 const EntityForm = ({ entityName, actionName, editID, formValues }) => {
     const navigate = useNavigate();
     const crud = useCrud();
-
-    const fields = Object.keys(config.entities[entityName].fields).map(field => {
+    const entityFields =entityConfigFiels(entityName)
+    const fields = entityFields.map(field => {
         const { type, reference } = config.entities[entityName].fields[field];
 
         switch (type) {
@@ -35,7 +36,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
     const handleSubmit = (event) => {
         event.preventDefault()
         const form = new FormData(event.target)
-        const values = Object.keys(config.entities[entityName].fields).map(field => {
+        const values = entityFields.map(field => {
             if ((form.getAll(field)) == [''] || (form.getAll(field))[0].length == 0) {
                 alert(`Please fill out ${field}`)
                 event.preventDefault()
@@ -48,8 +49,8 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 
         if (!values.includes(null)) {
             if (actionName === "create") {
-                crud.Create(values, entityName);
-            } else crud.Update(values, entityName, editID);
+                crud.insertNewItem(values, entityName);
+            } else crud.updateItem(values, entityName, editID);
             navigate(`/admin/${entityName}/list`, { replace: true })
 
         } else return
