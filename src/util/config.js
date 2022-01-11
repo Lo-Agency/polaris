@@ -1,5 +1,3 @@
-
-
 export default {
 	firebase: {
 		apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -29,6 +27,11 @@ export default {
 			pathname: "/admin",
 			isCaseSensitive: true,
 			isProtected: true
+		},
+		"forgot-password": {
+			pathname: "/forgot-password",
+			isCaseSensitive: true,
+			isProtected: false
 		}
 
 	},
@@ -114,7 +117,7 @@ export default {
 				priority: {
 					type: "select",
 					isArray: false,
-					value: ["Low","Medium","High"]
+					value: ["Low", "Medium", "High"]
 				}
 			}
 		},
@@ -132,15 +135,15 @@ export default {
 				projectType: {
 					type: "select",
 					isArray: false,
-					value: ["Real","Team", "Personal","Optional"]
+					value: ["Real", "Team", "Personal", "Optional"]
 				},
 				learningDay: {
 					type: "number",
 					isArray: false,
-					
+
 				}
 			}
 		}
-		
+
 	}
 };
