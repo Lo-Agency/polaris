@@ -60,7 +60,7 @@ export function Home() {
               const phaseId = Object.keys(phases).filter(phaseId => phaseId === id)
               { starting == null ? starting = (Object.values(roadmap))[1] : starting = endDate }
               endingDats.push(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))))
-              phaseProjects.push(phases[phaseId]["project"].map(projectId => ((projects)[projectId]).title))
+              phases[phaseId]["project"].map(projectId => phaseProjects.push(projects[projectId]["title"][0]))
               return (
                      <React.Fragment key={id}>
                             <tr>
