@@ -15,7 +15,6 @@ function Login() {
 		const email = formData.get("email");
 		const password = formData.get("password");
 
-
 		try {
 			await auth.SignIn(
 				email,
