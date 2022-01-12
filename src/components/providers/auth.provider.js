@@ -1,6 +1,7 @@
-import { signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "firebase/auth";
+import { signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, sendPasswordResetEmail } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../../util/firebase";
+import { WrongCredentialsException } from '../../exceptions/auth'
 
 const AuthContext = createContext(null);
 
@@ -15,9 +16,20 @@ const AuthProvider = ({ children }) => {
 	});
 
 	const SignIn = async (email, password, callback) => {
-		await setPersistence(auth, browserSessionPersistence);
-		await signInWithEmailAndPassword(auth, email, password);
-		callback();
+		try {
+			await setPersistence(auth, browserSessionPersistence);
+			await signInWithEmailAndPassword(auth, email, password);
+			callback();
+		} catch (error) {
+			switch (error.code) {
+				case 'auth/user-not-found':
+					throw new WrongCredentialsException('User not found.');
+				case 'auth/wrong-password':
+					throw new WrongCredentialsException('Password is incorrect.');
+				default:
+					throw new WrongCredentialsException('Something went Wrong contact admin!');
+			}
+		}
 	};
 
 	const SignUp = async (email, password) => {
@@ -31,12 +43,20 @@ const AuthProvider = ({ children }) => {
 		callback();
 	};
 
+	const ForgotPassword = async (email) => {
+		try {
+			await sendPasswordResetEmail(auth, email);
+		} catch (error) {
+			throw new WrongCredentialsException('We cant find a user with that e-mail address.');
+		}
+	}
+
 	return <AuthContext.Provider value={{
 		User: user,
 		SignIn,
 		SignUp,
-		LogOut
-
+		LogOut,
+		ForgotPassword
 	}}>
 		{children}
 	</AuthContext.Provider>;

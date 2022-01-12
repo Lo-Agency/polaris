@@ -27,6 +27,11 @@ export default {
 			pathname: "/admin",
 			isCaseSensitive: true,
 			isProtected: true
+		},
+		"forgot-password": {
+			pathname: "/forgot-password",
+			isCaseSensitive: true,
+			isProtected: false
 		}
 	},
 
