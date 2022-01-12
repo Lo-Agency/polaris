@@ -1,5 +1,3 @@
-
-
 export default {
 	firebase: {
 		apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -30,7 +28,6 @@ export default {
 			isCaseSensitive: true,
 			isProtected: true
 		}
-
 	},
 
 	entities: {
@@ -72,8 +69,8 @@ export default {
 				},
 
 			}
-
 		},
+
 		phase: {
 			fields: {
 				title: {
@@ -114,7 +111,7 @@ export default {
 				priority: {
 					type: "select",
 					isArray: false,
-					value: ["Low","Medium","High"]
+					value: ["Low", "Medium", "High"]
 				}
 			}
 		},
@@ -132,15 +129,15 @@ export default {
 				projectType: {
 					type: "select",
 					isArray: false,
-					value: ["Real","Team", "Personal","Optional"]
+					value: ["Real", "Team", "Personal", "Optional"]
 				},
 				learningDay: {
 					type: "number",
 					isArray: false,
-					
+
 				}
 			}
 		}
-		
+
 	}
 };

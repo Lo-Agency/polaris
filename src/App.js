@@ -5,12 +5,9 @@ import CustomRoute from "./components/routes/custom-routes";
 import React, { lazy, Suspense } from "react";
 import CrudProvider from "./components/providers/crud.provider";
 
-
-
 function App() {
   return (
     <>
-
       <AuthProvider>
         <Routes>
           {
@@ -27,7 +24,6 @@ function App() {
                 </CrudProvider>
               }>
               </Route>
-
             })
           }
           <Route path="*" element={<p>Not found</p>} />

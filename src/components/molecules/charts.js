@@ -5,18 +5,11 @@ import { Doughnut } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Charts = ({ phaseProjects, projectList }) => {
-	let projectLabels = [];
-	phaseProjects && (Object.values(phaseProjects)).forEach(elem => {
-		elem.map(item => item.map(each => {
-			projectLabels.push(each)
-		}))
-	})
-    let filteredProjects = (Object.values(projectList)).filter((item => projectLabels.indexOf((item.title)[0]) >= 0 ))
-	let projectDays = (Object.values(filteredProjects)).map(item => Number(item.days) + Number(item.learningDay))
-	let projectNames = (Object.values(filteredProjects)).map(item => item.title)
-	
+	const filteredProjects = (Object.values(projectList)).filter((item => phaseProjects.indexOf((item.title)[0]) >= 0))
+	const projectDays = (Object.values(filteredProjects)).map(item => Number(item.days) + Number(item.learningDay))
+
 	const data = {
-		labels: projectNames,
+		labels: phaseProjects,
 		datasets: [
 			{
 				label: '# of Votes',
@@ -37,8 +30,6 @@ const Charts = ({ phaseProjects, projectList }) => {
 			},
 		],
 	};
-
-
 
 	return (
 		<>
