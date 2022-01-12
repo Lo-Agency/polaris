@@ -33,7 +33,6 @@ export default {
 			isCaseSensitive: true,
 			isProtected: false
 		}
-
 	},
 
 	entities: {
@@ -75,8 +74,8 @@ export default {
 				},
 
 			}
-
 		},
+
 		phase: {
 			fields: {
 				title: {
