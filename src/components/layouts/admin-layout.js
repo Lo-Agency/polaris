@@ -19,7 +19,7 @@ const AdminLayout = ({ children }) => {
         }
     }
 
-    const selectEntity = (key) => {
+    const getSelectedEntityClassName = (key) => {
         if (key == entityName) {
             return "w-full text-2xl font-bold py-3 transition-colors text-left px-2"
         } else {
@@ -27,7 +27,7 @@ const AdminLayout = ({ children }) => {
         }
     }
 
-    const svgColor = (key) => {
+    const getSvgColor = (key) => {
         if (key == entityName) return "white"
         else return "black"
     }
@@ -39,8 +39,8 @@ const AdminLayout = ({ children }) => {
                     <ul className="flex justify-start flex-col text-xl" >
                         {
                             Object.keys(config.entities)
-                                .map(key => <li className={selectEntity(key)} key={key}><Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
-                                    <svg className="w-6 h-6" fill={svgColor(key)} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
+                                .map(key => <li className={getSelectedEntityClassName(key)} key={key}><Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
+                                    <svg className="w-6 h-6" fill={getSvgColor(key)} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
                                     {title(key)}
                                 </Link></li>
                                 )
