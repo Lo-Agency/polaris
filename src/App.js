@@ -1,9 +1,10 @@
 import { Route, Routes } from "react-router";
 import config from "./util/config";
 import AuthProvider from "./components/providers/auth.provider";
-import CustomRoute from "./components/routes/custom-routes";
 import React, { lazy, Suspense } from "react";
 import CrudProvider from "./components/providers/crud.provider";
+import PrivateRoute from "./components/routes/private-routes";
+import PublicRoute from "./components/routes/public-routes";
 
 function App() {
   return (
@@ -16,11 +17,16 @@ function App() {
               const Component = lazy(() => import(`./pages/${routeConfig}`));
               return <Route key={routeConfig} path={route.pathname} element={
                 <CrudProvider>
-                  <CustomRoute isProtected={route.isProtected}>
-                    <Suspense fallback={<p>Loading...</p>}>
-                      <Component />
-                    </Suspense>
-                  </CustomRoute>
+                  <Suspense fallback={<p>Loading...</p>}>
+                    {route.isProtected ?
+                      <PrivateRoute>
+                        <Component />
+                      </PrivateRoute>
+                      : <PublicRoute>
+                        <Component />
+                      </PublicRoute>
+                    }
+                  </Suspense>
                 </CrudProvider>
               }>
               </Route>

@@ -1,23 +1,18 @@
-import { signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, sendPasswordResetEmail } from "firebase/auth";
+import { signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, sendPasswordResetEmail, getAuth } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../../util/firebase";
 import { WrongCredentialsException } from '../../exceptions/auth'
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
-	const [user, setUser] = useState(null);
+	const auth =getAuth();
+	const [user, loading, error] = useAuthState(auth);
 
-	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged((user) => {
-			setUser(user);
-		});
-		return () => unsubscribe();
-	});
 
 	const SignIn = async (email, password, callback) => {
 		try {
-			await setPersistence(auth, browserSessionPersistence);
+			// await setPersistence(auth, browserLocalPersistence);
 			await signInWithEmailAndPassword(auth, email, password);
 			callback();
 		} catch (error) {
