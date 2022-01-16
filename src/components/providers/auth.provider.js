@@ -38,7 +38,6 @@ const AuthProvider = ({ children }) => {
 
 	const LogOut = async (callback) => {
 		await signOut(auth);
-		setUser(null);
 		callback();
 	};
 
