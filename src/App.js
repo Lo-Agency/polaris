@@ -5,6 +5,7 @@ import React, { lazy, Suspense } from "react";
 import CrudProvider from "./components/providers/crud.provider";
 import PrivateRoute from "./components/routes/private-routes";
 import PublicRoute from "./components/routes/public-routes";
+import LoadingPage from "./components/molecules/loading-page"
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
               const Component = lazy(() => import(`./pages/${routeConfig}`));
               return <Route key={routeConfig} path={route.pathname} element={
                 <CrudProvider>
-                  <Suspense fallback={<p>Loading...</p>}>
+                  <Suspense fallback={<LoadingPage />}>
                     {route.isProtected ?
                       <PrivateRoute>
                         <Component />

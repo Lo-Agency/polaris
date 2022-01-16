@@ -1,6 +1,5 @@
 import {
 	signOut,
-	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	sendPasswordResetEmail,
 	getAuth
@@ -15,9 +14,8 @@ const AuthProvider = ({ children }) => {
 	const auth = getAuth();
 	const [user, loading, error] = useAuthState(auth);
 
-	const SignIn = async (email, password, callback) => {
+	const signIn = async (email, password, callback) => {
 		try {
-			// await setPersistence(auth, browserLocalPersistence);
 			await signInWithEmailAndPassword(auth, email, password);
 			callback();
 		} catch (error) {
@@ -32,16 +30,12 @@ const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const SignUp = async (email, password) => {
-		await createUserWithEmailAndPassword(auth, email, password);
-	};
-
-	const LogOut = async (callback) => {
+	const logOut = async (callback) => {
 		await signOut(auth);
 		callback();
 	};
 
-	const ForgotPassword = async (email) => {
+	const forgotPassword = async (email) => {
 		try {
 			await sendPasswordResetEmail(auth, email);
 		} catch (error) {
@@ -53,10 +47,9 @@ const AuthProvider = ({ children }) => {
 		<AuthContext.Provider
 			value={{
 				User: user,
-				SignIn,
-				SignUp,
-				LogOut,
-				ForgotPassword
+				signIn,
+				logOut,
+				forgotPassword
 			}}>
 			{children}
 		</AuthContext.Provider>
