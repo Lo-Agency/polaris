@@ -1,14 +1,19 @@
-import { signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, sendPasswordResetEmail, getAuth } from "firebase/auth";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { WrongCredentialsException } from '../../exceptions/auth'
+import {
+	signOut,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	sendPasswordResetEmail,
+	getAuth
+} from 'firebase/auth';
+import React, { createContext, useContext } from 'react';
+import { WrongCredentialsException } from '../../exceptions/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
-	const auth =getAuth();
+	const auth = getAuth();
 	const [user, loading, error] = useAuthState(auth);
-
 
 	const SignIn = async (email, password, callback) => {
 		try {
@@ -29,7 +34,6 @@ const AuthProvider = ({ children }) => {
 
 	const SignUp = async (email, password) => {
 		await createUserWithEmailAndPassword(auth, email, password);
-
 	};
 
 	const LogOut = async (callback) => {
@@ -44,17 +48,20 @@ const AuthProvider = ({ children }) => {
 		} catch (error) {
 			throw new WrongCredentialsException('We cant find a user with that e-mail address.');
 		}
-	}
+	};
 
-	return <AuthContext.Provider value={{
-		User: user,
-		SignIn,
-		SignUp,
-		LogOut,
-		ForgotPassword
-	}}>
-		{children}
-	</AuthContext.Provider>;
+	return (
+		<AuthContext.Provider
+			value={{
+				User: user,
+				SignIn,
+				SignUp,
+				LogOut,
+				ForgotPassword
+			}}>
+			{children}
+		</AuthContext.Provider>
+	);
 };
 
 export default AuthProvider;
