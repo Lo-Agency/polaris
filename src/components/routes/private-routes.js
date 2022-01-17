@@ -4,11 +4,11 @@ import AdminLayout from '../layouts/admin-layout';
 import { useAuth } from '../providers/auth.provider';
 
 function PrivateRoute({ children }) {
-    const { User } = useAuth();
+    const { user } = useAuth();
     const location = useLocation();
     const from = location.state?.from?.pathname;
 
-    if (!User) return <Navigate to={config.routes.login.pathname} state={{ from: location }} />;
+    if (!user) return <Navigate to={config.routes.login.pathname} state={{ from: location }} />;
 
     if (from && !from.startsWith('/admin')) return <Navigate to={"/admin/learning/list"} state={{ from: location }} />;
 
