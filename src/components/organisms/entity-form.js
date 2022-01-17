@@ -1,19 +1,22 @@
 import { useNavigate } from "react-router";
 import config from "../../util/config";
 import { useCrud } from "../providers/crud.provider";
-import { title } from 'case';
 import TextInput from "../molecules/text-input";
 import NumberInput from "../molecules/number-input";
 import SelectBox from "../molecules/select-box";
 import DateInput from "../molecules/date-input";
 import ReferenceInput from "../molecules/reference-input";
 import { entityConfigFiels } from "../../util/extract-data";
+import { useState } from "react";
+import Button from "../atoms/button";
 
 
 const EntityForm = ({ entityName, actionName, editID, formValues }) => {
     const navigate = useNavigate();
     const crud = useCrud();
-    const entityFields =entityConfigFiels(entityName)
+    const [loading,setLoading]=useState(false);
+    const entityFields =entityConfigFiels(entityName);
+
     const fields = entityFields.map(field => {
         const { type, reference } = config.entities[entityName].fields[field];
 
@@ -33,7 +36,8 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
         }
     });
 
-    const handleSubmit = (event) => {
+    const handleSubmit =async (event) => {
+        setLoading(true)
         event.preventDefault()
         const form = new FormData(event.target)
         const values = entityFields.map(field => {
@@ -49,8 +53,12 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 
         if (!values.includes(null)) {
             if (actionName === "create") {
-                crud.insertNewItem(values, entityName);
-            } else crud.updateItem(values, entityName, editID);
+               await crud.insertNewItem(values, entityName);
+               setLoading(false);
+            } else{
+                await crud.updateItem(values, entityName, editID);
+                setLoading(false);
+                }
             navigate(`/admin/${entityName}/list`, { replace: true })
 
         } else return
@@ -61,7 +69,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
         <div className="min-h-screen min-w-full flex justify-center items-center">
             <form className="flex flex-col min-w-full  h-auto justify-center items-center  mx-20 my-32 rounded-lg" onSubmit={handleSubmit}>
                 {fields}
-                <button className="w-2/12 rounded-lg mt-10 transition-colors border-2 border-gray-400 text-white bg-black py-2 hover:text-gray-500" type="submit">{title(actionName)}</button>
+               <Button loading={loading} actionName={actionName}/>
             </form>
         </div>
     )
