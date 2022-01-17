@@ -17,7 +17,7 @@ function Login() {
 		const password = formData.get("password");
 
 		try {
-			await auth.SignIn(
+			await auth.signIn(
 				email,
 				password
 				, () => {
