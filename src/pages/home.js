@@ -9,9 +9,11 @@ import React from 'react';
 import { compareDesc } from 'date-fns';
 import Charts from '../components/molecules/charts';
 import { extractDataFromEntity } from '../util/extract-data';
+import GanttChart from '../components/molecules/ganttchart/gantt-chart';
 
 
 export function Home() {
+
        let endDate;
        let endingDats = [];
        let phaseProjects = []
@@ -57,6 +59,7 @@ export function Home() {
 
        //converting phaseData to table
        const renderPhaseData = (id, roadmap) => {
+          
               const phaseId = Object.keys(phases).filter(phaseId => phaseId === id)
               { starting == null ? starting = (Object.values(roadmap))[1] : starting = endDate }
               endingDats.push(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))))
@@ -83,69 +86,76 @@ export function Home() {
 
        //This function gives the days between two different dates
        const calculateRoadmapDuration = (date, otherDate) => Math.ceil(Math.abs(date - otherDate) / (1000 * 60 * 60 * 24));
-       
-       return <div className="flex items-center relative min-h-screen justify-center ">
-              <div className="bg-black p-2 flex fixed self-center mx-auto top-0 right-0 w-screen justify-between">
-                     <form className="flex ml-6">
-                            <Select
-                                   onChange={(value) => {
-                                          setSelectedRoadmap(value.value)
-                                   }}
-                                   theme={(theme) => ({
-                                          ...theme,
-                                          borderRadius: 0,
-                                          colors: {
-                                                 ...theme.colors,
-                                                 primary25: 'neutral10',
-                                                 primary: 'black',
-                                                 primary50: 'neutral20'
-                                          },
-                                   })}
-                                   className="p-2 w-96 max-w-lg"
-                                   classNamePrefix="select"
-                                   closeMenuOnSelect={false}
-                                   name={"roadmap"} options={options}>
-                            </Select>
-                     </form>
-                     <Link className="text-white p-2" to="/login">Log in</Link>
-              </div>
-              {!selectedRoadmap ? <h1 className="text-black relative h-36 ">Please Select a Roadmap to see the data</h1> :
-                     <div className="flex items-center  justify-start w-screen">
-                            <div className="flex self-start w-full overflow-hidden justify-center items-center">
-                                   {starting = null}
-                                   <div className="flex justify-center w-full self-start flex-col  mt-20 m-5 ">
-                                          <div> <p >Starting Date  {(Object.values(roadmaps[selectedRoadmap]))[1]} </p> </div>
-                                          <table className="my-5 border-b border-gray-200 w-l self-start ">
-                                                 <thead className="bg-black w-full">
-                                                        <tr>
-                                                               {Object.keys(config.entities["roadmap"].readfields)
-                                                                      .map((field, index) => {
-                                                                             return <th scope="col"
-                                                                                    className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" key={index}>{title(field)}</th>
-                                                                      })}
-                                                        </tr>
-                                                 </thead>
-                                                 <tbody className="bg-white">
-                                                        {Object.values(roadmaps[selectedRoadmap])[0]
-                                                               .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
-                                                 </tbody>
-                                          </table>
-                                   </div>
-                            </div>
 
-                            <div className="bg-black fixed top-16 right-0 h-screen w-2/12">
-                                   <div className="mt-40">
-                                          {phaseProjects.length !== 0 && <Charts phaseProjects={phaseProjects} projectList={projects} />}
-                                          {((endingDats.length !== 0 && (compareDesc(new Date(endingDats[(endingDats.length) - 1]), new Date())) !== 1)) && <p className="text-white text-xs text-center m-4">This Roadmap ends on {format(new Date(endingDats[(endingDats.length) - 1]), "P")}</p>}
-                                          {((endingDats.length !== 0 && (compareDesc(new Date(endingDats[(endingDats.length) - 1]), new Date())) !== 1)) ?
-                                                 <p className="text-white text-xs text-center m-4">{calculateRoadmapDuration(new Date(), new Date(endingDats[(endingDats.length) - 1]))} days are left</p>
-                                                 : ((endingDats.length !== 0) && <p className="text-white m-4">This roadmap is finished</p>)}
-                                   </div>
-
-                            </div>
+       return<>
+              <div className="flex items-center relative min-h-screen justify-center ">
+                     <div className="bg-black p-2 flex fixed self-center mx-auto top-0 right-0 w-screen justify-between">
+                            <form className="flex ml-6">
+                                   <Select
+                                          onChange={(value) => {
+                                                 setSelectedRoadmap(value.value)
+                                          }}
+                                          theme={(theme) => ({
+                                                 ...theme,
+                                                 borderRadius: 0,
+                                                 colors: {
+                                                        ...theme.colors,
+                                                        primary25: 'neutral10',
+                                                        primary: 'black',
+                                                        primary50: 'neutral20'
+                                                 },
+                                          })}
+                                          className="p-2 w-96 max-w-lg"
+                                          classNamePrefix="select"
+                                          closeMenuOnSelect={false}
+                                          name={"roadmap"} options={options && options}>
+                                   </Select>
+                            </form>
+                            <Link className="text-white p-2" to="/login">Log in</Link>
                      </div>
-              }
-       </div>
+                     {!selectedRoadmap ? <h1 className="text-black relative h-36 ">Please Select a Roadmap to see the data</h1> :
+                            <div className="flex items-center  justify-start w-screen">
+                                   <div className="flex self-start w-full overflow-hidden justify-center items-center">
+                                          {starting = null}
+                                          <div className="flex justify-center w-full self-start flex-col  mt-20 m-5 ">
+                                                 <div> <p >Starting Date  {(Object.values(roadmaps[selectedRoadmap]))[1]} </p> </div>
+                                                 <table className="my-5 border-b border-gray-200 w-l self-start ">
+                                                        <thead className="bg-black w-full">
+                                                               <tr>
+                                                                      {Object.keys(config.entities["roadmap"].readfields)
+                                                                             .map((field, index) => {
+                                                                                    return <th scope="col"
+                                                                                           className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" key={index}>{title(field)}</th>
+                                                                             })}
+                                                               </tr>
+                                                        </thead>
+                                                        <tbody className="bg-white">
+                                                               {Object.values(roadmaps[selectedRoadmap])[0]
+                                                                      .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
+                                                        </tbody>
+                                                 </table>
+                                          </div>
+                                   </div>
+
+                                   <div className="bg-black fixed top-16 right-0 h-screen w-2/12">
+                                          <div className="mt-40">
+                                                 {phaseProjects.length !== 0 && <Charts phaseProjects={phaseProjects} projectList={projects} />}
+                                                 {((endingDats.length !== 0 && (compareDesc(new Date(endingDats[(endingDats.length) - 1]), new Date())) !== 1)) && <p className="text-white text-xs text-center m-4">This Roadmap ends on {format(new Date(endingDats[(endingDats.length) - 1]), "P")}</p>}
+                                                 {((endingDats.length !== 0 && (compareDesc(new Date(endingDats[(endingDats.length) - 1]), new Date())) !== 1)) ?
+                                                        <p className="text-white text-xs text-center m-4">{calculateRoadmapDuration(new Date(), new Date(endingDats[(endingDats.length) - 1]))} days are left</p>
+                                                        : ((endingDats.length !== 0) && <p className="text-white m-4">This roadmap is finished</p>)}
+                                          </div>
+
+                                   </div>
+                            </div>
+
+
+                     }
+
+              </div>
+         
+              {selectedRoadmap && <GanttChart roadmapId={selectedRoadmap}/>}
+       </>
 }
 export default Home;
 

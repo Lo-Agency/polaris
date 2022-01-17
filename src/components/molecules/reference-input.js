@@ -4,8 +4,8 @@ import { extractDataFromEntity } from '../../util/extract-data';
 
 const ReferenceInput = ({ name, reference }) => {
     const referenceData = extractDataFromEntity(reference);
-    const selectBoxData = Object.entries(referenceData);
-    const options = selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));
+    const selectBoxData = referenceData && Object.entries(referenceData);
+    const options =selectBoxData && selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));
 
     return (
         <div key={name} className=" w-6/12 flex flex-col justify-center px-8">
