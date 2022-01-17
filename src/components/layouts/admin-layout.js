@@ -11,7 +11,7 @@ const AdminLayout = ({ children }) => {
     const navigate = useNavigate();
     const logOut = () => {
         try {
-            auth.LogOut(() => {
+            auth.logOut(() => {
                 navigate('/')
             })
         } catch (e) {

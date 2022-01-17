@@ -12,7 +12,7 @@ function ForgotPassword() {
 		const email = formData.get("email");
 
 		try {
-			await auth.ForgotPassword(email)
+			await auth.forgotPassword(email)
 			setAllert("Link send to your email check it")
 		} catch (e) {
 			setAllert(e.message)

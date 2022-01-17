@@ -1,23 +1,21 @@
-import { signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, sendPasswordResetEmail } from "firebase/auth";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../../util/firebase";
-import { WrongCredentialsException } from '../../exceptions/auth'
+import {
+	signOut,
+	signInWithEmailAndPassword,
+	sendPasswordResetEmail,
+	getAuth
+} from 'firebase/auth';
+import React, { createContext, useContext } from 'react';
+import { WrongCredentialsException } from '../../exceptions/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
-	const [user, setUser] = useState(null);
+	const auth = getAuth();
+	const [user, loading, error] = useAuthState(auth);
 
-	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged((user) => {
-			setUser(user);
-		});
-		return () => unsubscribe();
-	});
-
-	const SignIn = async (email, password, callback) => {
+	const signIn = async (email, password, callback) => {
 		try {
-			await setPersistence(auth, browserSessionPersistence);
 			await signInWithEmailAndPassword(auth, email, password);
 			callback();
 		} catch (error) {
@@ -32,34 +30,30 @@ const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const SignUp = async (email, password) => {
-		await createUserWithEmailAndPassword(auth, email, password);
-
-	};
-
-	const LogOut = async (callback) => {
+	const logOut = async (callback) => {
 		await signOut(auth);
-		setUser(null);
 		callback();
 	};
 
-	const ForgotPassword = async (email) => {
+	const forgotPassword = async (email) => {
 		try {
 			await sendPasswordResetEmail(auth, email);
 		} catch (error) {
 			throw new WrongCredentialsException('We cant find a user with that e-mail address.');
 		}
-	}
+	};
 
-	return <AuthContext.Provider value={{
-		User: user,
-		SignIn,
-		SignUp,
-		LogOut,
-		ForgotPassword
-	}}>
-		{children}
-	</AuthContext.Provider>;
+	return (
+		<AuthContext.Provider
+			value={{
+				user,
+				signIn,
+				logOut,
+				forgotPassword
+			}}>
+			{children}
+		</AuthContext.Provider>
+	);
 };
 
 export default AuthProvider;
