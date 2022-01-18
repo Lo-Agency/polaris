@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import config from "../../util/config";
 import { useNavigate } from "react-router";
 import { useAuth } from "../providers/auth.provider";
+import { ToastContainer } from "react-toastify";
 
 const AdminLayout = ({ children }) => {
     const { entityName, actionName } = useParams()
@@ -54,6 +55,7 @@ const AdminLayout = ({ children }) => {
                     {children}
                 </div>
             </div>
+            <ToastContainer />
         </>
     )
 }

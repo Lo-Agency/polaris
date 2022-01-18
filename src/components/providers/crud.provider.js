@@ -1,6 +1,8 @@
 import { push, ref, child, getDatabase, get, remove, set } from "@firebase/database";
 import { useState, createContext, useContext, useEffect } from "react";
 import { useParams } from "react-router";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import config from "../../util/config";
 import { database } from "../../util/firebase";
 
@@ -40,8 +42,33 @@ const CrudProvider = ({ children }) => {
       result[items[index]] = field;
       return result;
     }, {})
-    await push(ref(database, `${entity}`), result);
-    setChange(!change)
+    try {
+      await push(ref(database, `${entity}`), result);
+      toast.success(`New ${entity} is successfully created.`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setChange(!change)
+
+    } catch (error) {
+      toast.error('Somthing went wrong, please tyy again.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+
+
   };
 
   //delete data
@@ -51,8 +78,31 @@ const CrudProvider = ({ children }) => {
     if (deleteEntity.length != 0) {
       deleteEntity.map(entity => deleteDependency(entity, id))
     }
-    await remove(ref(database, `${entityName}/${id}`));
-    setChange(!change)
+    try{
+      const response = await remove(ref(database, `${entityName}/${id}`));
+      toast.success('successfully deleted.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setChange(!change)
+      return response;
+    } catch (error) {
+      toast.error('Somthing went wrong, please tyy again.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   }
 
   //delete data from others entities
@@ -96,8 +146,31 @@ const CrudProvider = ({ children }) => {
       result[items[index]] = field;
       return result;
     }, {})
-    await set(ref(database, `${entityName}/${editID}`), result)
-    setChange(!change)
+    try{
+      await set(ref(database, `${entityName}/${editID}`), result);
+      toast.success('successfully updated.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setChange(!change)
+    }catch (error) {
+      toast.error('Somthing went wrong, please tyy again.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  
   }
 
 

@@ -22,15 +22,15 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 
         switch (type) {
             case "text":
-                return <TextInput name={field} formValues={formValues} />
+                return <TextInput name={field} key={field} formValues={formValues} />
             case "number":
-                return <NumberInput name={field} formValues={formValues} />
+                return <NumberInput name={field} key={field} formValues={formValues} />
             case "select":
-                return <SelectBox name={field} entityName={entityName} />
+                return <SelectBox name={field} key={field} entityName={entityName} />
             case "date":
-                return <DateInput name={field} formValues={formValues} />
+                return <DateInput name={field} key={field} formValues={formValues} />
             case "ref":
-                return <ReferenceInput name={field} reference={reference} />
+                return <ReferenceInput name={field} key={field} reference={reference} />
             default:
                 return <p key={field}>field type for &quot;{field}&quot; not recognized</p>;
         }
