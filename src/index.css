@@ -30,8 +30,7 @@
 
 .Switch {
   margin: 4px 15px;
-  font-size: 14px;
-  font-family: "Arial, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue";
+  font-size: 12px;
   display: flex;
   justify-content: center;
   align-items: center;

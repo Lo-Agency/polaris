@@ -8,18 +8,6 @@ export const ViewSwitcher = ({
 }) => {
   return (
     <div className="ViewContainer">
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.QuarterDay)}
-      >
-        Quarter of Day
-      </button>
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.HalfDay)}
-      >
-        Half of Day
-      </button>
       <button className="Button" onClick={() => onViewModeChange(ViewMode.Day)}>
         Day
       </button>
