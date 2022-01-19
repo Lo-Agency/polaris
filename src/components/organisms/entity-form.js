@@ -14,8 +14,8 @@ import Button from "../atoms/button";
 const EntityForm = ({ entityName, actionName, editID, formValues }) => {
     const navigate = useNavigate();
     const crud = useCrud();
-    const [loading,setLoading]=useState(false);
-    const entityFields =entityConfigFiels(entityName);
+    const [loading, setLoading] = useState(false);
+    const entityFields = entityConfigFiels(entityName);
 
     const fields = entityFields.map(field => {
         const { type, reference } = config.entities[entityName].fields[field];
@@ -26,17 +26,17 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
             case "number":
                 return <NumberInput name={field} key={field} formValues={formValues} />
             case "select":
-                return <SelectBox name={field} key={field} entityName={entityName} />
+                return <SelectBox name={field} key={field} entityName={entityName} formValues={formValues} actionName={actionName} />
             case "date":
                 return <DateInput name={field} key={field} formValues={formValues} />
             case "ref":
-                return <ReferenceInput name={field} key={field} reference={reference} />
+                return <ReferenceInput name={field} key={field} reference={reference} formValues={formValues} actionName={actionName} />
             default:
                 return <p key={field}>field type for &quot;{field}&quot; not recognized</p>;
         }
     });
 
-    const handleSubmit =async (event) => {
+    const handleSubmit = async (event) => {
         setLoading(true)
         event.preventDefault()
         const form = new FormData(event.target)
@@ -53,12 +53,12 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 
         if (!values.includes(null)) {
             if (actionName === "create") {
-               await crud.insertNewItem(values, entityName);
-               setLoading(false);
-            } else{
+                await crud.insertNewItem(values, entityName);
+                setLoading(false);
+            } else {
                 await crud.updateItem(values, entityName, editID);
                 setLoading(false);
-                }
+            }
             navigate(`/admin/${entityName}/list`, { replace: true })
 
         } else return
@@ -69,7 +69,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
         <div className="min-h-screen min-w-full flex justify-center items-center">
             <form className="flex flex-col min-w-full  h-auto justify-center items-center  mx-20 my-32 rounded-lg" onSubmit={handleSubmit}>
                 {fields}
-               <Button loading={loading} actionName={actionName}/>
+                <Button loading={loading} actionName={actionName} />
             </form>
         </div>
     )
