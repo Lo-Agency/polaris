@@ -1,12 +1,12 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useCallback } from "react";
 import { ViewMode, Gantt } from "gantt-task-react";
 import { ViewSwitcher } from "./view-switcher";
 import "gantt-task-react/dist/index.css";
 import { extractDataFromEntity } from '../../../util/extract-data';
 import addDays from 'date-fns/addDays';
+import GanttModal from './gantt-chart-modal'
 
 const GanttChart = ({ roadmapId }) => {
-
 
   let starting = null;
   let startingpro = null;
@@ -68,7 +68,6 @@ const GanttChart = ({ roadmapId }) => {
     phases[phaseId]["project"].forEach(projectId => phaseProjects.push(projects[projectId]["title"][0]))
   }
 
-
   roadmapId && Object.values(roadmaps[roadmapId])[0]
     .map(phaseId => { return renderPhaseData(phaseId, roadmaps[roadmapId]) })
 
@@ -77,6 +76,7 @@ const GanttChart = ({ roadmapId }) => {
   const arrayofidphase = roadmaps && roadmapId && roadmaps[roadmapId]["phase"]
 
   for (let i = 0; i < arrayofidphase.length; i++) {
+    //phase
     ganttData.push({
       id: arrayofidphase[i],
       name: phases[arrayofidphase[i]]["title"][0],
@@ -85,24 +85,25 @@ const GanttChart = ({ roadmapId }) => {
       end: endingDates[i],
       start: startingDates[i],
     })
+    //project
     phases[arrayofidphase[i]]["project"].forEach(projectid =>
       ganttData.push({
         id: projectid + arrayofidphase[i], name: projects[projectid]["title"][0], type: "task",
         project: arrayofidphase[i],
         start: startingDatespro[i],
-        end: endingDatespro[i]
+        end: endingDatespro[i],
+        projectid: projectid,
       }))
   }
 
   const [view, setView] = useState(ViewMode.Month);
   const [tasks, setTasks] = useState(ganttData);
-
   const [isChecked, setIsChecked] = useState(true);
+  const [project, setProject] = useState(null);
 
   useEffect(() => {
     setTasks(ganttData)
   }, [roadmapId]);
-
 
   let columnWidth = 60;
   if (view === ViewMode.Month) {
@@ -111,33 +112,55 @@ const GanttChart = ({ roadmapId }) => {
     columnWidth = 250;
   }
 
-  const handleDblClick = (task) => {
-    alert("On Double Click event Id:" + task.id);
-  };
-  const handleSelect = (task, isSelected) => {
-    console.log(task.name + " has " + (isSelected ? "selected" : "unselected"));
-  };
+  // const handleShowModal = (task) => {
+  //   // alert("On Double Click event Id:" + task.id);
+  //   // console.log(task);
+
+  //       <Example />
+
+  // };
+
   const handleExpanderClick = (task) => {
     setTasks(tasks.map((t) => (t.id === task.id ? task : t)));
-    console.log("On expander click Id:" + task.id);
+  };
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = useCallback(() => {
+    setShowModal(!showModal);
+  }, [showModal]);
+
+  const handleCloseModal = useCallback(() => {
+    setShowModal(false);
+  }, []);
+
+  const handleSelect = (task, isSelected) => {
+    // console.log(projects[task.projectid]);
+    setProject(projects[task.projectid])
+    handleShowModal()
+    // setTaskSelected(isSelected)
+    // console.log(task.name + " has " + (isSelected ? "selected" : "unselected"));
   };
 
+  // console.log(taskSelected);
   return (
     <>
       <ViewSwitcher
+
         onViewModeChange={(viewMode) => setView(viewMode)}
-        onViewListChange={setIsChecked}
-        isChecked={isChecked}
+      // onViewListChange={setIsChecked}
+      // isChecked={isChecked}
       />
+      <h1>Roadmap</h1>
+      <h1>click on each items on roadmap for further informations</h1>
       <Gantt
         tasks={tasks}
         viewMode={view}
-        onDoubleClick={handleDblClick}
         onSelect={handleSelect}
         onExpanderClick={handleExpanderClick}
-        listCellWidth={isChecked ? "155px" : ""}
+        listCellWidth={isChecked ? "155px" : "90px"}
         columnWidth={columnWidth}
       />
+      {showModal && <GanttModal onCancel={handleCloseModal} project={project} />}
     </>
   );
 };

@@ -70,51 +70,48 @@ export function Home() {
 
        return <>
               <div className="relative ">
-                     <header className="max-w-full mx-auto px-4 sm:px-6 bg-black">
-                            <div className="flex justify-between items-center py-2 ">
-                                   <div className="flex justify-start lg:w-0 lg:flex-1 text-black">
-                                          <form className="flex ml-6">
-                                                 <Select
-                                                        onChange={(value) => {
+                     <header className="flex justify-between items-center max-w-full mx-auto px-4 sm:px-6 bg-black h-16">
+                            <div className="flex text-black">
+                                   <form className="flex ml-6">
+                                          <Select
+                                                 onChange={(value) => {
 
-                                                               setSelectedRoadmap(value.value)
-                                                        }}
-                                                        theme={(theme) => ({
-                                                               ...theme,
-                                                               borderRadius: 0,
-                                                               colors: {
-                                                                      ...theme.colors,
-                                                                      primary25: 'neutral10',
-                                                                      primary: 'black',
-                                                                      primary50: 'neutral20'
-                                                               },
-                                                        })}
-                                                        className="p-2 w-96 max-w-lg"
-                                                        classNamePrefix="select"
-                                                        closeMenuOnSelect={false}
-                                                        name={"roadmap"} options={options}>
-                                                 </Select>
-                                          </form>
-                                   </div>
+                                                        setSelectedRoadmap(value.value)
+                                                 }}
+                                                 theme={(theme) => ({
+                                                        ...theme,
+                                                        borderRadius: 0,
+                                                        colors: {
+                                                               ...theme.colors,
+                                                               primary25: 'neutral10',
+                                                               primary: 'black',
+                                                               primary50: 'neutral20'
+                                                        },
+                                                 })}
+                                                 className="p-2 w-96 max-w-lg"
+                                                 classNamePrefix="select"
+                                                 closeMenuOnSelect={false}
+                                                 name={"roadmap"} options={options}>
+                                          </Select>
+                                   </form>
+                            </div>
 
-                                   <div className="mr-10 text-white">
-                                          <Link className="text-white p-2" to="/login">Log in</Link>
-                                   </div>
-
+                            <div className="mr-10 justify-end z-10 text-white">
+                                   <Link className="text-white p-2" to="/login">Log in</Link>
                             </div>
                      </header>
 
 
                      <div className='flex'>
-                        
+
                             {selectedRoadmap && <div className='px-3 mt-6 w-5/6'>
                                    <GanttChart roadmapId={selectedRoadmap} />
                             </div>}
 
-                            
+
                             {!selectedRoadmap ? <h1 className="text-black mt-10 mx-auto">
                                    Please Select a Roadmap to see the data</h1> :
-                                   <div className=' bg-black pt-6 h-screen w-1/6'>
+                                   <div className=' bg-black h-screen  w-1/6 pt-20' style={{ marginTop: '-4rem' }}>
                                           {Object.values(roadmaps[selectedRoadmap])[0]
                                                  .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
                                           <div className="">
@@ -128,12 +125,8 @@ export function Home() {
                                           </div>
                                    </div>
                             }
-
                      </div>
-
               </div>
-
-
        </>
 }
 export default Home;
