@@ -6,6 +6,13 @@
   @apply flex flex-col justify-center items-center h-screen py-40;
 }
 
+
+html,body{
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 /* css for gantt chart */
 .ViewContainer {
   list-style: none;

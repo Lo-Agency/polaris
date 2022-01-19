@@ -24,7 +24,7 @@ export const ViewSwitcher = ({
         Month
       </button>
 
-      {/* <div className="Switch">
+      <div className="Switch">
         <label className="Switch_Toggle">
           <input
             type="checkbox"
@@ -34,8 +34,7 @@ export const ViewSwitcher = ({
           <span className="Slider" />
         </label>
         Show Task List
-      </div> */}
-
+      </div>
 
 
     </div>

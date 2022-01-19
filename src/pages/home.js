@@ -10,6 +10,7 @@ import { compareDesc } from 'date-fns';
 import Charts from '../components/molecules/charts';
 import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/molecules/ganttchart/gantt-chart';
+import TableView from '../components/molecules/tableview';
 
 
 export function Home() {
@@ -105,13 +106,14 @@ export function Home() {
                      <div className='flex'>
 
                             {selectedRoadmap && <div className='px-3 mt-6 w-5/6'>
-                                   <GanttChart roadmapId={selectedRoadmap} />
+                                   {/* <GanttChart roadmapId={selectedRoadmap} /> */}
+                                   <TableView roadmapId={selectedRoadmap}/>
                             </div>}
-
+                                          
 
                             {!selectedRoadmap ? <h1 className="text-black mt-10 mx-auto">
                                    Please Select a Roadmap to see the data</h1> :
-                                   <div className=' bg-black h-screen  w-1/6 pt-20' style={{ marginTop: '-4rem' }}>
+                                   <div className=' bg-black h-auto min-h-screen  w-1/6 pt-20' style={{ marginTop: '-4rem' }}>
                                           {Object.values(roadmaps[selectedRoadmap])[0]
                                                  .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
                                           <div className="">
