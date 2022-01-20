@@ -1,27 +1,24 @@
 import Select from 'react-select';
 import { title } from 'case';
 import { extractDataFromEntity } from '../../util/extract-data';
-import LoadingPage from './loading-page';
+import { useMemo } from 'react';
 
 const ReferenceInput = ({ name, reference, formValues, actionName }) => {
     const referenceData = extractDataFromEntity(reference);
     const selectBoxData = Object.entries(referenceData);
-    const values = [];
-    let defaultValues;
+
     const options = selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));
-    formValues && formValues[name].map(id => values.push(options.filter(option => option["value"] == id)[0]));
+   
 
-    if (values.length != 0) defaultValues = values;
-    else defaultValues = null
+    const createSelectBox = useMemo(()=>{
+        const defaultValue = !formValues
+        ? null
+        : formValues[name].map(id => options.filter(option => option["value"] == id)[0]);
 
-    if (defaultValues || actionName == "create") {
-        return (
-            <div key={name} className=" w-6/12 flex flex-col justify-center px-8">
-                <label className="mx-2 self-start">{title(name)}:
-                </label>
-                <Select className="basic-multi-select my-3 rounded-lg w-full "
+        return(
+            <Select className="basic-multi-select my-3 rounded-lg w-full "
                     classNamePrefix="select"
-                    defaultValue={defaultValues}
+                    value={defaultValue}
                     isMulti
                     hasValue
                     closeMenuOnSelect={false}
@@ -37,9 +34,17 @@ const ReferenceInput = ({ name, reference, formValues, actionName }) => {
                     })}
                     name={reference} options={options} >
                 </Select>
+        )
+    },[formValues])
+   
+        return (
+            <div key={name} className=" w-6/12 flex flex-col justify-center px-8">
+                <label className="mx-2 self-start">{title(name)}:
+                </label>
+                {createSelectBox}
             </div>
         )
-    } else return <LoadingPage />
+  
 }
 
 export default ReferenceInput;
