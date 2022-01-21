@@ -52,13 +52,6 @@ const GanttChart = ({ roadmapId }) => {
     return endDatepro;
   }
 
-  /**
-   * 
-   * @param {phaseid} id 
-   * @param {data of roadmaps[roadmapId] such as phase , starting date,titlej} roadmap 
-   * @returns 
-   */
-
   const renderPhaseData = (id, roadmap) => {
     const phaseId = Object.keys(phases).filter(phaseId => phaseId === id)
     { starting == null ? starting = (Object.values(roadmap))[1] : starting = endDate }
@@ -70,7 +63,6 @@ const GanttChart = ({ roadmapId }) => {
 
   roadmapId && Object.values(roadmaps[roadmapId])[0]
     .map(phaseId => { return renderPhaseData(phaseId, roadmaps[roadmapId]) })
-
 
   const ganttData = []
   const arrayofidphase = roadmaps && roadmapId && roadmaps[roadmapId]["phase"]
@@ -88,7 +80,9 @@ const GanttChart = ({ roadmapId }) => {
     //project
     phases[arrayofidphase[i]]["project"].forEach(projectid =>
       ganttData.push({
-        id: projectid + arrayofidphase[i], name: projects[projectid]["title"][0], type: "task",
+        id: projectid + arrayofidphase[i],
+        name: projects[projectid]["title"][0],
+        type: "task",
         project: arrayofidphase[i],
         start: startingDatespro[i],
         end: endingDatespro[i],
@@ -98,7 +92,6 @@ const GanttChart = ({ roadmapId }) => {
 
   const [view, setView] = useState(ViewMode.Month);
   const [tasks, setTasks] = useState(ganttData);
-  const [isChecked, setIsChecked] = useState(true);
   const [project, setProject] = useState(null);
 
   useEffect(() => {
@@ -107,18 +100,10 @@ const GanttChart = ({ roadmapId }) => {
 
   let columnWidth = 60;
   if (view === ViewMode.Month) {
-    columnWidth = 300;
+    columnWidth = 200;
   } else if (view === ViewMode.Week) {
-    columnWidth = 250;
+    columnWidth = 150;
   }
-
-  // const handleShowModal = (task) => {
-  //   // alert("On Double Click event Id:" + task.id);
-  //   // console.log(task);
-
-  //       <Example />
-
-  // };
 
   const handleExpanderClick = (task) => {
     setTasks(tasks.map((t) => (t.id === task.id ? task : t)));
@@ -134,31 +119,34 @@ const GanttChart = ({ roadmapId }) => {
   }, []);
 
   const handleSelect = (task, isSelected) => {
-    // console.log(projects[task.projectid]);
-    setProject(projects[task.projectid])
-    handleShowModal()
-    // setTaskSelected(isSelected)
-    // console.log(task.name + " has " + (isSelected ? "selected" : "unselected"));
+    if (task.type === "task") {
+      setProject(projects[task.projectid])
+      handleShowModal()
+    }
   };
 
-  // console.log(taskSelected);
   return (
     <>
       <ViewSwitcher
-
         onViewModeChange={(viewMode) => setView(viewMode)}
-      // onViewListChange={setIsChecked}
-      // isChecked={isChecked}
       />
-      <h1>Roadmap</h1>
-      <h1>click on each items on roadmap for further informations</h1>
+
       <Gantt
         tasks={tasks}
         viewMode={view}
         onSelect={handleSelect}
         onExpanderClick={handleExpanderClick}
-        listCellWidth={isChecked ? "155px" : "90px"}
         columnWidth={columnWidth}
+        fontFamily={"inherit"}
+        projectBackgroundColor="#313638"
+        projectBackgroundSelectedColor="#313638"
+        arrowColor={"#313638"}
+        todayColor={"rgba(190, 190, 190, 0.5)"}
+        fontSize="1rem"
+        barBackgroundColor="#BEBEBE"
+        barBackgroundSelectedColor="#BEBEBE"
+        barFill={70}
+        barCornerRadius={0}
       />
       {showModal && <GanttModal onCancel={handleCloseModal} project={project} />}
     </>

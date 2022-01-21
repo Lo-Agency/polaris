@@ -7,24 +7,26 @@ export const ViewSwitcher = ({
   isChecked
 }) => {
   return (
-    <div className="ViewContainer">
-      <button className="Button" onClick={() => onViewModeChange(ViewMode.Day)}>
+    <div className="flex justify-start mb-2">
+      <button className="btn" onClick={() => onViewModeChange(ViewMode.Day)}>
         Day
       </button>
       <button
-        className="Button"
+        className="btn"
         onClick={() => onViewModeChange(ViewMode.Week)}
       >
         Week
       </button>
       <button
-        className="Button"
+        className="btn"
         onClick={() => onViewModeChange(ViewMode.Month)}
       >
         Month
       </button>
+    </div>
+  )
 
-      <div className="Switch">
+  {/* <div className="Switch">
         <label className="Switch_Toggle">
           <input
             type="checkbox"
@@ -34,9 +36,6 @@ export const ViewSwitcher = ({
           <span className="Slider" />
         </label>
         Show Task List
-      </div>
+      </div> */}
 
-
-    </div>
-  );
 };

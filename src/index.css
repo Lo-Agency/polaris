@@ -6,6 +6,13 @@
   @apply flex flex-col justify-center items-center h-screen py-40;
 }
 
+.btn-form {
+  @apply focus:scale-50 animate-bounce py-2 mt-4 sm:mt-4 xsm:mt-2 rounded-lg text-white bg-black xsm:w-48 sm:w-60 w-80;
+}
+
+.btn{
+  @apply bg-black text-white py-2 m-2 rounded-lg text-sm cursor-pointer px-4
+}
 
 html,body{
   height: 100%;
@@ -14,85 +21,45 @@ html,body{
 }
 
 /* css for gantt chart */
-.ViewContainer {
-  list-style: none;
-  -ms-box-orient: horizontal;
-  display: flex;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
-  align-items: center;
+._3_ygE{
+  background-color: black;
+  color: white;
 }
 
-.Button {
-  background-color: #e7e7e7;
-  color: black;
-  border: none;
-  padding: 7px 16px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
-  font-size: 14px;
-  text-align: center;
+._9w8d5{
+  font-size: 12px !important;
 }
 
-.Switch {
-  margin: 4px 15px;
-  font-size: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+._WuQ0f{
+  font-size: 12px !important;
 }
 
-.Switch_Toggle {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 30px;
-  margin-right: 5px;
+._35nLX{
+  fill: black !important;
 }
 
-.Switch_Toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+._2eZzQ{
+  border-right: none !important;
 }
 
-.Slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+._9w8d5{
+  fill: white !important;
 }
 
-.Slider:before {
-  position: absolute;
-  content: "";
-  height: 21px;
-  width: 21px;
-  left: 6px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+._1rLuZ{
+  stroke: black !important;
 }
 
-input:checked+.Slider {
-  background-color: #2196f3;
+._9w8d5,._WuQ0f{
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
-input:focus+.Slider {
-  box-shadow: 0 0 1px #2196f3;
+._2RbVy {
+  opacity:1 !important;
 }
 
-input:checked+.Slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+._2q1Kt{
+  fill: white !important;
 }
-
 /* css for gantt chart */

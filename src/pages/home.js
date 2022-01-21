@@ -1,8 +1,6 @@
-import { title } from 'case';
 import { format } from 'date-fns';
 import Select from 'react-select'
 import { useState } from 'react';
-import config from '../util/config';
 import addDays from 'date-fns/addDays';
 import { Link } from 'react-router-dom';
 import React from 'react';
@@ -12,7 +10,6 @@ import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/molecules/ganttchart/gantt-chart';
 import TableView from '../components/molecules/tableview';
 
-
 export function Home() {
 
        let endDate;
@@ -21,25 +18,22 @@ export function Home() {
        let starting = null;
        const [selectedRoadmap, setSelectedRoadmap] = useState(null);
 
+       function viewToggle(viewtype) {
+              localStorage.setItem('viewtype', viewtype)
+              const view = localStorage.getItem('viewtype');
+              setViewType(view)
+       }
+
+       const view = localStorage.getItem('viewtype');
+       const [viewType, setViewType] = useState(view)
+
+
        const roadmaps = extractDataFromEntity("roadmap");
-       const learnings = extractDataFromEntity("learning");
        const projects = extractDataFromEntity("project")
        const phases = extractDataFromEntity("phase");
 
        // create options for roadmaps select box
        const options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
-
-       //learnings data for table
-       const renderLearningData = (phaseId) => {
-              const phaseLearnings = phases[phaseId]["learning"]
-              return (<>
-                     <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].title}</p>)}</td>
-                     <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].category}</p>)}</td>
-                     <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10 truncate max-w-xs" ><a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>{learnings[id].resources}</a></p>)}</td>
-                     <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].priority}</p>)}</td>
-              </>
-              )
-       }
 
        //calculate phase duration
        const calculatePhaseDuration = (phaseData) => {
@@ -102,18 +96,20 @@ export function Home() {
                             </div>
                      </header>
 
-
                      <div className='flex'>
+                            {selectedRoadmap && <div className='px-3 my-4 w-5/6'>
+                                   <div className='flex justify-end'>
+                                          <button onClick={() => viewToggle('true')} className="btn">Table view</button>
+                                          <button onClick={() => viewToggle('false')} className="btn">Gantt view</button>
+                                   </div>
 
-                            {selectedRoadmap && <div className='px-3 mt-6 w-5/6'>
-                                   {/* <GanttChart roadmapId={selectedRoadmap} /> */}
-                                   <TableView roadmapId={selectedRoadmap}/>
+                                   {viewType == 'true' && <TableView roadmapId={selectedRoadmap} />}
+                                   {viewType == 'false' && <GanttChart roadmapId={selectedRoadmap} />}
                             </div>}
-                                          
 
                             {!selectedRoadmap ? <h1 className="text-black mt-10 mx-auto">
                                    Please Select a Roadmap to see the data</h1> :
-                                   <div className=' bg-black h-auto min-h-screen  w-1/6 pt-20' style={{ marginTop: '-4rem' }}>
+                                   <div className=' bg-black h-auto min-h-screen w-1/6 pt-20' style={{ marginTop: '-4rem' }}>
                                           {Object.values(roadmaps[selectedRoadmap])[0]
                                                  .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
                                           <div className="">
