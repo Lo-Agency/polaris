@@ -28,27 +28,23 @@ const GanttChart = ({ roadmapId }) => {
     }
     return phaseDuration;
   }
-  /**
-   * 
-   * @param {Array oh phases =>[sss,kkkk]} phaseData 
-   * @param {*} roadmap 
-   */
-  function test(roadmap, projectDuration) {
+
+  const createStartEndProject = (roadmap, projectDuration) => {
     { startingpro == null ? startingpro = (Object.values(roadmap))[1] : startingpro = endDatepro }
-    const endarr = calculateProjectEndDate(startingpro, projectDuration)
-    return [new Date(startingpro), endarr]
+    const projectEndArr = calculateProjectEndDate(startingpro, projectDuration)
+    return [new Date(startingpro), projectEndArr]
   }
   const calculateProjectDuration = (phaseData, roadmap) => {
-    const arrstart = []
-    const arrend = []
+    const arrStart = []
+    const arrEnd = []
     for (let i = 0; i < (phaseData).length; i++) {
       let projectId = Object.keys(projects).filter(id => id === phaseData[i]);
       let projectDuration = (Number(projects[projectId]["learningDay"]) + Number(projects[projectId]["days"]));
-      const projectDatess = test(roadmap, projectDuration)
-      arrstart.push(projectDatess[0])
-      arrend.push(projectDatess[1])
+      const startEndProjectArr = createStartEndProject(roadmap, projectDuration)
+      arrStart.push(startEndProjectArr[0])
+      arrEnd.push(startEndProjectArr[1])
     }
-    return [arrstart, arrend]
+    return [arrStart, arrEnd]
   }
 
   const calculatePhaseEndDate = (starting, duration) => {
@@ -67,8 +63,8 @@ const GanttChart = ({ roadmapId }) => {
     startingDates.push(new Date(starting))
     endingDates.push(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))))
 
-    const ArrayofPhases = Object.values(phases[phaseId])[1]
-    const arrstartend = calculateProjectDuration(ArrayofPhases, roadmap)
+    const arrayofPhases = Object.values(phases[phaseId])[1]
+    const arrstartend = calculateProjectDuration(arrayofPhases, roadmap)
     startingDatespro.push(arrstartend[0])
     endingDatespro.push(arrstartend[1])
   }
@@ -79,9 +75,8 @@ const GanttChart = ({ roadmapId }) => {
   const ganttData = []
   const arrayofidphase = roadmaps && roadmapId && roadmaps[roadmapId]["phase"]
 
-
   for (let i = 0; i < arrayofidphase.length; i++) {
-    //phase
+    //phases
     ganttData.push({
       id: arrayofidphase[i],
       name: phases[arrayofidphase[i]]["title"][0],
@@ -91,11 +86,10 @@ const GanttChart = ({ roadmapId }) => {
       start: startingDates[i],
     })
 
-    console.log("tedad", phases[arrayofidphase[i]]["project"].length);
-    //project
+    //projects
     for (let j = 0; j < phases[arrayofidphase[i]]["project"].length; j++) {
       ganttData.push({
-        id: phases[arrayofidphase[i]]["project"][j]+arrayofidphase[i],
+        id: phases[arrayofidphase[i]]["project"][j] + arrayofidphase[i],
         name: projects[phases[arrayofidphase[i]]["project"][j]]["title"][0],
         type: "task",
         project: arrayofidphase[i],
@@ -109,7 +103,7 @@ const GanttChart = ({ roadmapId }) => {
   const [view, setView] = useState(ViewMode.Month);
   const [tasks, setTasks] = useState(ganttData);
   const [project, setProject] = useState(null);
-  console.log(tasks);
+
   useEffect(() => {
     setTasks(ganttData)
   }, [roadmapId]);

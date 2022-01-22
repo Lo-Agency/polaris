@@ -41,7 +41,6 @@ const CrudProvider = ({ children }) => {
   useEffect(() => {
     findAllItems().then((data) => {
       setDataState(data)
-      console.log("pl");
     })
   }, [change])
 
