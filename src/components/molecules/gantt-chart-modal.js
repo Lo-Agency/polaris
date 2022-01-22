@@ -1,6 +1,7 @@
 import { Fragment, useRef, useEffect } from 'react'
 
 const GanttModal = ({ onCancel, project }) => {
+  console.log("ll",project);
   const cancelButtonRef = useRef(null)
   useEffect(() => { });
 
@@ -36,10 +37,10 @@ const GanttModal = ({ onCancel, project }) => {
             <div className="p-5 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <table className='min-w-full divide-y divide-gray-500 m-8'>
                 <tbody>
-                  <tr>
+                  {/* <tr>
                     <td>Type:</td>
-                    <td>{project.projectType}</td>
-                  </tr>
+                    <td>{project["projectType"]}</td>
+                  </tr> */}
                   <tr>
                     <td>Learning:</td>
                     <td>{project.learningDay} days</td>

@@ -15,7 +15,6 @@ const GanttChart = ({ roadmapId }) => {
   let endingDatespro = [];
   let startingDates = [];
   let startingDatespro = [];
-  let phaseProjects = []
 
   const roadmaps = extractDataFromEntity("roadmap");
   const projects = extractDataFromEntity("project")
@@ -29,15 +28,27 @@ const GanttChart = ({ roadmapId }) => {
     }
     return phaseDuration;
   }
-
+  /**
+   * 
+   * @param {Array oh phases =>[sss,kkkk]} phaseData 
+   * @param {*} roadmap 
+   */
+  function test(roadmap, projectDuration) {
+    { startingpro == null ? startingpro = (Object.values(roadmap))[1] : startingpro = endDatepro }
+    const endarr = calculateProjectEndDate(startingpro, projectDuration)
+    return [new Date(startingpro), endarr]
+  }
   const calculateProjectDuration = (phaseData, roadmap) => {
-    for (let i = 0; i < (phaseData[1]).length; i++) {
-      { startingpro == null ? startingpro = (Object.values(roadmap))[1] : startingpro = endDatepro }
-      startingDatespro.push(new Date(startingpro))
-      let projectId = Object.keys(projects).filter(id => id === phaseData[1][i]);
+    const arrstart = []
+    const arrend = []
+    for (let i = 0; i < (phaseData).length; i++) {
+      let projectId = Object.keys(projects).filter(id => id === phaseData[i]);
       let projectDuration = (Number(projects[projectId]["learningDay"]) + Number(projects[projectId]["days"]));
-      endingDatespro.push(calculateProjectEndDate(startingpro, projectDuration))
+      const projectDatess = test(roadmap, projectDuration)
+      arrstart.push(projectDatess[0])
+      arrend.push(projectDatess[1])
     }
+    return [arrstart, arrend]
   }
 
   const calculatePhaseEndDate = (starting, duration) => {
@@ -54,9 +65,12 @@ const GanttChart = ({ roadmapId }) => {
     const phaseId = Object.keys(phases).filter(phaseId => phaseId === id)
     { starting == null ? starting = (Object.values(roadmap))[1] : starting = endDate }
     startingDates.push(new Date(starting))
-    calculateProjectDuration(Object.values(phases[phaseId]), roadmap)
     endingDates.push(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))))
-    phases[phaseId]["project"].forEach(projectId => phaseProjects.push(projects[projectId]["title"][0]))
+
+    const ArrayofPhases = Object.values(phases[phaseId])[1]
+    const arrstartend = calculateProjectDuration(ArrayofPhases, roadmap)
+    startingDatespro.push(arrstartend[0])
+    endingDatespro.push(arrstartend[1])
   }
 
   roadmapId && Object.values(roadmaps[roadmapId])[0]
@@ -64,6 +78,7 @@ const GanttChart = ({ roadmapId }) => {
 
   const ganttData = []
   const arrayofidphase = roadmaps && roadmapId && roadmaps[roadmapId]["phase"]
+
 
   for (let i = 0; i < arrayofidphase.length; i++) {
     //phase
@@ -75,23 +90,26 @@ const GanttChart = ({ roadmapId }) => {
       end: endingDates[i],
       start: startingDates[i],
     })
+
+    console.log("tedad", phases[arrayofidphase[i]]["project"].length);
     //project
-    phases[arrayofidphase[i]]["project"].forEach(projectid =>
+    for (let j = 0; j < phases[arrayofidphase[i]]["project"].length; j++) {
       ganttData.push({
-        id: projectid + arrayofidphase[i],
-        name: projects[projectid]["title"][0],
+        id: phases[arrayofidphase[i]]["project"][j]+arrayofidphase[i],
+        name: projects[phases[arrayofidphase[i]]["project"][j]]["title"][0],
         type: "task",
         project: arrayofidphase[i],
-        start: startingDatespro[i],
-        end: endingDatespro[i],
-        projectid: projectid,
-      }))
+        start: startingDatespro[i][j],
+        end: endingDatespro[i][j],
+        projectid: phases[arrayofidphase[i]]["project"][j],
+      })
+    }
   }
 
   const [view, setView] = useState(ViewMode.Month);
   const [tasks, setTasks] = useState(ganttData);
   const [project, setProject] = useState(null);
-
+  console.log(tasks);
   useEffect(() => {
     setTasks(ganttData)
   }, [roadmapId]);
