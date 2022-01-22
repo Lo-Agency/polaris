@@ -33,8 +33,8 @@ const Entity = () => {
     const entityContent = data && sortData();
 
     const handleDelete = (item) => {
-        crud.deleteItem(item);
-    }
+        if (confirm(`Are you sure you want to delete this ${entityName}?`)) crud.deleteItem(item);
+   }
 
     const handleEdit = (item) => {
         setEditId(item);
