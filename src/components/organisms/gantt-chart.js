@@ -118,8 +118,8 @@ const GanttChart = ({ roadmapId }) => {
   const handleExpanderClick = (task) => {
     setTasks(tasks.map((t) => (t.id === task.id ? task : t)));
   };
-  const [showModal, setShowModal] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
   const handleShowModal = useCallback(() => {
     setShowModal(!showModal);
   }, [showModal]);
@@ -129,7 +129,7 @@ const GanttChart = ({ roadmapId }) => {
   }, []);
 
   const handleSelect = (task, isSelected) => {
-    if (task.type === "task") {
+    if (task.type === "task" & isSelected) {
       setProject(projects[task.projectid])
       handleShowModal()
     }
@@ -162,11 +162,10 @@ const GanttChart = ({ roadmapId }) => {
         onSelect={handleSelect}
         onExpanderClick={handleExpanderClick}
         columnWidth={columnWidth}
-        fontFamily={"inherit"}
+        fontFamily="inherit"
         projectBackgroundColor="#313638"
         projectBackgroundSelectedColor="#313638"
-        arrowColor={"#313638"}
-        todayColor={"rgba(190, 190, 190, 0.5)"}
+        todayColor="rgba(190, 190, 190, 0.5)"
         fontSize="1rem"
         barBackgroundColor="#BEBEBE"
         barBackgroundSelectedColor="#BEBEBE"
