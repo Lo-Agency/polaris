@@ -1,10 +1,9 @@
 import { React, useState, useEffect, useCallback } from "react";
 import { ViewMode, Gantt } from "gantt-task-react";
-import { ViewSwitcher } from "./view-switcher";
 import "gantt-task-react/dist/index.css";
-import { extractDataFromEntity } from '../../../util/extract-data';
+import { extractDataFromEntity } from '../../util/extract-data';
 import addDays from 'date-fns/addDays';
-import GanttModal from './gantt-chart-modal'
+import GanttModal from '../molecules/gantt-chart-modal';
 
 const GanttChart = ({ roadmapId }) => {
 
@@ -19,7 +18,6 @@ const GanttChart = ({ roadmapId }) => {
   let phaseProjects = []
 
   const roadmaps = extractDataFromEntity("roadmap");
-  const learnings = extractDataFromEntity("learning");
   const projects = extractDataFromEntity("project")
   const phases = extractDataFromEntity("phase");
 
@@ -127,9 +125,24 @@ const GanttChart = ({ roadmapId }) => {
 
   return (
     <>
-      <ViewSwitcher
-        onViewModeChange={(viewMode) => setView(viewMode)}
-      />
+      {/* View switcher for gantt chart */}
+      <div className="flex justify-start mb-2">
+        <button className="btn" onClick={() => setView(ViewMode.Day)}>
+          Day
+        </button>
+        <button
+          className="btn"
+          onClick={() => setView(ViewMode.Week)}
+        >
+          Week
+        </button>
+        <button
+          className="btn"
+          onClick={() => setView(ViewMode.Month)}
+        >
+          Month
+        </button>
+      </div>
 
       <Gantt
         tasks={tasks}

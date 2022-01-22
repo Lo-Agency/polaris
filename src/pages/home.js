@@ -5,10 +5,10 @@ import addDays from 'date-fns/addDays';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { compareDesc } from 'date-fns';
-import Charts from '../components/molecules/charts';
+import Charts from '../components/molecules/doughnut-chart';
 import { extractDataFromEntity } from '../util/extract-data';
-import GanttChart from '../components/molecules/ganttchart/gantt-chart';
-import TableView from '../components/molecules/tableview';
+import GanttChart from '../components/organisms/gantt-chart';
+import TableView from '../components/molecules/table-roadmap';
 
 export function Home() {
 
@@ -102,11 +102,11 @@ export function Home() {
                                           <button onClick={() => viewToggle('true')} className="btn">Table view</button>
                                           <button onClick={() => viewToggle('false')} className="btn">Gantt view</button>
                                    </div>
-
                                    {viewType == 'true' && <TableView roadmapId={selectedRoadmap} />}
                                    {viewType == 'false' && <GanttChart roadmapId={selectedRoadmap} />}
                             </div>}
-
+                            
+                            {/* Doughnut Chart */}
                             {!selectedRoadmap ? <h1 className="text-black mt-10 mx-auto">
                                    Please Select a Roadmap to see the data</h1> :
                                    <div className=' bg-black h-auto min-h-screen w-1/6 pt-20' style={{ marginTop: '-4rem' }}>
