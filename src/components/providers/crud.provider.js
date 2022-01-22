@@ -1,6 +1,8 @@
 import { push, ref, child, getDatabase, get, remove, set } from "@firebase/database";
 import { useState, createContext, useContext, useEffect } from "react";
 import { useParams } from "react-router";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import config from "../../util/config";
 import { database } from "../../util/firebase";
 
@@ -10,6 +12,30 @@ const CrudProvider = ({ children }) => {
   const [formValues, setFormValues] = useState(null)
   const { entityName } = useParams();
   const [dataState, setDataState] = useState();
+
+  //send notifications
+  const sendNotification = (type, message) => {
+    if (type == "success")
+      return toast.success(message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    else return toast.error(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+
 
   //get all data from db
   useEffect(() => {
@@ -40,8 +66,16 @@ const CrudProvider = ({ children }) => {
       result[items[index]] = field;
       return result;
     }, {})
-    await push(ref(database, `${entity}`), result);
-    setChange(!change)
+    try {
+      await push(ref(database, `${entity}`), result);
+      sendNotification("success", `New ${entity} is successfully created.`)
+      setChange(!change)
+
+    } catch (error) {
+      sendNotification("error", 'Somthing went wrong, please tyy again.')
+    }
+
+
   };
 
   //delete data
@@ -51,8 +85,14 @@ const CrudProvider = ({ children }) => {
     if (deleteEntity.length != 0) {
       deleteEntity.map(entity => deleteDependency(entity, id))
     }
-    await remove(ref(database, `${entityName}/${id}`));
-    setChange(!change)
+    try {
+      const response = await remove(ref(database, `${entityName}/${id}`));
+      sendNotification("success", 'successfully deleted.')
+      setChange(!change)
+      return response;
+    } catch (error) {
+      sendNotification("error", 'Somthing went wrong, please tyy again.')
+    }
   }
 
   //delete data from others entities
@@ -96,8 +136,14 @@ const CrudProvider = ({ children }) => {
       result[items[index]] = field;
       return result;
     }, {})
-    await set(ref(database, `${entityName}/${editID}`), result)
-    setChange(!change)
+    try {
+      await set(ref(database, `${entityName}/${editID}`), result);
+      sendNotification("success", 'successfully updated.')
+      setChange(!change)
+
+    } catch (error) {
+      sendNotification("error", 'Somthing went wrong, please tyy again.')
+    }
   }
 
 
