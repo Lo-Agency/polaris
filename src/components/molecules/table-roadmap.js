@@ -82,7 +82,7 @@ const TableView = ({ roadmapId }) => {
     return (
         <div className="flex w-full overflow-hidden justify-center items-center">
             {startDate = null}
-            <div className="flex justify-center w-full flex-col ">
+            <div className="flex justify-center w-full flex-col">
                 <div> <p >Starting Date  {(Object.values(roadmaps[roadmapId]))[1]} </p> </div>
                 <table className="my-5 border-b border-gray-200 w-l">
                     <thead className="bg-black w-full">

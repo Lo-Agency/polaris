@@ -21,11 +21,8 @@ html,body{
 }
 
 /* css for gantt chart */
-._3_ygE{
-  background-color: black;
-  color: white;
-}
 
+/* header of table */
 ._9w8d5{
   font-size: 12px !important;
 }
@@ -33,28 +30,27 @@ html,body{
 ._WuQ0f{
   font-size: 12px !important;
 }
-
+._3_ygE{
+  background-color: black;
+  color: white;
+}
 ._35nLX{
   fill: black !important;
 }
-
 ._2eZzQ{
   border-right: none !important;
 }
-
 ._9w8d5{
   fill: white !important;
 }
-
 ._1rLuZ{
   stroke: black !important;
 }
-
 ._9w8d5,._WuQ0f{
   text-transform: uppercase;
   font-weight: 500;
 }
-
+/* phase half background */
 ._2RbVy {
   opacity:1 !important;
 }
