@@ -12,25 +12,26 @@ import TableView from '../components/molecules/table-roadmap';
 
 export function Home() {
 
-       let endDate;
-       let endingDats = [];
-       let phaseProjects = []
-       let starting = null;
        const [selectedRoadmap, setSelectedRoadmap] = useState(null);
+
+       const roadmaps = extractDataFromEntity("roadmap");
+       const projects = extractDataFromEntity("project")
+       const phases = extractDataFromEntity("phase");
+
+       const view = localStorage.getItem('viewtype');
+       const [viewType, setViewType] = useState(view)
+
 
        function viewToggle(viewtype) {
               localStorage.setItem('viewtype', viewtype)
               const view = localStorage.getItem('viewtype');
               setViewType(view)
        }
-
-       const view = localStorage.getItem('viewtype');
-       const [viewType, setViewType] = useState(view)
-
-
-       const roadmaps = extractDataFromEntity("roadmap");
-       const projects = extractDataFromEntity("project")
-       const phases = extractDataFromEntity("phase");
+   
+       let endDate;
+       let endingDats = [];
+       let phaseProjects = []
+       let starting = null;
 
        // create options for roadmaps select box
        const options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))

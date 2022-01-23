@@ -7,106 +7,31 @@ import GanttModal from '../molecules/gantt-chart-modal';
 
 const GanttChart = ({ roadmapId }) => {
 
-  let starting = null;
-  let startingpro = null;
-  let endDate;
-  let endDatepro;
-  let endingDates = [];
-  let endingDatespro = [];
-  let startingDates = [];
-  let startingDatespro = [];
-
-  const roadmaps = extractDataFromEntity("roadmap");
-  const projects = extractDataFromEntity("project")
-  const phases = extractDataFromEntity("phase");
-
-  const calculatePhaseDuration = (phaseData) => {
-    let phaseDuration = 0;
-    for (let i = 0; i < (phaseData[1]).length; i++) {
-      let projectId = Object.keys(projects).filter(id => id === phaseData[1][i]);
-      phaseDuration += (Number(projects[projectId]["learningDay"]) + Number(projects[projectId]["days"]));
-    }
-    return phaseDuration;
-  }
-
-  const createStartEndProject = (roadmap, projectDuration) => {
-    { startingpro == null ? startingpro = (Object.values(roadmap))[1] : startingpro = endDatepro }
-    const projectEndArr = calculateProjectEndDate(startingpro, projectDuration)
-    return [new Date(startingpro), projectEndArr]
-  }
-  const calculateProjectDuration = (phaseData, roadmap) => {
-    const arrStart = []
-    const arrEnd = []
-    for (let i = 0; i < (phaseData).length; i++) {
-      let projectId = Object.keys(projects).filter(id => id === phaseData[i]);
-      let projectDuration = (Number(projects[projectId]["learningDay"]) + Number(projects[projectId]["days"]));
-      const startEndProjectArr = createStartEndProject(roadmap, projectDuration)
-      arrStart.push(startEndProjectArr[0])
-      arrEnd.push(startEndProjectArr[1])
-    }
-    return [arrStart, arrEnd]
-  }
-
-  const calculatePhaseEndDate = (starting, duration) => {
-    endDate = addDays(new Date(starting), duration);
-    return endDate;
-  }
-
-  const calculateProjectEndDate = (starting, duration) => {
-    endDatepro = addDays(new Date(starting), duration);
-    return endDatepro;
-  }
-
-  const renderPhaseData = (id, roadmap) => {
-    const phaseId = Object.keys(phases).filter(phaseId => phaseId === id)
-    { starting == null ? starting = (Object.values(roadmap))[1] : starting = endDate }
-    startingDates.push(new Date(starting))
-    endingDates.push(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))))
-
-    const arrayofPhases = Object.values(phases[phaseId])[1]
-    const arrstartend = calculateProjectDuration(arrayofPhases, roadmap)
-    startingDatespro.push(arrstartend[0])
-    endingDatespro.push(arrstartend[1])
-  }
-
-  roadmapId && Object.values(roadmaps[roadmapId])[0]
-    .map(phaseId => { return renderPhaseData(phaseId, roadmaps[roadmapId]) })
-
   const ganttData = []
-  const arrayofidphase = roadmaps && roadmapId && roadmaps[roadmapId]["phase"]
-
-  for (let i = 0; i < arrayofidphase.length; i++) {
-    //phases
-    ganttData.push({
-      id: arrayofidphase[i],
-      name: phases[arrayofidphase[i]]["title"][0],
-      type: "project",
-      hideChildren: false,
-      end: endingDates[i],
-      start: startingDates[i],
-    })
-
-    //projects
-    for (let j = 0; j < phases[arrayofidphase[i]]["project"].length; j++) {
-      ganttData.push({
-        id: phases[arrayofidphase[i]]["project"][j] + arrayofidphase[i],
-        name: projects[phases[arrayofidphase[i]]["project"][j]]["title"][0],
-        type: "task",
-        project: arrayofidphase[i],
-        start: startingDatespro[i][j],
-        end: endingDatespro[i][j],
-        projectid: phases[arrayofidphase[i]]["project"][j],
-      })
-    }
-  }
-
-  const [view, setView] = useState(ViewMode.Month);
   const [tasks, setTasks] = useState(ganttData);
+  const [view, setView] = useState(ViewMode.Month);
   const [project, setProject] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     setTasks(ganttData)
   }, [roadmapId]);
+
+  let phaseStartDate = null;
+  let projectStartDate = null;
+
+  let phaseEndDate;
+  let projectEndDate;
+
+  let phasesEndDates = [];
+  let projectsEndDates = [];
+
+  let phasesStartDates = [];
+  let projectsStartDates = [];
+
+  const roadmaps = extractDataFromEntity("roadmap");
+  const projects = extractDataFromEntity("project")
+  const phases = extractDataFromEntity("phase");
 
   let columnWidth = 60;
   if (view === ViewMode.Month) {
@@ -115,11 +40,75 @@ const GanttChart = ({ roadmapId }) => {
     columnWidth = 150;
   }
 
+  const phasesId = roadmaps && roadmapId && roadmaps[roadmapId]["phase"]
+
+  const calculatePhaseDuration = (phaseData) => {
+    let phaseProjects = phaseData[1]
+    let phaseDuration = 0;
+    phaseProjects.forEach(id => {
+      let projectId = Object.keys(projects).find(projectId => projectId === id);
+      phaseDuration += (Number(projects[projectId]["learningDay"]) + Number(projects[projectId]["days"]));
+    })
+
+    return phaseDuration;
+  }
+
+  const createStartEndProject = (roadmap, projectDuration) => {
+    if (projectStartDate == null) {
+      projectStartDate = (Object.values(roadmap))[1]
+    }
+    else {
+      projectStartDate = projectEndDate
+    }
+
+    const projectEndDates = calculateProjectEndDate(projectStartDate, projectDuration)
+    return [new Date(projectStartDate), projectEndDates]
+  }
+
+  const calculateProjectDuration = (phaseProjects, roadmap) => {
+    const startDates = []
+    const endDates = []
+    phaseProjects.forEach(projectId => {
+      let projectDuration = (Number(projects[projectId]["learningDay"]) + Number(projects[projectId]["days"]));
+      const projectStartDates = createStartEndProject(roadmap, projectDuration)
+      startDates.push(projectStartDates[0])
+      endDates.push(projectStartDates[1])
+    })
+
+    return [startDates, endDates]
+  }
+
+  const calculatePhaseEndDate = (starting, duration) => {
+    phaseEndDate = addDays(new Date(starting), duration);
+    return phaseEndDate;
+  }
+
+  const calculateProjectEndDate = (startDate, duration) => {
+    projectEndDate = addDays(new Date(startDate), duration);
+    return projectEndDate;
+  }
+
+  const renderPhaseData = (id, roadmap) => {
+    const phaseId = Object.keys(phases).find(phaseId => phaseId === id)
+
+    if (phaseStartDate == null) {
+      phaseStartDate = (Object.values(roadmap))[1]
+    }
+    else {
+      phaseStartDate = phaseEndDate
+    }
+    phasesStartDates.push(new Date(phaseStartDate))
+    phasesEndDates.push(calculatePhaseEndDate(phaseStartDate, calculatePhaseDuration(Object.values(phases[phaseId]))))
+    const phaseProjects = Object.values(phases[phaseId])[1]
+    const startEndDates = calculateProjectDuration(phaseProjects, roadmap)
+    projectsStartDates.push(startEndDates[0])
+    projectsEndDates.push(startEndDates[1])
+  }
+
   const handleExpanderClick = (task) => {
     setTasks(tasks.map((t) => (t.id === task.id ? task : t)));
   };
 
-  const [showModal, setShowModal] = useState(false);
   const handleShowModal = useCallback(() => {
     setShowModal(!showModal);
   }, [showModal]);
@@ -130,10 +119,38 @@ const GanttChart = ({ roadmapId }) => {
 
   const handleSelect = (task, isSelected) => {
     if (task.type === "task" & isSelected) {
-      setProject(projects[task.projectid])
+      setProject(projects[task.projectId])
       handleShowModal()
     }
   };
+
+  roadmapId && Object.values(roadmaps[roadmapId])[0]
+    .map(phaseId => { return renderPhaseData(phaseId, roadmaps[roadmapId]) })
+
+  phasesId.forEach((phaseId, phaseIndex) => {
+    //phases
+    ganttData.push({
+      id: phaseId,
+      name: phases[phaseId]["title"][0],
+      type: "project",
+      hideChildren: false,
+      start: phasesStartDates[phaseIndex],
+      end: phasesEndDates[phaseIndex],
+    })
+
+    //projects
+    phases[phaseId]["project"].forEach((projectId, projectIndex) => {
+      ganttData.push({
+        id: projectId + phaseId,
+        name: projects[projectId]["title"][0],
+        type: "task",
+        start: projectsStartDates[phaseIndex][projectIndex],
+        end: projectsEndDates[phaseIndex][projectIndex],
+        project: phaseId,
+        projectId: projectId,
+      })
+    });
+  })
 
   return (
     <>

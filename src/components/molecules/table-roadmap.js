@@ -7,10 +7,11 @@ import { extractDataFromEntity } from '../../util/extract-data';
 
 const TableView = ({ roadmapId }) => {
 
+    let startDate = null;
     let endDate;
-    let endingDats = [];
-    let phaseProjects = []
-    let starting = null;
+    let endDates = [];
+    let phaseProjectsName = []
+
     const roadmaps = extractDataFromEntity("roadmap");
     const learnings = extractDataFromEntity("learning");
     const projects = extractDataFromEntity("project")
@@ -30,12 +31,13 @@ const TableView = ({ roadmapId }) => {
     //calculate phase duration
     const calculatePhaseDuration = (phaseData) => {
         let phaseDuration = 0;
-        for (let i = 0; i < (phaseData[1]).length; i++) {
-            let projectId = Object.keys(projects).filter(id => id === phaseData[1][i]);
+        let projectsPhase = phaseData[1]
+        projectsPhase.forEach(id => {
+            let projectId = Object.keys(projects).find(projectId => projectId === id);
             phaseDuration += (Number(projects[projectId]["learningDay"]) + Number(projects[projectId]["days"]));
-        }
-        return phaseDuration;
+        })
 
+        return phaseDuration;
     }
 
     //calculate ent date of phase
@@ -46,10 +48,18 @@ const TableView = ({ roadmapId }) => {
 
     //converting phaseData to table
     const renderPhaseData = (id, roadmap) => {
-        const phaseId = Object.keys(phases).filter(phaseId => phaseId === id)
-        { starting == null ? starting = (Object.values(roadmap))[1] : starting = endDate }
-        endingDats.push(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))))
-        phases[phaseId]["project"].forEach(projectId => phaseProjects.push(projects[projectId]["title"][0]))
+        const phaseId = Object.keys(phases).find(phaseId => phaseId === id)
+
+        if (startDate == null) {
+            (Object.values(roadmap))[1]
+        }
+        else {
+            startDate = endDate
+        }
+
+        endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))))
+        phases[phaseId]["project"].forEach(projectId => phaseProjectsName.push(projects[projectId]["title"][0]))
+        console.log(phaseProjectsName);
         return (
             <React.Fragment key={id}>
                 <tr>
@@ -63,7 +73,7 @@ const TableView = ({ roadmapId }) => {
                 </tr>
                 <tr>
                     <td className="bg-gray-100 py-2 w-24">Evaluation</td>
-                    <td colSpan="5" className="bg-gray-100 py-2 w-24"> {format(calculatePhaseEndDate(starting, calculatePhaseDuration(Object.values(phases[phaseId]))), "EEEE d MMM yyyy")}</td>
+                    <td colSpan="5" className="bg-gray-100 py-2 w-24"> {format(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))), "EEEE d MMM yyyy")}</td>
                 </tr>
             </React.Fragment>
         )
@@ -71,7 +81,7 @@ const TableView = ({ roadmapId }) => {
 
     return (
         <div className="flex w-full overflow-hidden justify-center items-center">
-            {starting = null}
+            {startDate = null}
             <div className="flex justify-center w-full flex-col ">
                 <div> <p >Starting Date  {(Object.values(roadmaps[roadmapId]))[1]} </p> </div>
                 <table className="my-5 border-b border-gray-200 w-l">

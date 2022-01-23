@@ -1,8 +1,6 @@
-import { Fragment, useRef, useEffect } from 'react'
+import { Fragment } from 'react'
 
 const GanttModal = ({ onCancel, project }) => {
-  const cancelButtonRef = useRef(null)
-  useEffect(() => { });
 
   return (
     <Fragment>
@@ -46,7 +44,6 @@ const GanttModal = ({ onCancel, project }) => {
                 <button
                   type="button"
                   className="btn-form focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  ref={cancelButtonRef}
                 >
                   OK
                 </button>
