@@ -18,7 +18,7 @@ const ReferenceInput = ({ name, reference, formValues, actionName }) => {
         return(
             <Select className="basic-multi-select my-3 rounded-lg w-full "
                     classNamePrefix="select"
-                    value={defaultValue}
+                    defaultValue={defaultValue}
                     isMulti
                     hasValue
                     closeMenuOnSelect={false}

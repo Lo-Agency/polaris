@@ -2,7 +2,8 @@ import {
 	signOut,
 	signInWithEmailAndPassword,
 	sendPasswordResetEmail,
-	getAuth
+	getAuth,
+	createUserWithEmailAndPassword
 } from 'firebase/auth';
 import React, { createContext, useContext } from 'react';
 import { WrongCredentialsException } from '../../exceptions/auth';
@@ -43,10 +44,17 @@ const AuthProvider = ({ children }) => {
 		}
 	};
 
+	const signup = async(callback)=>{
+		await createUserWithEmailAndPassword(auth, email, password);
+		await await push(ref(database, 'user'), {email: [email], isApproved: false});
+		callback();
+	}
+
 	return (
 		<AuthContext.Provider
 			value={{
 				user,
+				signup,
 				signIn,
 				logOut,
 				forgotPassword

@@ -32,10 +32,16 @@ export default {
 			pathname: "/forgot-password",
 			isCaseSensitive: true,
 			isProtected: false
-		}
+		},
+		signup: {
+			pathname: "/signup",
+			isCaseSensitive: true,
+			isProtected: false
+		},
 	},
 
 	entities: {
+	
 		roadmap: {
 			fields: {
 				title: {
@@ -142,7 +148,49 @@ export default {
 
 				}
 			}
-		}
+		},
+		group: {
+			fields: {
+				title: {
+					type: "text",
+					isArray: false
+				},
+				description: {
+					type: "text",
+					isArray: false
+				},
+				slug: {
+					type: "text",
+					isArray: false
+				},
+				roadmap: {
+					type: "ref",
+					reference: "roadmap",
+					isArray: true
+				}
+			},
+			list:["roadmap"]
+
+		},
+		user: {
+			fields: {
+				email: {
+					type: "text",
+					isArray: false
+				},
+				isApproved: {
+					type: "text",
+					isArray: false
+				},
+				group: {
+					type: "ref",
+					reference: "group",
+					isArray: true,
+				},
+				
+			},
+			list: ["group"]
+		},
 
 	}
 };
