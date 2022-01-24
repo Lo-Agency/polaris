@@ -41,7 +41,8 @@ const CrudProvider = ({ children }) => {
   useEffect(() => {
     findAllItems().then((data) => {
       setDataState(data)
-      console.log("h");
+      // this code is for moments that client is offline.
+      console.log("Client is off");
     })
   }, [change])
 

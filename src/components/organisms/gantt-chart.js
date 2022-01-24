@@ -1,9 +1,9 @@
 import { React, useState, useEffect, useCallback } from "react";
 import { ViewMode, Gantt } from "gantt-task-react";
-import "gantt-task-react/dist/index.css";
 import { extractDataFromEntity } from '../../util/extract-data';
 import addDays from 'date-fns/addDays';
 import GanttModal from '../molecules/gantt-chart-modal';
+import "gantt-task-react/dist/index.css";
 
 const GanttChart = ({ roadmapId }) => {
 
@@ -78,8 +78,8 @@ const GanttChart = ({ roadmapId }) => {
     return [startDates, endDates]
   }
 
-  const calculatePhaseEndDate = (starting, duration) => {
-    phaseEndDate = addDays(new Date(starting), duration);
+  const calculatePhaseEndDate = (startDate, duration) => {
+    phaseEndDate = addDays(new Date(startDate), duration);
     return phaseEndDate;
   }
 
@@ -105,8 +105,8 @@ const GanttChart = ({ roadmapId }) => {
     projectsEndDates.push(startEndDates[1])
   }
 
-  const handleExpanderClick = (task) => {
-    setTasks(tasks.map((t) => (t.id === task.id ? task : t)));
+  const handleExpanderClick = (selectedTask) => {
+    setTasks(tasks.map((task) => (task.id === selectedTask.id ? selectedTask : task)));
   };
 
   const handleShowModal = useCallback(() => {
@@ -118,7 +118,7 @@ const GanttChart = ({ roadmapId }) => {
   }, []);
 
   const handleSelect = (task, isSelected) => {
-    if (task.type === "task" & isSelected) {
+    if (task.type === "task" && isSelected) {
       setProject(projects[task.projectId])
       handleShowModal()
     }
@@ -141,6 +141,7 @@ const GanttChart = ({ roadmapId }) => {
     //projects
     phases[phaseId]["project"].forEach((projectId, projectIndex) => {
       ganttData.push({
+        //every id of projects must be unique in this gantt chart
         id: projectId + phaseId,
         name: projects[projectId]["title"][0],
         type: "task",

@@ -20,15 +20,15 @@ export function Home() {
        const projects = extractDataFromEntity("project")
        const phases = extractDataFromEntity("phase");
 
+       let startDate = null;
        let endDate;
        let endDates = [];
-       let phaseProjects = []
-       let startDate = null;
-
+       let phaseProjectsName = []
+       
        // create options for roadmaps select box
        const options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
 
-       const viewToggle = (viewtype) => {
+       const RoadmapView = (viewtype) => {
               localStorage.setItem('viewtype', viewtype)
               const view = localStorage.getItem('viewtype');
               setViewType(view)
@@ -47,17 +47,16 @@ export function Home() {
        }
 
        //calculate ent date of phase
-       const calculatePhaseEndDate = (starting, duration) => {
-              endDate = addDays(new Date(starting), duration);
+       const calculatePhaseEndDate = (startDate, duration) => {
+              endDate = addDays(new Date(startDate), duration);
               return endDate;
        }
 
-       //converting phaseData to table
        const renderPhaseData = (id, roadmap) => {
               const phaseId = Object.keys(phases).find(phaseId => phaseId === id)
               { startDate == null ? startDate = (Object.values(roadmap))[1] : startDate = endDate }
               endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))))
-              phases[phaseId]["project"].forEach(projectId => phaseProjects.push(projects[projectId]["title"][0]))
+              phases[phaseId]["project"].forEach(projectId => phaseProjectsName.push(projects[projectId]["title"][0]))
        }
 
        //This function gives the days between two different dates
@@ -99,8 +98,8 @@ export function Home() {
                      <div className='flex'>
                             {selectedRoadmap && <div className='px-3 my-4 w-5/6'>
                                    <div className='flex justify-end'>
-                                          <button onClick={() => viewToggle('true')} className="btn">Table view</button>
-                                          <button onClick={() => viewToggle('false')} className="btn">Gantt view</button>
+                                          <button onClick={() => RoadmapView('true')} className="btn">Table view</button>
+                                          <button onClick={() => RoadmapView('false')} className="btn">Gantt view</button>
                                    </div>
                                    {viewType == 'true' && <TableView roadmapId={selectedRoadmap} />}
                                    {viewType == 'false' && <GanttChart roadmapId={selectedRoadmap} />}
@@ -113,7 +112,7 @@ export function Home() {
                                           {Object.values(roadmaps[selectedRoadmap])[0]
                                                  .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
                                           <div >
-                                                 {phaseProjects.length !== 0 && <Charts phaseProjects={phaseProjects} projectList={projects} />}
+                                                 {phaseProjectsName.length !== 0 && <Charts phaseProjects={phaseProjectsName} projectList={projects} />}
                                                  {((endDates.length !== 0 && (compareDesc(new Date(endDates[(endDates.length) - 1]), new Date())) !== 1)) && <p className="text-white text-xs text-center m-4">This Roadmap ends on {format(new Date(endDates[(endDates.length) - 1]), "P")}</p>}
                                                  {((endDates.length !== 0 && (compareDesc(new Date(endDates[(endDates.length) - 1]), new Date())) !== 1)) ?
                                                         <p className="text-white text-xs text-center m-4">{calculateRoadmapDuration(new Date(), new Date(endDates[(endDates.length) - 1]))} days are left</p>

@@ -32,7 +32,6 @@ const GanttModal = ({ onCancel, project }) => {
                     <td>Learning:</td>
                     <td>{project.learningDay} days</td>
                   </tr>
-
                   <tr>
                     <td>Project:</td>
                     <td>{project.days} days</td>

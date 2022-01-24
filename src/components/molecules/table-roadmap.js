@@ -1,8 +1,8 @@
+import React from 'react';
 import { title } from 'case';
 import { format } from 'date-fns';
 import config from '../../util/config';
 import addDays from 'date-fns/addDays';
-import React from 'react';
 import { extractDataFromEntity } from '../../util/extract-data';
 
 const TableView = ({ roadmapId }) => {
@@ -10,7 +10,6 @@ const TableView = ({ roadmapId }) => {
     let startDate = null;
     let endDate;
     let endDates = [];
-    let phaseProjectsName = []
 
     const roadmaps = extractDataFromEntity("roadmap");
     const learnings = extractDataFromEntity("learning");
@@ -20,19 +19,21 @@ const TableView = ({ roadmapId }) => {
     //learnings data for table
     const renderLearningData = (phaseId) => {
         const phaseLearnings = phases[phaseId]["learning"]
-        return (<>
+        return <>
             <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].title}</p>)}</td>
             <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].category}</p>)}</td>
-            <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10 truncate max-w-xs" ><a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>{learnings[id].resources}</a></p>)}</td>
+            <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10 truncate max-w-xs" >
+                <a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>{learnings[id].resources}</a></p>)}
+            </td>
             <td className="px-6 py-4 whitespace-nowrap">{phaseLearnings.map(id => <p key={id} className="py-5 h-10">{learnings[id].priority}</p>)}</td>
-        </>)
+        </>
     }
 
     //calculate phase duration
     const calculatePhaseDuration = (phaseData) => {
         let phaseDuration = 0;
-        let projectsPhase = phaseData[1]
-        projectsPhase.forEach(id => {
+        let phaseIdProjects = phaseData[1]
+        phaseIdProjects.forEach(id => {
             let projectId = Object.keys(projects).find(projectId => projectId === id);
             phaseDuration += (Number(projects[projectId]["learningDay"]) + Number(projects[projectId]["days"]));
         })
@@ -41,8 +42,8 @@ const TableView = ({ roadmapId }) => {
     }
 
     //calculate ent date of phase
-    const calculatePhaseEndDate = (starting, duration) => {
-        endDate = addDays(new Date(starting), duration);
+    const calculatePhaseEndDate = (startDate, duration) => {
+        endDate = addDays(new Date(startDate), duration);
         return endDate;
     }
 
@@ -58,8 +59,7 @@ const TableView = ({ roadmapId }) => {
         }
 
         endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))))
-        phases[phaseId]["project"].forEach(projectId => phaseProjectsName.push(projects[projectId]["title"][0]))
-        console.log(phaseProjectsName);
+
         return (
             <React.Fragment key={id}>
                 <tr>
@@ -73,7 +73,9 @@ const TableView = ({ roadmapId }) => {
                 </tr>
                 <tr>
                     <td className="bg-gray-100 py-2 w-24">Evaluation</td>
-                    <td colSpan="5" className="bg-gray-100 py-2 w-24"> {format(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))), "EEEE d MMM yyyy")}</td>
+                    <td colSpan="5" className="bg-gray-100 py-2 w-24">
+                        {format(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))), "EEEE d MMM yyyy")}
+                    </td>
                 </tr>
             </React.Fragment>
         )
@@ -89,14 +91,19 @@ const TableView = ({ roadmapId }) => {
                         <tr>
                             {Object.keys(config.entities["roadmap"].readfields)
                                 .map((field, index) => {
-                                    return <th scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" key={index}>{title(field)}</th>
+                                    return (
+                                        <th scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
+                                            key={index}>
+                                            {title(field)}
+                                        </th>
+                                    )
                                 })}
                         </tr>
                     </thead>
-                    <tbody className="bg-white">
+                    <tbody >
                         {Object.values(roadmaps[roadmapId])[0]
-                            .map(phase => { return renderPhaseData(phase, roadmaps[roadmapId]) }).filter(Boolean)}
+                            .map(phaseId => { return renderPhaseData(phaseId, roadmaps[roadmapId]) }).filter(Boolean)}
                     </tbody>
                 </table>
             </div>
