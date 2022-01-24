@@ -178,16 +178,20 @@ export default {
 					type: "text",
 					isArray: false
 				},
-				isApproved: {
-					type: "text",
-					isArray: false
-				},
 				group: {
 					type: "ref",
 					reference: "group",
 					isArray: true,
 				},
-				
+				type: {
+					type: "select",
+					isArray: false,
+					value: ["admin", "user"]
+				},
+				isApproved: {
+					type: "boolean",
+					isArray: false
+				},
 			},
 			list: ["group"]
 		},

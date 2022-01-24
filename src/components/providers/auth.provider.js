@@ -5,6 +5,8 @@ import {
 	getAuth,
 	createUserWithEmailAndPassword
 } from 'firebase/auth';
+import { ref, set } from "@firebase/database";
+import { database } from "../../util/firebase";
 import React, { createContext, useContext } from 'react';
 import { WrongCredentialsException } from '../../exceptions/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -43,10 +45,11 @@ const AuthProvider = ({ children }) => {
 			throw new WrongCredentialsException('We cant find a user with that e-mail address.');
 		}
 	};
-
-	const signup = async(callback)=>{
-		await createUserWithEmailAndPassword(auth, email, password);
-		await await push(ref(database, 'user'), {email: [email], isApproved: false});
+	
+	const signup = async (email, password, callback) => {
+		const data = await createUserWithEmailAndPassword(auth, email, password);
+		const userId = data.user.uid
+		await set(ref(database, `user/${userId}`), { email, isApproved: "false", type: "user" });
 		callback();
 	}
 
