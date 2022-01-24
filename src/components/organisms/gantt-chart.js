@@ -153,45 +153,44 @@ const GanttChart = ({ roadmapId }) => {
     });
   })
 
-  return (
-    <>
-      {/* View switcher for gantt chart */}
-      <div className="flex justify-start mb-2">
-        <button className="btn" onClick={() => setView(ViewMode.Day)}>
-          Day
-        </button>
-        <button
-          className="btn"
-          onClick={() => setView(ViewMode.Week)}
-        >
-          Week
-        </button>
-        <button
-          className="btn"
-          onClick={() => setView(ViewMode.Month)}
-        >
-          Month
-        </button>
-      </div>
+  return <>
+    {/* View switcher for gantt chart */}
+    <div className="flex justify-start mb-2">
+      <button className="btn" onClick={() => setView(ViewMode.Day)}>
+        Day
+      </button>
+      <button
+        className="btn"
+        onClick={() => setView(ViewMode.Week)}
+      >
+        Week
+      </button>
+      <button
+        className="btn"
+        onClick={() => setView(ViewMode.Month)}
+      >
+        Month
+      </button>
+    </div>
 
-      <Gantt
-        tasks={tasks}
-        viewMode={view}
-        onSelect={handleSelect}
-        onExpanderClick={handleExpanderClick}
-        columnWidth={columnWidth}
-        fontFamily="inherit"
-        projectBackgroundColor="#313638"
-        projectBackgroundSelectedColor="#313638"
-        todayColor="rgba(190, 190, 190, 0.5)"
-        fontSize="1rem"
-        barBackgroundColor="#BEBEBE"
-        barBackgroundSelectedColor="#BEBEBE"
-        barFill={70}
-        barCornerRadius={0}
-      />
-      {showModal && <GanttModal onCancel={handleCloseModal} project={project} />}
-    </>
-  );
+    <Gantt
+      tasks={tasks}
+      viewMode={view}
+      onSelect={handleSelect}
+      onExpanderClick={handleExpanderClick}
+      columnWidth={columnWidth}
+      fontFamily="inherit"
+      projectBackgroundColor="#313638"
+      projectBackgroundSelectedColor="#313638"
+      todayColor="rgba(190, 190, 190, 0.5)"
+      fontSize="1rem"
+      barBackgroundColor="#BEBEBE"
+      barBackgroundSelectedColor="#BEBEBE"
+      barFill={70}
+      barCornerRadius={0}
+    />
+    {showModal && <GanttModal onCancel={handleCloseModal} project={project} />}
+  </>
+
 };
 export default GanttChart;
