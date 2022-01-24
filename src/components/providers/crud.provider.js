@@ -142,7 +142,7 @@ const CrudProvider = ({ children }) => {
       setChange(!change)
 
     } catch (error) {
-      sendNotification("error", 'Somthing went wrong, please tyy again.')
+      sendNotification("error", 'Somthing went wrong, please try again.')
     }
   }
 

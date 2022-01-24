@@ -12,6 +12,7 @@
 		"case": "^1.6.3",
 		"date-fns": "^2.26.0",
 		"firebase": "^9.3.0",
+		"gantt-task-react": "^0.3.7",
 		"history": "5",
 		"react": "^17.0.2",
 		"react-chartjs-2": "^4.0.0",
