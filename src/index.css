@@ -2,9 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
- 
-  .center-content {
-    @apply flex flex-col justify-center items-center h-screen py-40;
-  }
+.center-content {
+  @apply flex flex-col justify-center items-center h-screen py-40;
+}
 
- 
+.btn-form {
+  @apply focus:scale-50 animate-bounce py-2 mt-4 sm:mt-4 xsm:mt-2 rounded-lg text-white bg-black xsm:w-48 sm:w-60 w-80;
+}
+
+.btn{
+  @apply bg-black text-white py-2 m-2 rounded-lg text-sm cursor-pointer px-4
+}
+
+html,body{
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* css for gantt chart */
+
+/* header of table */
+._9w8d5{
+  font-size: 12px !important;
+}
+
+._WuQ0f{
+  font-size: 12px !important;
+}
+._3_ygE{
+  background-color: black;
+  color: white;
+}
+._35nLX{
+  fill: black !important;
+}
+._2eZzQ{
+  border-right: none !important;
+}
+._9w8d5{
+  fill: white !important;
+}
+._1rLuZ{
+  stroke: black !important;
+}
+._9w8d5,._WuQ0f{
+  text-transform: uppercase;
+  font-weight: 500;
+}
+/* phase half background */
+._2RbVy {
+  opacity:1 !important;
+}
+
+._2q1Kt{
+  fill: white !important;
+}
+/* css for gantt chart */
