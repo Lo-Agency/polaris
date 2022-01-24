@@ -24,7 +24,7 @@ export function Home() {
        let endDate;
        let endDates = [];
        let phaseProjectsName = []
-       
+
        // create options for roadmaps select box
        const options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
 
@@ -33,7 +33,7 @@ export function Home() {
               const view = localStorage.getItem('viewtype');
               setViewType(view)
        }
-       
+
        //calculate phase duration
        const calculatePhaseDuration = (phaseData) => {
               let phaseDuration = 0;
@@ -62,7 +62,7 @@ export function Home() {
        //This function gives the days between two different dates
        const calculateRoadmapDuration = (date, otherDate) => Math.ceil(Math.abs(date - otherDate) / (1000 * 60 * 60 * 24));
 
-       return <>
+       return (
               <div className="relative ">
                      <header className="flex justify-between items-center max-w-full mx-auto px-4 sm:px-6 bg-black h-16">
                             <div className="flex text-black">
@@ -122,7 +122,7 @@ export function Home() {
                             }
                      </div>
               </div>
-       </>
+       )
 }
 export default Home;
 
