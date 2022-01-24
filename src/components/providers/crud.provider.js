@@ -41,8 +41,6 @@ const CrudProvider = ({ children }) => {
   useEffect(() => {
     findAllItems().then((data) => {
       setDataState(data)
-      // this code is for moments that client is offline.
-      console.log("Client is off");
     })
   }, [change])
 
@@ -144,7 +142,7 @@ const CrudProvider = ({ children }) => {
       setChange(!change)
 
     } catch (error) {
-      sendNotification("error", 'Somthing went wrong, please tyy again.')
+      sendNotification("error", 'Somthing went wrong, please try again.')
     }
   }
 
