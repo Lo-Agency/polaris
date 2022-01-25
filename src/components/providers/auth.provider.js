@@ -17,10 +17,9 @@ const AuthProvider = ({ children }) => {
 	const auth = getAuth();
 	const [user, loading, error] = useAuthState(auth);
 
-	const signIn = async (email, password, callback) => {
+	const signIn = async (email, password) => {
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
-			callback();
 		} catch (error) {
 			switch (error.code) {
 				case 'auth/user-not-found':
@@ -33,9 +32,8 @@ const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const logOut = async (callback) => {
+	const logOut = async () => {
 		await signOut(auth);
-		callback();
 	};
 
 	const forgotPassword = async (email) => {
@@ -45,12 +43,12 @@ const AuthProvider = ({ children }) => {
 			throw new WrongCredentialsException('We cant find a user with that e-mail address.');
 		}
 	};
-	
-	const signup = async (email, password, callback) => {
+
+	const signup = async (email, password) => {
 		const data = await createUserWithEmailAndPassword(auth, email, password);
 		const userId = data.user.uid
 		await set(ref(database, `user/${userId}`), { email, isApproved: "false", type: "user" });
-		callback();
+
 	}
 
 	return (

@@ -2,28 +2,40 @@ import { format } from 'date-fns';
 import Select from 'react-select'
 import { useState } from 'react';
 import addDays from 'date-fns/addDays';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { compareDesc } from 'date-fns';
 import Charts from '../components/molecules/doughnut-chart';
 import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/organisms/gantt-chart';
 import TableView from '../components/molecules/table-roadmap';
+import { useAuth } from '../components/providers/auth.provider';
 
 export function Home() {
+       const auth = useAuth();
+       const navigate = useNavigate();
        const view = localStorage.getItem('viewtype');
-
        const [selectedRoadmap, setSelectedRoadmap] = useState(null);
        const [viewType, setViewType] = useState(view)
-
        const roadmaps = extractDataFromEntity("roadmap");
-       const projects = extractDataFromEntity("project")
+       const projects = extractDataFromEntity("project");
        const phases = extractDataFromEntity("phase");
+       const users = extractDataFromEntity("user");
+       const userData = users && users[auth.user.uid];
 
        let startDate = null;
        let endDate;
        let endDates = [];
        let phaseProjectsName = []
+
+       const logOut = async () => {
+              try {
+                     await auth.logOut()
+                     navigate('/login')
+              } catch (e) {
+                     console.log(e)
+              }
+       }
 
        // create options for roadmaps select box
        const options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
@@ -91,7 +103,8 @@ export function Home() {
                             </div>
 
                             <div className="mr-10 justify-end z-10 text-white">
-                                   <Link className="text-white p-2" to="/login">Log in</Link>
+                                   <button onClick={logOut}>Log Out</button>
+                                   {userData?.type[0] == "admin" ? <button onClick={() => { navigate('/admin/roadmap/list') }}>Admin Panel</button> : null}
                             </div>
                      </header>
 

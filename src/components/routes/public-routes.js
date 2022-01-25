@@ -5,7 +5,7 @@ function PublicRoute({ children }) {
     const { user } = useAuth();
     const location = useLocation();
     
-    if(user) return <Navigate to={"/admin/roadmap/list"} state={{ from: location }} />
+    if(user) return <Navigate to={"/"} state={{ from: location }} />
 
     return children
 }

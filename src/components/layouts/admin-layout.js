@@ -10,11 +10,10 @@ const AdminLayout = ({ children }) => {
     const { entityName, actionName } = useParams()
     const auth = useAuth();
     const navigate = useNavigate();
-    const logOut = () => {
+    const logOut = async () => {
         try {
-            auth.logOut(() => {
-                navigate('/')
-            })
+            await auth.logOut()
+            navigate('/login')
         } catch (e) {
             console.log(e)
         }
@@ -51,7 +50,10 @@ const AdminLayout = ({ children }) => {
             </div>
             <div className=" flex flex-col w-12/12 pl-10 h-12/12 ml-40 items-end bg-lightGray">
                 <div className="flex justify-center items-center  self-start min-w-full h-auto">
-                    <button className=" mx-4 top-2 right-2 fixed hover:text-gray-500" onClick={logOut}>Log Out</button>
+                    <div className="mx-4 top-2 right-2 fixed">
+                        <button className="m-2 hover:text-gray-500" onClick={() => { navigate('/') }}>Home Page</button>
+                        <button className=" m-2 hover:text-gray-500" onClick={logOut}>Log Out</button>
+                    </div>
                     {children}
                 </div>
             </div>

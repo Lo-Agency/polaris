@@ -1,14 +1,12 @@
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
 import AuthLayout from "../components/layouts/auth-layout";
 
 function Login() {
 	const navigate = useNavigate();
-	const location = useLocation();
 	const auth = useAuth();
 	const [error, setError] = useState(null);
-	const from = location.state?.from?.pathname || "/";
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -17,15 +15,8 @@ function Login() {
 		const password = formData.get("password");
 
 		try {
-			await auth.signIn(
-				email,
-				password
-				, () => {
-					if (from == "/")
-						navigate("/admin/roadmap/list")
-					else
-						navigate(from, { replace: true });
-				})
+			await auth.signIn(email,password)
+			navigate('/')
 		} catch (e) {
 			setError(e.message)
 		}

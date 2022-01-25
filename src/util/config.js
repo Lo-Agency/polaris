@@ -11,7 +11,7 @@ export default {
 		home: {
 			pathname: "/",
 			isCaseSensitive: false,
-			isProtected: false
+			isProtected: true
 		},
 		login: {
 			pathname: "/login",
