@@ -21,44 +21,38 @@ const AdminLayout = ({ children }) => {
 
     const getSelectedEntityClassName = (key) => {
         if (key == entityName) {
-            return "w-full text-2xl font-bold py-3 transition-colors text-left px-2"
-        } else {
-            return "w-full text-md hover:text-gray-500  py-3 transition-colors text-left px-2"
+            return "w-full font-extrabold tracking-wide py-3 transition-colors text-left px-2"
         }
+        return "w-full tracking-wide hover:bg-gray-900 py-3 transition-colors text-left px-2"
     }
 
     const getSvgColor = (key) => {
         if (key == entityName) return "white"
-        else return "black"
+        return "transparent"
     }
 
     return (
-        <>
-            <div className="bg-black  fixed h-screen text-white w-40 pb-2 ">
-                <aside  >
-                    <ul className="flex justify-start flex-col text-xl" >
+        <div className="relative">
+            <aside className="bg-black fixed h-screen text-white w-1/6 justify-between flex-col flex" >
+                <div>
+                    <h1 className="text-center text-2xl m-5 ">Polaris</h1>
+                    <ul className="flex justify-start  flex-col text-base">
                         {
-                            Object.keys(config.entities)
-                                .map(key => <li className={getSelectedEntityClassName(key)} key={key}><Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
-                                    <svg className="w-6 h-6" fill={getSvgColor(key)} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                                    {title(key)}
-                                </Link></li>
-                                )
+                            Object.keys(config.entities).map(key =>
+                                <li className={getSelectedEntityClassName(key)} key={key}>
+                                    <Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
+                                        <svg className="w-6 h-6" fill={getSvgColor(key)} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
+                                        {title(key)}
+                                    </Link>
+                                </li>)
                         }
                     </ul>
-                </aside>
-            </div>
-            <div className=" flex flex-col w-12/12 pl-10 h-12/12 ml-40 items-end bg-lightGray">
-                <div className="flex justify-center items-center  self-start min-w-full h-auto">
-                    <div className="mx-4 top-2 right-2 fixed">
-                        <button className="m-2 hover:text-gray-500" onClick={() => { navigate('/') }}>Home Page</button>
-                        <button className=" m-2 hover:text-gray-500" onClick={logOut}>Log Out</button>
-                    </div>
-                    {children}
                 </div>
-            </div>
+                <button className="text-center text-base p-5 hover:bg-gray-900" onClick={logOut}>Logout</button>
+            </aside>
+            {children}
             <ToastContainer />
-        </>
+        </div>
     )
 }
 

@@ -63,8 +63,8 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 
 
     return (
-        <div className="min-h-screen min-w-full flex justify-center items-center">
-            <form className="flex flex-col min-w-full  h-auto justify-center items-center  mx-20 my-32 rounded-lg" onSubmit={handleSubmit}>
+        <div className="top-0 absolute right-0 w-5/6">
+            <form className="flex flex-col h-auto justify-center items-center  w-5/6 mx-20 my-32 rounded-lg" onSubmit={handleSubmit}>
                 {fields}
                 <Button loading={loading} actionName={actionName} />
             </form>
