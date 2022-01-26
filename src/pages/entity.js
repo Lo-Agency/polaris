@@ -7,7 +7,7 @@ import { useCrud } from "../components/providers/crud.provider";
 import { title } from "case";
 import { extractDataFromEntity, entityConfigFiels } from "../util/extract-data";
 import AdminLayout from "../components/layouts/admin-layout";
-import FilterUsers from "../components/molecules/filter-users";
+import Select from 'react-select';
 
 const Entity = () => {
     const { entityName, actionName } = useParams();
@@ -16,6 +16,10 @@ const Entity = () => {
     const data = extractDataFromEntity(entityName);
     const IDs = data && Object.keys(data);
     const configFields = entityConfigFiels(entityName)
+    const groups = extractDataFromEntity("group")
+
+    //create options for filter users
+    const filterUsersOptions = groups && Object.entries(groups).map(group => ({ "value": group[0], "label": group[1]["title"] }))
 
     const sortData = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
@@ -32,10 +36,13 @@ const Entity = () => {
         return sortedData;
     }
 
-    const entityContent = data && sortData();
+    let entityContent = data && sortData();
+    console.log(data)
+    const filterUsersByGroup = (groupName) => {
+        entityContent = entityContent.filter(user => user[1].includes(groupName))
+        console.log(entityContent, "ent1")
+    }
 
-
-    console.log(entityContent, "entcon")
     const handleDelete = (item) => {
         if (confirm(`Are you sure you want to delete this ${entityName}?`)) crud.deleteItem(item);
     }
@@ -58,7 +65,26 @@ const Entity = () => {
                     <div className="flex fixed self-start  py-4">
                         <Link className=" py-2 my-2 text-center w-56 rounded-lg  bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new {entityName}</Link>
                     </div>
-                    {entityName=="user"?  <FilterUsers /> : null}
+                    {entityName == "user"
+                        ? <Select
+                            className="w-96 my-6 max-w-lg"
+                            classNamePrefix="select"
+                            closeMenuOnSelect={false}
+                            onChange={(value) => { filterUsersByGroup(value.label) }}
+                            theme={(theme) => ({
+                                ...theme,
+                                borderRadius: 0,
+                                colors: {
+                                    ...theme.colors,
+                                    primary25: 'neutral10',
+                                    primary: 'black',
+                                    primary50: 'neutral20'
+                                }
+                            })}
+                            name={"groups"}
+                            options={filterUsersOptions}
+                        />
+                        : null}
                     <div className="flex min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
                         {data ? <table className="my-10 border-b w-11/12 border-gray-200 shadow-md ">
                             <thead className="bg-black w-full">
