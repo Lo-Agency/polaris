@@ -34,11 +34,11 @@ const AdminLayout = ({ children }) => {
     }
 
     return (
-        <>
-            <aside className="bg-black fixed h-screen text-white w-48 justify-between flex-col flex" >
+        <div className="relative">
+            <aside className="bg-black fixed h-screen text-white w-1/6 justify-between flex-col flex" >
                 <div>
                     <h1 className="text-center text-2xl m-5 ">Polaris</h1>
-                    <ul className="flex justify-start flex-col px-2 text-base">
+                    <ul className="flex justify-start  flex-col text-base">
                         {
                             Object.keys(config.entities).map(key =>
                                 <li className={getSelectedEntityClassName(key)} key={key}>
@@ -48,19 +48,13 @@ const AdminLayout = ({ children }) => {
                                     </Link>
                                 </li>)
                         }
-
                     </ul>
                 </div>
                 <button className="text-center text-base p-5 hover:bg-gray-900" onClick={logOut}>Logout</button>
             </aside>
-
-            <div className="flex flex-col w-12/12 pl-10 h-12/12 ml-40 items-end bg-lightGray">
-                <div className="flex justify-center items-center self-start min-w-full h-auto">
-                    {children}
-                </div>
-            </div>
+            {children}
             <ToastContainer />
-        </>
+        </div>
     )
 }
 
