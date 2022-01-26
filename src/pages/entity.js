@@ -12,7 +12,7 @@ import Select from 'react-select';
 const Entity = () => {
 
     const [editID, setEditId] = useState(null);
-
+    const [usersGroup, setUsersGroup] = useState("all users");
     const { entityName, actionName } = useParams();
     const crud = useCrud();
     const data = extractDataFromEntity(entityName);
@@ -22,6 +22,7 @@ const Entity = () => {
 
     //create options for filter users
     const filterUsersOptions = groups && Object.entries(groups).map(group => ({ "value": group[0], "label": group[1]["title"] }))
+    filterUsersOptions.push({ value: "all users", label: "all users" });
 
     const sortData = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
@@ -38,10 +39,9 @@ const Entity = () => {
     }
 
     let entityContent = data && sortData();
-    console.log(data)
-    const filterUsersByGroup = (groupName) => {
-        entityContent = entityContent.filter(user => user[1].includes(groupName))
-        console.log(entityContent, "ent1")
+
+    if (entityName == "user" && usersGroup != "all users") {
+        entityContent = entityContent.filter(user => user[1].includes(usersGroup))
     }
 
     const handleDelete = (item) => {
@@ -63,34 +63,34 @@ const Entity = () => {
         default:
             return <AdminLayout>
                 <div className="top-0 absolute right-0 w-5/6" >
-                <header className="fixed bg-white z-10 shadow-md flex justify-between h-16 w-5/6 items-center px-5">
-                    <p className="px-4">{title(entityName)}</p>
-                    {entityName == "user"
-                        ? <Select
-                            className="w-96 my-6 max-w-lg"
-                            classNamePrefix="select"
-                            closeMenuOnSelect={false}
-                            onChange={(value) => { filterUsersByGroup(value.label) }}
-                            theme={(theme) => ({
-                                ...theme,
-                                borderRadius: 0,
-                                colors: {
-                                    ...theme.colors,
-                                    primary25: 'neutral10',
-                                    primary: 'black',
-                                    primary50: 'neutral20'
-                                }
-                            })}
-                            name={"groups"}
-                            options={filterUsersOptions}
-                        />
-                        : null}
-                    <div>
-                        <Link className="mx-2" to={`/`}>Home</Link>
-                        <Link className="py-2 px-4 mx-2 text-center rounded-lg bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
-                    </div>
+                    <header className="fixed bg-white z-10 shadow-md flex justify-between h-16 w-5/6 items-center px-5">
+                        <p className="px-4">{title(entityName)}</p>
+                        {entityName == "user"
+                            ? <Select
+                                className="w-96 my-6 max-w-lg"
+                                classNamePrefix="select"
+                                closeMenuOnSelect={false}
+                                onChange={(value) => setUsersGroup(value.label)}
+                                theme={(theme) => ({
+                                    ...theme,
+                                    borderRadius: 0,
+                                    colors: {
+                                        ...theme.colors,
+                                        primary25: 'neutral10',
+                                        primary: 'black',
+                                        primary50: 'neutral20'
+                                    }
+                                })}
+                                name={"groups"}
+                                options={filterUsersOptions}
+                            />
+                            : null}
+                        <div>
+                            <Link className="mx-2" to={`/`}>Home</Link>
+                            <Link className="py-2 px-4 mx-2 text-center rounded-lg bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
+                        </div>
 
-                </header>
+                    </header>
                     <div className="flex min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
                         {data ? <table className="my-10 border-b w-11/12 border-gray-200 shadow-md ">
                             <thead className="bg-black w-full">
@@ -110,7 +110,7 @@ const Entity = () => {
                                         <tr className="text-center p-4 text-sm" key={index}>{item.map((titleName, index) => {
                                             return (
                                                 <td className="flex-shrink-0 mx-10 max-w-xs px-8 py-5 text-left" key={index}>
-                                                    {title(titleName)}
+                                                    {titleName}
                                                 </td>
                                             )
                                         })}

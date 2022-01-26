@@ -110,9 +110,9 @@ export function Home() {
                                    </form>
                             </div>
 
-                            <div className="mr-10 justify-end z-10 text-white">
-                                   <button onClick={logOut}>Log Out</button>
-                                   {userData?.type[0] == "admin" ? <button onClick={() => { navigate('/admin/roadmap/list') }}>Admin Panel</button> : null}
+                            <div className="justify-end z-10 text-white">
+                                   {userData?.type[0] == "admin" ? <button className='mr-10' onClick={() => { navigate('/admin/roadmap/list') }}>Admin Panel</button> : null}
+                                   <button className='mr-10' onClick={logOut}>Logout</button>
                             </div>
                      </header>
 
