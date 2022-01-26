@@ -20,6 +20,7 @@ export function Home() {
        const roadmaps = extractDataFromEntity("roadmap");
        const projects = extractDataFromEntity("project");
        const phases = extractDataFromEntity("phase");
+       const groups = extractDataFromEntity("group");
        const users = extractDataFromEntity("user");
        const userData = users && users[auth.user.uid];
 
@@ -38,7 +39,14 @@ export function Home() {
        }
 
        // create options for roadmaps select box
-       const options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
+       let options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
+
+       if (userData?.type[0] != "admin") {
+              const userGroup = groups && userData.group.map(id => (Object.entries(groups).filter(group => group[0] == id)[0]))
+              let userOptions = []
+              userGroup && userGroup.forEach(group => group[1].roadmap.forEach(id => userOptions.push(options.filter(selectOption => selectOption.value == id)[0])))
+              options = userOptions;
+       }
 
        const RoadmapView = (viewtype) => {
               localStorage.setItem('viewtype', viewtype)

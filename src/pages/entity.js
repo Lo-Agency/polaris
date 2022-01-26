@@ -7,6 +7,7 @@ import { useCrud } from "../components/providers/crud.provider";
 import { title } from "case";
 import { extractDataFromEntity, entityConfigFiels } from "../util/extract-data";
 import AdminLayout from "../components/layouts/admin-layout";
+import FilterUsers from "../components/molecules/filter-users";
 
 const Entity = () => {
     const { entityName, actionName } = useParams();
@@ -33,6 +34,8 @@ const Entity = () => {
 
     const entityContent = data && sortData();
 
+
+    console.log(entityContent, "entcon")
     const handleDelete = (item) => {
         if (confirm(`Are you sure you want to delete this ${entityName}?`)) crud.deleteItem(item);
     }
@@ -55,6 +58,7 @@ const Entity = () => {
                     <div className="flex fixed self-start  py-4">
                         <Link className=" py-2 my-2 text-center w-56 rounded-lg  bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new {entityName}</Link>
                     </div>
+                    {entityName=="user"?  <FilterUsers /> : null}
                     <div className="flex min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
                         {data ? <table className="my-10 border-b w-11/12 border-gray-200 shadow-md ">
                             <thead className="bg-black w-full">

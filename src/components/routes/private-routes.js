@@ -5,7 +5,7 @@ import { useAuth } from '../providers/auth.provider';
 import 'react-toastify/dist/ReactToastify.css';
 
 function PrivateRoute({ children }) {
-    const { user } = useAuth();
+    const { user , logOut } = useAuth();
     const location = useLocation();
     const users = extractDataFromEntity("user")
     const from = location.state?.from?.pathname;
@@ -14,7 +14,7 @@ function PrivateRoute({ children }) {
 
     const userData = users && users[user.uid]
     if (userData && userData.isApproved[0] == 'false') {
-        auth.logOut()
+        logOut()
         return <Navigate to={config.routes.login.pathname} state={{ from: location }} />
     }
     if (userData?.type[0] == "user" && location.pathname != '/') return <Navigate to={"/"} state={{ from: location }} />;
