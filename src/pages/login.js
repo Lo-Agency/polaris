@@ -39,8 +39,9 @@ function Login() {
 						<input className="py-2 px-3 rounded-lg xsm:w-48 sm:w-60 w-80 border-2 border-black" name="password" type="password" />
 					</div>
 					<a href='/forgot-password' className="py-2">Forgot Password</a>
-
+					
 					<button className="btn-form" type="submit">Login</button>
+					<a href='/signup' className="py-2">Dont have an account yet?</a>
 					{error && <div className="flex items-center text-red-500 text-sm font-bold px-4 py-3" role="alert">
 						<p>{error}</p>
 					</div>}

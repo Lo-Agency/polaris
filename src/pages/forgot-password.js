@@ -22,7 +22,7 @@ function ForgotPassword() {
 	return (
 		<AuthLayout>
 			<form onSubmit={sendResetPassEmail}>
-			<h1 className="text-xl mb-2">Forgot your password?</h1>
+				<h1 className="text-xl mb-2">Forgot your password?</h1>
 				<div className="flex flex-col justify-center items-center" >
 					<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 						<label className="py-2">
@@ -34,7 +34,7 @@ function ForgotPassword() {
 					<button className="btn-form" type="submit">
 						Reset password
 					</button>
-
+					<a href='/login' className="py-2">Login</a>
 					{error && <div className="flex items-center text-blue-500 text-sm font-bold px-4 py-3" role="alert">
 						<p>{error}</p>
 					</div>}

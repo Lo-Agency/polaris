@@ -94,14 +94,19 @@ const Entity = () => {
                     <div className="flex min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
                         {data ? <table className="my-10 border-b w-11/12 border-gray-200 shadow-md ">
                             <thead className="bg-black w-full">
-
                                 <tr>
                                     {configFields.map(field => {
-                                        return <th scope="col"
-                                            className="px-6 py-3 text-left text-m font-medium text-white uppercase tracking-wider" key={field}>{title(field)}</th>
+                                        return (
+                                            <th scope="col"
+                                                className="px-6 py-3 text-left text-sm font-medium text-white uppercase tracking-wider" key={field}>
+                                                {title(field)}
+                                            </th>
+                                        )
                                     })}
                                     <th scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Tools</th>
+                                        className="px-6 py-3 text-left text-sm font-medium text-white uppercase tracking-wider">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
