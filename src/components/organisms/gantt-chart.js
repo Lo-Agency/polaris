@@ -5,11 +5,11 @@ import addDays from 'date-fns/addDays';
 import GanttModal from '../molecules/gantt-chart-modal';
 import "gantt-task-react/dist/index.css";
 
-const GanttChart = ({ roadmapId }) => {
+const GanttChart = ({ roadmapId, viewcalendar }) => {
 
   const ganttData = []
   const [tasks, setTasks] = useState(ganttData);
-  const [view, setView] = useState(ViewMode.Month);
+  // const [view, setView] = useState(ViewMode.Month);
   const [project, setProject] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -34,9 +34,9 @@ const GanttChart = ({ roadmapId }) => {
   const phases = extractDataFromEntity("phase");
 
   let columnWidth = 60;
-  if (view === ViewMode.Month) {
+  if (viewcalendar === ViewMode.Month) {
     columnWidth = 200;
-  } else if (view === ViewMode.Week) {
+  } else if (viewcalendar === ViewMode.Week) {
     columnWidth = 150;
   }
 
@@ -155,27 +155,27 @@ const GanttChart = ({ roadmapId }) => {
 
   return <>
     {/* View switcher for gantt chart */}
-    <div className="flex justify-start mb-2">
+    {/* <div className="flex mb-2">
       <button className="btn" onClick={() => setView(ViewMode.Day)}>
         Day
       </button>
       <button
-        className="btn"
+        className="btn mx-2"
         onClick={() => setView(ViewMode.Week)}
       >
         Week
       </button>
       <button
-        className="btn"
+        className="btn mx-2"
         onClick={() => setView(ViewMode.Month)}
       >
         Month
       </button>
-    </div>
+    </div> */}
 
     <Gantt
       tasks={tasks}
-      viewMode={view}
+      viewMode={viewcalendar}
       onSelect={handleSelect}
       onExpanderClick={handleExpanderClick}
       columnWidth={columnWidth}

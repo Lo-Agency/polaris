@@ -21,7 +21,7 @@ const GanttModal = ({ onCancel, project }) => {
             enter="ease-out duration-300"
             leave="ease-in duration-200"
           >
-            <div className="p-5 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className="p-5 inline-block align-bottom bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <table className='min-w-full divide-y divide-gray-500 m-8'>
                 <tbody>
                   <tr>

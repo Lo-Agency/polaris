@@ -63,14 +63,14 @@ const Entity = () => {
         default:
             return <AdminLayout>
                 <div className="top-0 absolute right-0 w-5/6" >
-                    <header className="fixed bg-white z-10 shadow-md flex justify-between h-16 w-5/6 items-center px-5">
+                    <header className="fixed navbar w-5/6">
                         <p className="px-4">{title(entityName)}</p>
                         <div>
                             <Link className="mx-2" to={`/`}>Home</Link>
                             <Link className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
                         </div>
                     </header>
-                    <div className="flex flex-col min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
+                    <div className="flex flex-col min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2 overflow-hidden mt-20" >
                         {entityName === "user"
                             ? <Select
                                 className="w-96 mx-10 mt-5 self-end max-w-lg"

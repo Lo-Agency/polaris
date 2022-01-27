@@ -21,17 +21,17 @@ const AdminLayout = ({ children }) => {
 
     const getSelectedEntityClassName = (key) => {
         if (key == entityName) {
-            return "w-full bg-white text-black text-lg tracking-wide py-3 px-4 transition-colors text-left px-2"
+            return "w-full hover:bg-white hover:text-black text-lg tracking-wide py-3 px-4 transition-colors text-left px-2"
         }
-        return "w-full tracking-wide py-3 text-lg px-4 transition-colors text-left px-2"
+        return "w-full hover:bg-white hover:text-black tracking-wide py-3 text-lg px-4 transition-colors text-left px-2"
     }
 
     return (
         <div className="relative">
-            <aside className="bg-black fixed h-screen text-white w-1/6 justify-between flex-col flex" >
+            <aside className="bg-black fixed h-screen border border-black text-white w-1/6 justify-between flex-col flex">
                 <div>
                     <h1 className="text-center text-2xl m-5 ">Polaris.</h1>
-                    <ul className="flex justify-start  flex-col text-base">
+                    <ul className="flex justify-start flex-col text-base">
                         {
                             Object.keys(config.entities).map(key =>
                                 <li className={getSelectedEntityClassName(key)} key={key}>
@@ -42,7 +42,7 @@ const AdminLayout = ({ children }) => {
                         }
                     </ul>
                 </div>
-                <button className="text-center text-base p-5 hover:bg-gray-900" onClick={logOut}>Logout</button>
+                <button className="text-center text-base p-5 hover:bg-white hover:text-black" onClick={logOut}>Logout</button>
             </aside>
             {children}
             <ToastContainer />
