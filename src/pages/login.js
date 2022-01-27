@@ -1,14 +1,12 @@
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
 import AuthLayout from "../components/layouts/auth-layout";
 
 function Login() {
 	const navigate = useNavigate();
-	const location = useLocation();
 	const auth = useAuth();
 	const [error, setError] = useState(null);
-	const from = location.state?.from?.pathname || "/";
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -17,15 +15,8 @@ function Login() {
 		const password = formData.get("password");
 
 		try {
-			await auth.signIn(
-				email,
-				password
-				, () => {
-					if (from == "/")
-						navigate("/admin/roadmap/list")
-					else
-						navigate(from, { replace: true });
-				})
+			await auth.signIn(email,password)
+			navigate('/')
 		} catch (e) {
 			setError(e.message)
 		}
@@ -48,8 +39,9 @@ function Login() {
 						<input className="py-2 px-3 rounded-lg xsm:w-48 sm:w-60 w-80 border-2 border-black" name="password" type="password" />
 					</div>
 					<a href='/forgot-password' className="py-2">Forgot Password</a>
-
+					
 					<button className="btn-form" type="submit">Login</button>
+					<a href='/signup' className="py-2">Dont have an account yet?</a>
 					{error && <div className="flex items-center text-red-500 text-sm font-bold px-4 py-3" role="alert">
 						<p>{error}</p>
 					</div>}

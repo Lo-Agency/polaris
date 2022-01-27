@@ -6,17 +6,24 @@ import EntityForm from "../components/organisms/entity-form";
 import { useCrud } from "../components/providers/crud.provider";
 import { title } from "case";
 import { extractDataFromEntity, entityConfigFiels } from "../util/extract-data";
+import AdminLayout from "../components/layouts/admin-layout";
+import Select from 'react-select';
 
 const Entity = () => {
 
     const [editID, setEditId] = useState(null);
-
+    const [usersGroup, setUsersGroup] = useState("*");
     const { entityName, actionName } = useParams();
     const crud = useCrud();
     const data = extractDataFromEntity(entityName);
     const IDs = data && Object.keys(data);
     const configFields = entityConfigFiels(entityName)
+    const groups = extractDataFromEntity("group")
 
+    //create options for filter users
+    let filterUsersOptions = [{ value: "*", label: "All Users" }]
+    groups && Object.entries(groups).forEach(group => filterUsersOptions.push({ "value": group[0], "label": group[1]["title"] }))
+  
     const sortData = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
             if (dataItem[field]) {
@@ -31,7 +38,11 @@ const Entity = () => {
         return sortedData;
     }
 
-    const entityContent = data && sortData();
+    let entityContent = data && sortData();
+
+    if (entityName == "user" && usersGroup != "All Users") {
+        entityContent = entityContent.filter(user => user[1].includes(usersGroup))
+    }
 
     const handleDelete = (item) => {
         if (confirm(`Are you sure you want to delete this ${entityName}?`)) crud.deleteItem(item);
@@ -44,25 +55,43 @@ const Entity = () => {
 
     switch (actionName) {
         case "create":
-            return <EntityForm entityName={entityName} actionName={actionName} formValues={null} />
+            return <AdminLayout><EntityForm entityName={entityName} actionName={actionName} formValues={null} /></AdminLayout>
         case "edit":
-            return <EntityForm entityName={entityName} actionName={actionName} formValues={crud.formValues} editID={editID} />
+            return <AdminLayout><EntityForm entityName={entityName} actionName={actionName} formValues={crud.formValues} editID={editID} /> </AdminLayout>
         case "remove":
-            return <EntityForm entityName={entityName} actionName={actionName} />
+            return <AdminLayout><EntityForm entityName={entityName} actionName={actionName} /> </AdminLayout>
         default:
-            return (
-                <div className="top-0 absolute right-0 w-5/6">
+            return <AdminLayout>
+                <div className="top-0 absolute right-0 w-5/6" >
                     <header className="fixed bg-white z-10 shadow-md flex justify-between h-16 w-5/6 items-center px-5">
                         <p className="px-4">{title(entityName)}</p>
                         <div>
                             <Link className="mx-2" to={`/`}>Home</Link>
-                            <Link className="py-2 px-4 mx-2 text-center rounded-lg bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
+                            <Link className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
                         </div>
-
                     </header>
-
-                    <div className="flex mt-16 justify-center sm:px-6 lg:px-8 h-auto py-2 overflow-hidden px-10">
-                        {data ? <table className="my-5 border-b border-gray-200 shadow-md w-full">
+                    <div className="flex flex-col min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
+                        {entityName === "user"
+                            ? <Select
+                                className="w-96 mx-10 mt-5 self-end max-w-lg"
+                                classNamePrefix="select"
+                                closeMenuOnSelect={false}
+                                onChange={(value) => setUsersGroup(value.label)}
+                                theme={(theme) => ({
+                                    ...theme,
+                                    borderRadius: 0,
+                                    colors: {
+                                        ...theme.colors,
+                                        primary25: 'neutral10',
+                                        primary: 'black',
+                                        primary50: 'neutral20'
+                                    }
+                                })}
+                                name={"groups"}
+                                options={filterUsersOptions}
+                            />
+                            : null}
+                        {data ? <table className="mx-10 my-5 self-end border-b w-11/12 border-gray-200 shadow-md ">
                             <thead className="bg-black w-full">
                                 <tr>
                                     {configFields.map(field => {
@@ -80,12 +109,12 @@ const Entity = () => {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {entityContent.map((item, index) => {
+                                {entityContent.map((items, index) => {
                                     return (
-                                        <tr className="text-center p-4 text-sm" key={index}>{item.map((titleName, index) => {
+                                        <tr className="text-center p-4 text-sm" key={index}>{items.map((item, index) => {
                                             return (
                                                 <td className="flex-shrink-0 mx-10 max-w-xs px-8 py-5 text-left" key={index}>
-                                                    {title(titleName)}
+                                                    {item}
                                                 </td>
                                             )
                                         })}
@@ -101,9 +130,10 @@ const Entity = () => {
                             </tbody>
                         </table> : <p className="mt-10">no data!</p>}
                     </div>
-
                 </div>
-            )
+            </AdminLayout>
+
     }
 }
+
 export default Entity;

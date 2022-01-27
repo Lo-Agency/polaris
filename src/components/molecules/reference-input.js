@@ -5,20 +5,20 @@ import { useMemo } from 'react';
 
 const ReferenceInput = ({ name, reference, formValues, actionName }) => {
     const referenceData = extractDataFromEntity(reference);
-    const selectBoxData = Object.entries(referenceData);
+    const selectBoxData = referenceData && Object.entries(referenceData);
 
-    const options = selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));
+    const options =selectBoxData && selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));
    
 
     const createSelectBox = useMemo(()=>{
-        const defaultValue = !formValues
-        ? null
-        : formValues[name].map(id => options.filter(option => option["value"] == id)[0]);
+        const defaultValue = formValues
+        ? formValues[name] && formValues[name].map(id => options.filter(option => option["value"] == id)[0])
+        : null;
 
         return(
             <Select className="basic-multi-select my-3 rounded-lg w-full "
                     classNamePrefix="select"
-                    value={defaultValue}
+                    defaultValue={defaultValue}
                     isMulti
                     hasValue
                     closeMenuOnSelect={false}

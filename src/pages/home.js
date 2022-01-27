@@ -2,31 +2,51 @@ import { format } from 'date-fns';
 import Select from 'react-select'
 import { useState } from 'react';
 import addDays from 'date-fns/addDays';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { compareDesc } from 'date-fns';
 import Charts from '../components/molecules/doughnut-chart';
 import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/organisms/gantt-chart';
 import TableView from '../components/molecules/table-roadmap';
+import { useAuth } from '../components/providers/auth.provider';
 
 export function Home() {
+       const auth = useAuth();
+       const navigate = useNavigate();
        const view = localStorage.getItem('viewtype');
-
        const [selectedRoadmap, setSelectedRoadmap] = useState(null);
        const [viewType, setViewType] = useState(view)
-
        const roadmaps = extractDataFromEntity("roadmap");
-       const projects = extractDataFromEntity("project")
+       const projects = extractDataFromEntity("project");
        const phases = extractDataFromEntity("phase");
+       const groups = extractDataFromEntity("group");
+       const users = extractDataFromEntity("user");
+       const userData = users && users[auth.user.uid];
 
        let startDate = null;
        let endDate;
        let endDates = [];
        let phaseProjectsName = []
 
+       const logOut = async () => {
+              try {
+                     await auth.logOut()
+                     navigate('/login')
+              } catch (e) {
+                     console.log(e)
+              }
+       }
+
        // create options for roadmaps select box
-       const options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
+       let options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
+
+       if (userData?.type[0] != "admin") {
+              const userGroup = groups && userData.group.map(id => (Object.entries(groups).filter(group => group[0] == id)[0]))
+              let userOptions = []
+              userGroup && userGroup.forEach(group => group[1].roadmap.forEach(id => userOptions.push(options.filter(selectOption => selectOption.value == id)[0])))
+              options = userOptions;
+       }
 
        const RoadmapView = (viewtype) => {
               localStorage.setItem('viewtype', viewtype)
@@ -90,8 +110,9 @@ export function Home() {
                                    </form>
                             </div>
 
-                            <div className="mr-10 justify-end z-10 text-white">
-                                   <Link className="text-white p-2" to="/login">Log in</Link>
+                            <div className="justify-end z-10 text-white">
+                                   {userData?.type[0] == "admin" ? <button className='mr-10' onClick={() => { navigate('/admin/roadmap/list') }}>Admin Panel</button> : null}
+                                   <button className='mr-10' onClick={logOut}>Logout</button>
                             </div>
                      </header>
 

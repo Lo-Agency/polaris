@@ -20,7 +20,7 @@ const SelectBox = ({ name, entityName, formValues }) => {
 			<Select
 				className="basic-multi-select my-3 rounded-lg w-full "
 				classNamePrefix="select"
-				value={item}
+				defaultValue={item}
                 onChange={(e)=>{setItem(e)}}
 				closeMenuOnSelect={false}
 				theme={(theme) => ({
