@@ -12,7 +12,7 @@ import Select from 'react-select';
 const Entity = () => {
 
     const [editID, setEditId] = useState(null);
-    const [usersGroup, setUsersGroup] = useState("all users");
+    const [usersGroup, setUsersGroup] = useState("*");
     const { entityName, actionName } = useParams();
     const crud = useCrud();
     const data = extractDataFromEntity(entityName);
@@ -21,9 +21,9 @@ const Entity = () => {
     const groups = extractDataFromEntity("group")
 
     //create options for filter users
-    const filterUsersOptions = groups && Object.entries(groups).map(group => ({ "value": group[0], "label": group[1]["title"] }))
-    filterUsersOptions.push({ value: "all users", label: "all users" });
-
+    let filterUsersOptions = [{ value: "*", label: "All Users" }]
+    groups && Object.entries(groups).forEach(group => filterUsersOptions.push({ "value": group[0], "label": group[1]["title"] }))
+  
     const sortData = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
             if (dataItem[field]) {
@@ -40,7 +40,7 @@ const Entity = () => {
 
     let entityContent = data && sortData();
 
-    if (entityName == "user" && usersGroup != "all users") {
+    if (entityName == "user" && usersGroup != "All Users") {
         entityContent = entityContent.filter(user => user[1].includes(usersGroup))
     }
 
@@ -65,9 +65,15 @@ const Entity = () => {
                 <div className="top-0 absolute right-0 w-5/6" >
                     <header className="fixed bg-white z-10 shadow-md flex justify-between h-16 w-5/6 items-center px-5">
                         <p className="px-4">{title(entityName)}</p>
-                        {entityName == "user"
+                        <div>
+                            <Link className="mx-2" to={`/`}>Home</Link>
+                            <Link className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
+                        </div>
+                    </header>
+                    <div className="flex flex-col min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
+                        {entityName === "user"
                             ? <Select
-                                className="w-96 my-6 max-w-lg"
+                                className="w-96 mx-10 mt-5 self-end max-w-lg"
                                 classNamePrefix="select"
                                 closeMenuOnSelect={false}
                                 onChange={(value) => setUsersGroup(value.label)}
@@ -85,14 +91,7 @@ const Entity = () => {
                                 options={filterUsersOptions}
                             />
                             : null}
-                        <div>
-                            <Link className="mx-2" to={`/`}>Home</Link>
-                            <Link className="py-2 px-4 mx-2 text-center rounded-lg bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
-                        </div>
-
-                    </header>
-                    <div className="flex min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2  overflow-hidden  mt-20 rounded-lg" >
-                        {data ? <table className="my-10 border-b w-11/12 border-gray-200 shadow-md ">
+                        {data ? <table className="mx-10 my-5 self-end border-b w-11/12 border-gray-200 shadow-md ">
                             <thead className="bg-black w-full">
                                 <tr>
                                     {configFields.map(field => {
@@ -110,12 +109,12 @@ const Entity = () => {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {entityContent.map((item, index) => {
+                                {entityContent.map((items, index) => {
                                     return (
-                                        <tr className="text-center p-4 text-sm" key={index}>{item.map((titleName, index) => {
+                                        <tr className="text-center p-4 text-sm" key={index}>{items.map((item, index) => {
                                             return (
                                                 <td className="flex-shrink-0 mx-10 max-w-xs px-8 py-5 text-left" key={index}>
-                                                    {titleName}
+                                                    {item}
                                                 </td>
                                             )
                                         })}

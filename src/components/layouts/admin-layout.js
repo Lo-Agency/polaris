@@ -21,7 +21,7 @@ const AdminLayout = ({ children }) => {
 
     const getSelectedEntityClassName = (key) => {
         if (key == entityName) {
-            return "w-full bg-gray-800 text-lg tracking-wide py-3 px-4 transition-colors text-left px-2"
+            return "w-full bg-white text-black text-lg tracking-wide py-3 px-4 transition-colors text-left px-2"
         }
         return "w-full tracking-wide py-3 text-lg px-4 transition-colors text-left px-2"
     }

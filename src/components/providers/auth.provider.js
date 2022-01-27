@@ -43,11 +43,20 @@ const AuthProvider = ({ children }) => {
 			throw new WrongCredentialsException('We cant find a user with that e-mail address.');
 		}
 	};
-
+	console.log("sdsdsdl,ddddfl,l,")
 	const signup = async (email, password) => {
 		const data = await createUserWithEmailAndPassword(auth, email, password);
 		const userId = data.user.uid
-		await set(ref(database, `user/${userId}`), { email, isApproved: "false", type: "user" });
+		try{
+			await set(ref(database, `user/${userId}`), { email, isApproved: "false", type: "user" });
+		}catch(error){
+			switch (error.code) {
+				case 'auth/email-already-in-use':
+					throw new WrongCredentialsException('This email is already exist.');
+				default:
+					throw new WrongCredentialsException('Something went Wrong contact admin!');
+			}
+		}
 
 	}
 
