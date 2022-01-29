@@ -19,6 +19,7 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+        run: echo "GITHUB_SHA_SHORT=$(git rev-parse --short \"$GITHUB_SHA\")" >> $GITHUB_ENV
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -41,4 +42,4 @@ jobs:
           push: true
           tags: |
             lo-nexus.apps.lo.agency:18083/lo-agency/polaris:latest
-            lo-nexus.apps.lo.agency:18083/lo-agency/polaris:$GITHUB_SHA
+            lo-nexus.apps.lo.agency:18083/lo-agency/polaris:$GITHUB_SHA_SHORT
