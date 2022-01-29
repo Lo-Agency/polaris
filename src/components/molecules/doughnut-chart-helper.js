@@ -15,12 +15,10 @@ const Charts = ({ phaseProjects, projectList }) => {
 				label: '# of Votes',
 				data: projectDays,
 				backgroundColor: [
-					'rgb(220,220,220)',
-					'rgb(211,211,211)',
-					'rgb(192,192,192)',
-					'rgb(169,169,169)',
-					'rgb(128,128,128)',
-					'rgb(105,105,105)',
+					'#333333',
+					'#555555',
+					'#777777',
+					'#999999',
 				],
 				borderColor: [
 					'rgb(0,0,0)'
@@ -32,10 +30,8 @@ const Charts = ({ phaseProjects, projectList }) => {
 	};
 
 	return (
-		<div className="flex items-center  min-w-full justify-center">
-			<div className="min-w-full">
-				<Doughnut data={data} />
-			</div>
+		<div className="">
+			<Doughnut data={data} />
 		</div>
 	)
 }

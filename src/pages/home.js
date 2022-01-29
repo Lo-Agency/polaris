@@ -1,16 +1,14 @@
-import { format } from 'date-fns';
 import Select from 'react-select'
 import { useState } from 'react';
 import addDays from 'date-fns/addDays';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
-import { compareDesc } from 'date-fns';
-import Charts from '../components/molecules/doughnut-chart';
+import DoughnutChart from '../components/organisms/doughnut-chart';
 import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/organisms/gantt-chart';
 import TableView from '../components/molecules/table-roadmap';
 import { useAuth } from '../components/providers/auth.provider';
-import { ViewMode, Gantt } from "gantt-task-react";
+import { ViewMode } from "gantt-task-react";
 
 export function Home() {
 
@@ -83,9 +81,6 @@ export function Home() {
               phases[phaseId]["project"].forEach(projectId => phaseProjectsName.push(projects[projectId]["title"][0]))
        }
 
-       //This function gives the days between two different dates
-       const calculateRoadmapDuration = (date, otherDate) => Math.ceil(Math.abs(date - otherDate) / (1000 * 60 * 60 * 24));
-
        return (
               <div className="flex flex-col">
                      <header className="navbar fixed w-full">
@@ -132,7 +127,7 @@ export function Home() {
                             :
                             <div className='px-4 mt-20 mb-10'>
                                    <div className='flex justify-between mb-3'>
-                                          {viewType === 'false' ? <div className="flex self-center">
+                                          {viewType === 'gantt' ? <div className="flex self-center">
                                                  <button className="btn" onClick={() => setView(ViewMode.Day)}>
                                                         Day
                                                  </button>
@@ -176,7 +171,7 @@ export function Home() {
                                                         </Select>
                                                  </form>
 
-                                                 <button onClick={() => RoadmapView('true')} >
+                                                 <button onClick={() => RoadmapView('table')} >
                                                         <svg className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                                                xmlns="http://www.w3.org/2000/svg">
                                                                <path strokeLinecap="round"
@@ -187,12 +182,12 @@ export function Home() {
                                                         </svg>
                                                  </button>
 
-                                                 <button className="rotate" onClick={() => RoadmapView('false')} >
+                                                 <button className="rotate" onClick={() => RoadmapView('gantt')} >
                                                         <svg className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
                                                                fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                                  </button>
 
-                                                 <button>
+                                                 <button onClick={() => RoadmapView('doughnut')} >
                                                         <svg className="w-10 h-10 hover:bg-gray-200 hover:rounded-lg p-1 rounded" fill="none" stroke="currentColor"
                                                                viewBox="0 0 24 24"
                                                                xmlns="http://www.w3.org/2000/svg">
@@ -207,26 +202,11 @@ export function Home() {
                                                  </button>
                                           </div>
                                    </div>
-                                   {viewType === 'true' && <TableView roadmapId={selectedRoadmap} />}
-                                   {viewType === 'false' && <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap} />}
+                                   {viewType === 'table' && <TableView roadmapId={selectedRoadmap} />}
+                                   {viewType === 'gantt' && <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap} />}
+                                   {viewType === 'doughnut' && <DoughnutChart selectedRoadmap={selectedRoadmap} />}
                             </div>
                      }
-
-                     {/* Doughnut Chart
-                           {!selectedRoadmap ? <h1 className="text-black mt-10 mx-auto">
-                                   Please Select a Roadmap to see the data</h1> :
-                                   <div className=' bg-black h-auto min-h-screen w-1/6 pt-20' style={{ marginTop: '-4rem' }}>
-                                          {Object.values(roadmaps[selectedRoadmap])[0]
-                                                 .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
-                                          <div >
-                                                 {phaseProjectsName.length !== 0 && <Charts phaseProjects={phaseProjectsName} projectList={projects} />}
-                                                 {((endDates.length !== 0 && (compareDesc(new Date(endDates[(endDates.length) - 1]), new Date())) !== 1)) && <p className="text-white text-xs text-center m-4">This Roadmap ends on {format(new Date(endDates[(endDates.length) - 1]), "P")}</p>}
-                                                 {((endDates.length !== 0 && (compareDesc(new Date(endDates[(endDates.length) - 1]), new Date())) !== 1)) ?
-                                                        <p className="text-white text-xs text-center m-4">{calculateRoadmapDuration(new Date(), new Date(endDates[(endDates.length) - 1]))} days are left</p>
-                                                        : ((endDates.length !== 0) && <p className="text-white m-4">This roadmap is finished</p>)}
-                                          </div>
-                                   </div>
-                            } */}
               </div>
        )
 }
