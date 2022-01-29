@@ -19,6 +19,8 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+      -
+        name: Set Short SHA environment variable
         run: echo "GITHUB_SHA_SHORT=$(git rev-parse --short \"$GITHUB_SHA\")" >> $GITHUB_ENV
       -
         name: Set up QEMU
