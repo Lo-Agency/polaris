@@ -6,11 +6,9 @@ import CrudProvider from "./components/providers/crud.provider";
 import PrivateRoute from "./components/routes/private-routes";
 import PublicRoute from "./components/routes/public-routes";
 import LoadingPage from "./components/molecules/loading-page"
-import NotFound from "./pages/404";
 
 function App() {
   return (
-    <>
       <AuthProvider>
         <Routes>
           {
@@ -34,10 +32,9 @@ function App() {
               </Route>
             })
           }
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<p>Not found</p>} />
         </Routes>
       </AuthProvider>
-    </>
   );
 }
 
