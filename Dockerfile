@@ -3,6 +3,7 @@ FROM node:16 as build
 WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
+ENV DISABLE_ESLINT_PLUGIN true
 
 ARG NODE_ENV
 ENV NODE_ENV=${NODE_ENV}
