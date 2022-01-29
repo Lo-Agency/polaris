@@ -17,12 +17,13 @@ function PrivateRoute({ children }) {
         logOut()
         return <Navigate to={config.routes.login.pathname} state={{ from: location }} />
     }
-    if (userData?.type[0] == "user" && location.pathname != '/'){
-         return <Navigate to={config.routes.home.pathname} state={{ from: location }} />;
-        }
+    
+    if (userData?.type[0] == "user" && location.pathname != '/') {
+        return <Navigate to={config.routes.home.pathname} state={{ from: location }} />;
+    }
 
     if (userData?.type[0] == "admin") {
-        if (from && !from.startsWith('/admin')){
+        if (from && !from.startsWith('/admin')) {
             return <Navigate to={'/admin/roadmap/list'} state={{ from: location }} />;
         }
     }

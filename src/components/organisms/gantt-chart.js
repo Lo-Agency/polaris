@@ -154,25 +154,6 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
   })
 
   return <>
-    {/* View switcher for gantt chart */}
-    {/* <div className="flex mb-2">
-      <button className="btn" onClick={() => setView(ViewMode.Day)}>
-        Day
-      </button>
-      <button
-        className="btn mx-2"
-        onClick={() => setView(ViewMode.Week)}
-      >
-        Week
-      </button>
-      <button
-        className="btn mx-2"
-        onClick={() => setView(ViewMode.Month)}
-      >
-        Month
-      </button>
-    </div> */}
-
     <Gantt
       tasks={tasks}
       viewMode={viewcalendar}

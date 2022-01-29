@@ -132,7 +132,6 @@ export function Home() {
                             :
                             <div className='px-4 mt-20 mb-10'>
                                    <div className='flex justify-between mb-3'>
-
                                           {viewType === 'false' ? <div className="flex self-center">
                                                  <button className="btn" onClick={() => setView(ViewMode.Day)}>
                                                         Day
@@ -153,7 +152,7 @@ export function Home() {
                                                  <div className='flex self-center'> <p>Starting Date  {(Object.values(roadmaps[selectedRoadmap]))[1]} </p> </div>}
 
                                           <div className='flex'>
-                                                 <form>
+                                                 <form className='mr-3'>
                                                         <Select
                                                                onChange={(value) => {
                                                                       setSelectedRoadmap(value.value)
@@ -177,29 +176,57 @@ export function Home() {
                                                         </Select>
                                                  </form>
 
-                                                 <button className='ml-2' onClick={() => RoadmapView('true')} >
-                                                        <img src="https://img.icons8.com/wired/30/000000/grid.png" />
+                                                 <button onClick={() => RoadmapView('true')} >
+                                                        <svg className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                                               xmlns="http://www.w3.org/2000/svg">
+                                                               <path strokeLinecap="round"
+                                                                      strokeLinejoin="round"
+                                                                      strokeWidth="2"
+                                                                      d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                                               </path>
+                                                        </svg>
                                                  </button>
 
-                                                 <button className="ml-2" onClick={() => RoadmapView('false')} >
-                                                        <img src="https://img.icons8.com/ios-filled/30/000000/gantt-chart.png" />
+                                                 <button className="rotate" onClick={() => RoadmapView('false')} >
+                                                        <svg className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
+                                                               fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                                  </button>
 
-
-                                                 <button className="ml-2">
-                                                        <img src="https://img.icons8.com/ios-filled/30/000000/doughnut-chart.png" />
+                                                 <button>
+                                                        <svg className="w-10 h-10 hover:bg-gray-200 hover:rounded-lg p-1 rounded" fill="none" stroke="currentColor"
+                                                               viewBox="0 0 24 24"
+                                                               xmlns="http://www.w3.org/2000/svg">
+                                                               <path strokeLinecap="round"
+                                                                      strokeLinejoin="round"
+                                                                      strokeWidth="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+                                                               <path strokeLinecap="round"
+                                                                      className=''
+                                                                      strokeLinejoin="round"
+                                                                      strokeWidth="" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                                                        </svg>
                                                  </button>
                                           </div>
-
-
                                    </div>
                                    {viewType === 'true' && <TableView roadmapId={selectedRoadmap} />}
                                    {viewType === 'false' && <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap} />}
                             </div>
-
-
                      }
 
+                     {/* Doughnut Chart
+                           {!selectedRoadmap ? <h1 className="text-black mt-10 mx-auto">
+                                   Please Select a Roadmap to see the data</h1> :
+                                   <div className=' bg-black h-auto min-h-screen w-1/6 pt-20' style={{ marginTop: '-4rem' }}>
+                                          {Object.values(roadmaps[selectedRoadmap])[0]
+                                                 .map(phase => { return renderPhaseData(phase, roadmaps[selectedRoadmap]) }).filter(Boolean)}
+                                          <div >
+                                                 {phaseProjectsName.length !== 0 && <Charts phaseProjects={phaseProjectsName} projectList={projects} />}
+                                                 {((endDates.length !== 0 && (compareDesc(new Date(endDates[(endDates.length) - 1]), new Date())) !== 1)) && <p className="text-white text-xs text-center m-4">This Roadmap ends on {format(new Date(endDates[(endDates.length) - 1]), "P")}</p>}
+                                                 {((endDates.length !== 0 && (compareDesc(new Date(endDates[(endDates.length) - 1]), new Date())) !== 1)) ?
+                                                        <p className="text-white text-xs text-center m-4">{calculateRoadmapDuration(new Date(), new Date(endDates[(endDates.length) - 1]))} days are left</p>
+                                                        : ((endDates.length !== 0) && <p className="text-white m-4">This roadmap is finished</p>)}
+                                          </div>
+                                   </div>
+                            } */}
               </div>
        )
 }

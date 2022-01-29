@@ -8,14 +8,16 @@ import DateInput from "../molecules/date-input";
 import ReferenceInput from "../molecules/reference-input";
 import { entityConfigFiels } from "../../util/extract-data";
 import { useState } from "react";
+import { title } from "case";
 import Button from "../atoms/button";
 import CheckBox from "../molecules/check-box";
 
 
 const EntityForm = ({ entityName, actionName, editID, formValues }) => {
+    
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const crud = useCrud();
-    const [loading, setLoading] = useState(false);
     const entityFields = entityConfigFiels(entityName);
 
     const fields = entityFields.map(field => {
@@ -32,8 +34,8 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
                 return <DateInput name={field} key={field} formValues={formValues} />
             case "ref":
                 return <ReferenceInput name={field} key={field} reference={reference} formValues={formValues} actionName={actionName} />
-                case "boolean":
-                    return <CheckBox name={field} key={field} formValues={formValues} />
+            case "boolean":
+                return <CheckBox name={field} key={field} formValues={formValues} />
             default:
                 return <p key={field}>field type for &quot;{field}&quot; not recognized</p>;
         }
@@ -43,11 +45,10 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
         event.preventDefault()
         const form = new FormData(event.target)
         const values = entityFields.map(field => {
-          
-                return form.getAll(field)
-            
-           
+
+            return form.getAll(field)
         })
+
         if (!values.includes(null)) {
             if (actionName === "create") {
                 await crud.insertNewItem(values, entityName);
@@ -58,13 +59,14 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
             }
             navigate(`/admin/${entityName}/list`, { replace: true })
 
-        } else return
+        } return
     }
 
 
     return (
         <div className="top-0 absolute right-0 w-5/6">
-            <form className="flex flex-col h-auto justify-center items-center  w-5/6 mx-20 my-32" onSubmit={handleSubmit}>
+            <form className="flex flex-col h-auto justify-center items-center w-5/6 mt-40"
+                onSubmit={handleSubmit}>
                 {fields}
                 <Button loading={loading} actionName={actionName} />
             </form>

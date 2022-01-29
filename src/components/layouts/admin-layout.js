@@ -20,10 +20,10 @@ const AdminLayout = ({ children }) => {
     }
 
     const getSelectedEntityClassName = (key) => {
-        if (key == entityName) {
-            return "w-full hover:bg-white hover:text-black text-lg tracking-wide py-3 px-4 transition-colors text-left px-2"
+        if (key === entityName) {
+            return "w-full bg-white text-black text-lg tracking-wide py-3 px-4 transition-colors text-left px-2"
         }
-        return "w-full hover:bg-white hover:text-black tracking-wide py-3 text-lg px-4 transition-colors text-left px-2"
+        return "w-full hover:bg-gray-800 tracking-wide py-3 text-lg px-4 transition-colors text-left px-2"
     }
 
     return (
@@ -35,16 +35,29 @@ const AdminLayout = ({ children }) => {
                         {
                             Object.keys(config.entities).map(key =>
                                 <li className={getSelectedEntityClassName(key)} key={key}>
-                                    <Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
+                                    <Link className="flex justify-start items-center"
+                                        to={`/admin/${key.toLowerCase()}/list`}>
                                         {title(key)}
                                     </Link>
                                 </li>)
                         }
                     </ul>
                 </div>
-                <button className="text-center text-base p-5 hover:bg-white hover:text-black" onClick={logOut}>Logout</button>
+                <button className="text-center text-base p-5 hover:bg-gray-800" onClick={logOut}>Logout</button>
             </aside>
-            {children}
+
+            <div className="top-0 absolute right-0 w-5/6">
+
+                <header className="fixed navbar w-5/6">
+                    <p className="px-4">{title(entityName)}</p>
+                    <div>
+                        <Link className="mx-2" to={`/`}>Home</Link>
+                        <Link className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
+                    </div>
+                </header>
+
+                {children}
+            </div>
             <ToastContainer />
         </div>
     )

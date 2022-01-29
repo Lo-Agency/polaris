@@ -25,7 +25,7 @@ const CrudProvider = ({ children }) => {
         draggable: true,
         progress: undefined,
       });
-    else return toast.error(message, {
+    return toast.error(message, {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -36,12 +36,11 @@ const CrudProvider = ({ children }) => {
     });
   }
 
-
   //get all data from db
   useEffect(() => {
     findAllItems().then((data) => {
       setDataState(data)
-      console.log("ll");
+      console.log("l[l");
     })
   }, [change])
 
@@ -67,16 +66,15 @@ const CrudProvider = ({ children }) => {
       result[items[index]] = field;
       return result;
     }, {})
+
     try {
       await push(ref(database, `${entity}`), result);
       sendNotification("success", `New ${entity} is successfully created.`)
       setChange(!change)
 
     } catch (error) {
-      sendNotification("error", 'Somthing went wrong, please tyy again.')
+      sendNotification("error", 'Somthing went wrong, please try again.')
     }
-
-
   };
 
   //delete data
@@ -92,8 +90,9 @@ const CrudProvider = ({ children }) => {
       setChange(!change)
       return response;
     } catch (error) {
-      sendNotification("error", 'Somthing went wrong, please tyy again.')
+      sendNotification("error", 'Somthing went wrong, please try again.')
     }
+
   }
 
   //delete data from others entities

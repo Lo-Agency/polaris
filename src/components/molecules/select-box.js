@@ -28,9 +28,9 @@ const SelectBox = ({ name, entityName, formValues }) => {
 					borderRadius: 0,
 					colors: {
 						...theme.colors,
-						primary25: 'neutral10',
+						primary25: '#C0C0C0',
+						primary50: '#C0C0C0',
 						primary: 'black',
-						primary50: 'neutral20'
 					}
 				})}
 				components={animatedComponents}
@@ -41,8 +41,8 @@ const SelectBox = ({ name, entityName, formValues }) => {
 	}, [formValues]);
 
 	return (
-		<div key={name} className=" w-6/12 flex items-center flex-col justify-center px-8">
-			<label className="mx-2 self-start">{title(name)}:</label>
+		<div key={name} className="w-6/12 flex items-center flex-col justify-center">
+			<label className="self-start">{title(name)}:</label>
 			{createSelectBox}
 		</div>
 	);

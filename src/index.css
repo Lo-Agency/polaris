@@ -63,3 +63,7 @@ html,body{
   fill: white !important;
 }
 /* css for gantt chart */
+
+.rotate{
+  transform: rotate(90deg);
+}
