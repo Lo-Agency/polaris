@@ -9,19 +9,22 @@ import GanttChart from '../components/organisms/gantt-chart';
 import TableView from '../components/molecules/table-roadmap';
 import { useAuth } from '../components/providers/auth.provider';
 import { ViewMode } from "gantt-task-react";
+import { useCrud } from '../components/providers/crud.provider';
 
 export function Home() {
+       const crud = useCrud()
+       const dataState = crud.dataState
 
        const view = localStorage.getItem('viewtype');
        const [viewcalendar, setView] = useState(ViewMode.Month);
        const [selectedRoadmap, setSelectedRoadmap] = useState(null);
        const [viewType, setViewType] = useState(view)
 
-       const roadmaps = extractDataFromEntity("roadmap");
-       const projects = extractDataFromEntity("project");
-       const phases = extractDataFromEntity("phase");
-       const groups = extractDataFromEntity("group");
-       const users = extractDataFromEntity("user");
+       const roadmaps = extractDataFromEntity("roadmap",dataState);
+       const projects = extractDataFromEntity("project",dataState);
+       const phases = extractDataFromEntity("phase",dataState);
+       const groups = extractDataFromEntity("group",dataState);
+       const users = extractDataFromEntity("user",dataState);
        const auth = useAuth();
        const navigate = useNavigate();
        const userData = users && users[auth.user.uid];

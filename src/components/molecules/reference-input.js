@@ -2,9 +2,13 @@ import Select from 'react-select';
 import { title } from 'case';
 import { extractDataFromEntity } from '../../util/extract-data';
 import { useMemo } from 'react';
+import { useCrud } from '../providers/crud.provider';
 
 const ReferenceInput = ({ name, reference, formValues, actionName }) => {
-    const referenceData = extractDataFromEntity(reference);
+    const crud = useCrud()
+    const dataState = crud.dataState
+
+    const referenceData = extractDataFromEntity(reference, dataState);
     const selectBoxData = referenceData && Object.entries(referenceData);
 
     const options = selectBoxData && selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));

@@ -11,10 +11,14 @@ const TableView = ({ roadmapId }) => {
     let endDate;
     let endDates = [];
 
-    const roadmaps = extractDataFromEntity("roadmap");
-    const learnings = extractDataFromEntity("learning");
-    const projects = extractDataFromEntity("project")
-    const phases = extractDataFromEntity("phase");
+    const crud = useCrud()
+    const dataState = crud.dataState
+
+
+    const roadmaps = extractDataFromEntity("roadmap", dataState);
+    const learnings = extractDataFromEntity("learning", dataState);
+    const projects = extractDataFromEntity("project", dataState)
+    const phases = extractDataFromEntity("phase", dataState);
 
     //learnings data for table
     const renderLearningData = (phaseId) => {
