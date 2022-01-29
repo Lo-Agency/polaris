@@ -9,6 +9,7 @@
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.1.0",
 		"@testing-library/user-event": "^12.1.10",
+		"tailwindcss": "npm:@tailwindcss/postcss7-compat",
 		"case": "^1.6.3",
 		"date-fns": "^2.26.0",
 		"firebase": "^9.3.0",
@@ -57,7 +58,6 @@
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"postcss": "^7",
-		"prettier": "2.4.1",
-		"tailwindcss": "npm:@tailwindcss/postcss7-compat"
+		"prettier": "2.4.1"
 	}
 }
