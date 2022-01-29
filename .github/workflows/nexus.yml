@@ -20,8 +20,15 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
-        name: Set Short SHA environment variable
-        run: echo "GITHUB_SHA_SHORT=$(git rev-parse --short \"$GITHUB_SHA\")" >> $GITHUB_ENV
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            lo-nexus.apps.lo.agency:18083/lo-agency/polaris
+          tags: |
+            type=schedule,pattern={{date 'YYYYMMDD'}}
+            type=sha
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -42,6 +49,5 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: |
-            lo-nexus.apps.lo.agency:18083/lo-agency/polaris:latest
-            lo-nexus.apps.lo.agency:18083/lo-agency/polaris:${GITHUB_SHA_SHORT}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
