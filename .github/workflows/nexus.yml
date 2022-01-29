@@ -43,6 +43,11 @@ jobs:
           username: ${{ secrets.NEXUS_USERNAME }}
           password: ${{ secrets.NEXUS_PASSWORD }}
       -
+        name: Set insecure registry for pushing
+        run: |
+          echo "{ \"insecure-registries\": [\"lo-nexus.apps.lo.agency:18083\"] }" | sudo tee /etc/docker/daemon.json
+          sudo service docker restart
+      -
         name: Build and push
         uses: docker/build-push-action@v2
         with:
