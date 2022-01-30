@@ -15,12 +15,7 @@ function SignUp() {
         const password = formData.get("password");
 
         try {
-            await auth.signup(
-                email,
-                password
-                , () => {
-                    navigate("/login")
-                })
+            await auth.signup(email, password);
         } catch (e) {
             setError(e.message)
         }

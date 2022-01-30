@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
 		try {
 			const data = await createUserWithEmailAndPassword(auth, email, password);
 			const userId = data.user.uid
-			await set(ref(database, `user/${userId}`), { email, isApproved: "false", type: "user" });
+			await set(ref(database, `user/${userId}`), { email, isApproved: "false", type: "user", group: "" });
 		} catch (error) {
 			switch (error.code) {
 				case 'auth/email-already-in-use':

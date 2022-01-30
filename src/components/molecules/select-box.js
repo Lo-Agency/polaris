@@ -2,26 +2,24 @@ import config from '../../util/config';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { title } from 'case';
-import { useMemo, useState } from 'react';
+import LoadingPage from './loading-page';
 
-const SelectBox = ({ name, entityName, formValues }) => {
+const SelectBox = ({ name, entityName, formValues, actionName }) => {
 	const animatedComponents = makeAnimated();
 	const selectvalue = config.entities[entityName].fields[name].value;
-	const selectOptions = selectvalue.map((option) => ({ value: option, label: option }));
-    const [item,setItem]= useState(null);
+	const selectOptions =selectvalue && selectvalue.map((option) => ({ value: option, label: option }));
+   const defaultValue = formValues && selectOptions.filter((option) => option['value'] == formValues[name][0]);
     
-	const createSelectBox = useMemo(() => {
-		const defaultValue = !formValues
-			? null
-			: selectOptions.filter((option) => option['value'] == formValues[name][0]).pop();
-        setItem(defaultValue)
-
-		return (
+   const showForm = defaultValue || actionName == "create";
+// console.log(selectOptions , formValues)
+	return <>
+	{showForm?
+		<div key={name} className="w-6/12 flex items-center flex-col justify-center">
+			<label className="self-start">{title(name)}:</label>
 			<Select
 				className="basic-multi-select my-3 rounded-lg w-full "
 				classNamePrefix="select"
-				defaultValue={item}
-                onChange={(e)=>{setItem(e)}}
+				defaultValue={defaultValue}
 				closeMenuOnSelect={false}
 				theme={(theme) => ({
 					...theme,
@@ -37,15 +35,10 @@ const SelectBox = ({ name, entityName, formValues }) => {
 				name={name}
 				options={selectOptions}
 			/>
-		);
-	}, [formValues]);
-
-	return (
-		<div key={name} className="w-6/12 flex items-center flex-col justify-center">
-			<label className="self-start">{title(name)}:</label>
-			{createSelectBox}
 		</div>
-	);
+		: <LoadingPage />
+			}
+	</>
 };
 
 export default SelectBox;
