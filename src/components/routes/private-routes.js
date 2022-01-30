@@ -3,11 +3,16 @@ import config from '../../util/config';
 import { extractDataFromEntity } from '../../util/extract-data';
 import { useAuth } from '../providers/auth.provider';
 import 'react-toastify/dist/ReactToastify.css';
+import { useCrud } from '../providers/crud.provider';
+
 
 function PrivateRoute({ children }) {
+    const crud = useCrud()
+    const dataState = crud.dataState
+
     const { user, logOut } = useAuth();
     const location = useLocation();
-    const users = extractDataFromEntity("user")
+    const users = extractDataFromEntity("user",dataState)
     const from = location.state?.from?.pathname;
 
     if (!user) return <Navigate to={config.routes.login.pathname} state={{ from: location }} />;
@@ -17,7 +22,7 @@ function PrivateRoute({ children }) {
         logOut()
         return <Navigate to={config.routes.login.pathname} state={{ from: location }} />
     }
-    
+
     if (userData?.type[0] == "user" && location.pathname != '/') {
         return <Navigate to={config.routes.home.pathname} state={{ from: location }} />;
     }

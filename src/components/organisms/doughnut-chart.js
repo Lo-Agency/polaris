@@ -4,14 +4,17 @@ import Charts from '../molecules/doughnut-chart-helper';
 import { format } from 'date-fns';
 import { extractDataFromEntity } from '../../util/extract-data';
 import addDays from 'date-fns/addDays';
+import { useCrud } from '../providers/crud.provider';
 
 const DoughnutChart = ({ selectedRoadmap }) => {
+    const crud = useCrud()
+    const dataState = crud.dataState
 
-    const roadmaps = extractDataFromEntity("roadmap");
-    const phases = extractDataFromEntity("phase");
-    const projects = extractDataFromEntity("project");
+    const roadmaps = extractDataFromEntity("roadmap",dataState);
+    const phases = extractDataFromEntity("phase",dataState);
+    const projects = extractDataFromEntity("project",dataState);
+
     let phaseProjectsName = []
-
     let startDate = null;
     let endDate;
     let endDates = [];
