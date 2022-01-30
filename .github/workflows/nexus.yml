@@ -25,7 +25,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            lo-nexus.apps.lo.agency:8443/lo-agency/polaris
+            lo-nexus.apps.lo.agency:8880/lo-agency/polaris
           tags: |
             type=schedule,pattern={{date 'YYYYMMDD'}}
             type=sha
@@ -39,14 +39,9 @@ jobs:
         name: Login to Nexus Container Registry
         uses: docker/login-action@v1 
         with:
-          registry: lo-nexus.apps.lo.agency:8443
+          registry: lo-nexus.apps.lo.agency:8880
           username: ${{ secrets.NEXUS_USERNAME }}
           password: ${{ secrets.NEXUS_PASSWORD }}
-      -
-        name: Set insecure registry for pushing
-        run: |
-          echo "{ \"insecure-registries\": [\"lo-nexus.apps.lo.agency:8443\"] }" | sudo tee /etc/docker/daemon.json
-          sudo service docker restart
       -
         name: Build and push
         uses: docker/build-push-action@v2
