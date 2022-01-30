@@ -12,6 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        name: Set insecure registry
+        run: |
+          echo "{ \"insecure-registries\": [\"custom-repo.net\"] }" | sudo tee /etc/docker/daemon.json
+          sudo service docker restart
+      -
         name: Checkout
         uses: actions/checkout@v2
       -
