@@ -14,7 +14,7 @@ jobs:
       -
         name: Set insecure registry
         run: |
-          echo "{ \"insecure-registries\": [\"custom-repo.net\"] }" | sudo tee /etc/docker/daemon.json
+          echo "{ \"insecure-registries\": [\"lo-nexus.apps.lo.agency:8880\"] }" | sudo tee /etc/docker/daemon.json
           sudo service docker restart
       -
         name: Checkout
