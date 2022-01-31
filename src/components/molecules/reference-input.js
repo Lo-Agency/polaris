@@ -3,9 +3,11 @@ import { title } from 'case';
 import { extractDataFromEntity } from '../../util/extract-data';
 import LoadingPage from './loading-page';
 
-
 const ReferenceInput = ({ name, reference, formValues, actionName }) => {
-    const referenceData = extractDataFromEntity(reference);
+    const crud = useCrud()
+    const dataState = crud.dataState
+
+    const referenceData = extractDataFromEntity(reference, dataState);
     const selectBoxData = referenceData && Object.entries(referenceData);
     const values = [];
     let defaultValues = null;

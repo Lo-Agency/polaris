@@ -4,12 +4,14 @@ import { extractDataFromEntity } from '../../util/extract-data';
 import addDays from 'date-fns/addDays';
 import GanttModal from '../molecules/gantt-chart-modal';
 import "gantt-task-react/dist/index.css";
+import { useCrud } from "../providers/crud.provider";
 
 const GanttChart = ({ roadmapId, viewcalendar }) => {
+  const crud = useCrud()
+  const dataState = crud.dataState
 
   const ganttData = []
   const [tasks, setTasks] = useState(ganttData);
-  // const [view, setView] = useState(ViewMode.Month);
   const [project, setProject] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -29,9 +31,9 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
   let phasesStartDates = [];
   let projectsStartDates = [];
 
-  const roadmaps = extractDataFromEntity("roadmap");
-  const projects = extractDataFromEntity("project")
-  const phases = extractDataFromEntity("phase");
+  const roadmaps = extractDataFromEntity("roadmap",dataState);
+  const projects = extractDataFromEntity("project",dataState)
+  const phases = extractDataFromEntity("phase",dataState);
 
   let columnWidth = 60;
   if (viewcalendar === ViewMode.Month) {

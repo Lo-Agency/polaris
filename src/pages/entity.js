@@ -15,10 +15,11 @@ const Entity = () => {
     const [usersGroup, setUsersGroup] = useState("All Users");
     const { entityName, actionName } = useParams();
     const crud = useCrud();
-    const data = extractDataFromEntity(entityName);
+    const dataState = crud.dataState
+    const data = extractDataFromEntity(entityName,dataState);
     const Ids = data && Object.keys(data);
     const configFields = entityConfigFiels(entityName)
-    const groups = extractDataFromEntity("group")
+    const groups = extractDataFromEntity("group",dataState)
 
     //create options for filter users
     let filterUsersOptions = [{ value: "*", label: "All Users" }]
@@ -28,7 +29,7 @@ const Entity = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
             if (dataItem[field] && dataItem[field]!="" ) {
                 if (config.entities[entityName].fields[field].isArray) {
-                    let fieldData = extractDataFromEntity(field)
+                    let fieldData = extractDataFromEntity(field,dataState)
                     const titles = dataItem[field].map(id => fieldData[id]["title"])
                     return titles.join(", ")
                 }
@@ -39,7 +40,6 @@ const Entity = () => {
     }
 
     let entityContent = data && sortData();
-    console.log(entityContent);
 
     if (entityName === "user" && usersGroup != "All Users") {
         entityContent = entityContent && entityContent.filter(user =>

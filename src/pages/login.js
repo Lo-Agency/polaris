@@ -6,11 +6,9 @@ import AuthLayout from "../components/layouts/auth-layout";
 function Login() {
 	const navigate = useNavigate();
 	const auth = useAuth();
-	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
 	const handleSubmit = async (event) => {
-		setLoading(true)
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const email = formData.get("email");
@@ -22,7 +20,6 @@ function Login() {
 		} catch (e) {
 			setError(e.message)
 		}
-		setLoading(false)
 	};
 
 	return (
@@ -43,26 +40,8 @@ function Login() {
 					</div>
 
 					<button className="btn-form w-2/12 flex justify-center items-center" type="submit">
-						{loading ?
-							<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" className="mr-3" stroke="#fff">
-								<g transform="translate(1 1)" strokeWidth="2">
-									<circle opacity=".5" cx="18" cy="18" r="18" />
-									<path d="M36 18c0-9.94-8.06-18-18-18">
-										<animateTransform
-											attributeName="transform"
-											type="rotate"
-											from="0 18 18"
-											to="360 18 18"
-											dur="1s"
-											repeatCount="indefinite" />
-									</path>
-								</g>
-							</svg>
-							: <>Login</>
-						}
+						Login
 					</button>
-
-
 
 					<a href='/forgot-password' className="py-2">Forgot Password</a>
 					<a href='/signup'>Dont have an account yet?</a>
