@@ -10,6 +10,8 @@ import { database } from "../../util/firebase";
 import React, { createContext, useContext } from 'react';
 import { WrongCredentialsException } from '../../exceptions/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthContext = createContext(null);
 
@@ -49,6 +51,16 @@ const AuthProvider = ({ children }) => {
 			const data = await createUserWithEmailAndPassword(auth, email, password);
 			const userId = data.user.uid
 			await set(ref(database, `user/${userId}`), { email, isApproved: "false", type: "user", group: "" });
+			toast.success('Your Email address is successfully registered. Please wait for admin approval verification.', {
+				position: "top-center",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			  });
+		
 		} catch (error) {
 			switch (error.code) {
 				case 'auth/email-already-in-use':
