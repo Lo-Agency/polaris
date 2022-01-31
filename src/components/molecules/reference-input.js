@@ -2,6 +2,7 @@ import Select from 'react-select';
 import { title } from 'case';
 import { extractDataFromEntity } from '../../util/extract-data';
 import LoadingPage from './loading-page';
+import { useCrud } from '../providers/crud.provider';
 
 const ReferenceInput = ({ name, reference, formValues, actionName }) => {
     const crud = useCrud()
@@ -11,7 +12,7 @@ const ReferenceInput = ({ name, reference, formValues, actionName }) => {
     const selectBoxData = referenceData && Object.entries(referenceData);
     const values = [];
     let defaultValues = null;
-    const options = selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));
+    const options =selectBoxData && selectBoxData.map(data => ({ "value": data[0], "label": data[1].title }));
 
     if (formValues) {
         if (Array.isArray(formValues[name])) {
