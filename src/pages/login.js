@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import AuthLayout from "../components/layouts/auth-layout";
 
 function Login() {
@@ -43,8 +44,8 @@ function Login() {
 						Login
 					</button>
 
-					<a href='/forgot-password' className="py-2">Forgot Password</a>
-					<a href='/signup'>Dont have an account yet?</a>
+					<Link to='/forgot-password' className="py-2">Forgot Password</Link>
+					<Link to='/signup'>Dont have an account yet?</Link>
 					{error && <div className="flex items-center text-red-500 text-sm font-bold px-4 py-3" role="alert">
 						<p>{error}</p>
 					</div>}

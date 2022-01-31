@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 const AuthLayout = ({ children }) => {
     return (
         <div className="center-content">
