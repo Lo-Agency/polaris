@@ -27,7 +27,7 @@ const Entity = () => {
 
     const sortData = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
-            if (dataItem[field]) {
+            if (dataItem[field] && dataItem[field]!== "" ) {
                 if (config.entities[entityName].fields[field].isArray) {
                     let fieldData = extractDataFromEntity(field,dataState)
                     const titles = dataItem[field].map(id => fieldData[id]["title"])
@@ -41,7 +41,7 @@ const Entity = () => {
 
     let entityContent = data && sortData();
 
-    if (entityName === "user" && usersGroup != "All Users") {
+    if (entityName === "user" && usersGroup !== "All Users") {
         entityContent = entityContent && entityContent.filter(user =>
             user[1] && user[1].includes(usersGroup)
         )
