@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import AuthLayout from "../components/layouts/auth-layout";
 
 function SignUp() {
@@ -49,10 +50,10 @@ function SignUp() {
                         <p>{error}</p>
                     </div>}
 
-                    <a href='/login' className="py-2">
+                    <Link to='/login' className="py-2">
                         Already Have an account?
                         Login
-                    </a>
+                    </Link>
                 </div>
             </form>
         </AuthLayout>
