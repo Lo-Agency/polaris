@@ -1,6 +1,7 @@
 import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
 import AuthLayout from "../components/layouts/auth-layout"
+import { Link } from "react-router-dom";
 
 function ForgotPassword() {
 	const auth = useAuth();
@@ -37,7 +38,7 @@ function ForgotPassword() {
 					</button>
 
 
-					<a href='/login' className="py-2">Login</a>
+					<Link to='/login' className="py-2">Login</Link>
 					{error && <div className="flex items-center text-blue-500 text-sm font-bold px-4 py-3" role="alert">
 						<p>{error}</p>
 					</div>}
