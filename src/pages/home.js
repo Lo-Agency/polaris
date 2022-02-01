@@ -46,8 +46,8 @@ export function Home() {
        // create options for roadmaps select box
        let options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
 
-       if (userData?.type[0] != "admin" && userData?.group!="") {
-              const userGroup = groups && userData.group.map(id => (Object.entries(groups).filter(group => group[0] == id)[0]))
+       if (userData?.type[0] !== "admin" && userData?.group!=="") {
+              const userGroup = groups && userData.group.map(id => (Object.entries(groups).filter(group => group[0] === id)[0]))
               let userOptions = []
               userGroup && userGroup.forEach(group => group[1].roadmap.forEach(id => userOptions.push(options.filter(selectOption => selectOption.value == id)[0])))
               options = userOptions;
@@ -79,7 +79,7 @@ export function Home() {
 
        const renderPhaseData = (id, roadmap) => {
               const phaseId = Object.keys(phases).find(phaseId => phaseId === id)
-              { startDate == null ? startDate = (Object.values(roadmap))[1] : startDate = endDate }
+              { startDate === null ? startDate = (Object.values(roadmap))[1] : startDate = endDate }
               endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))))
               phases[phaseId]["project"].forEach(projectId => phaseProjectsName.push(projects[projectId]["title"][0]))
        }
@@ -89,7 +89,7 @@ export function Home() {
                      <header className="navbar fixed w-full">
                             <h1 className="text-2xl">Polaris</h1>
                             <div>
-                                   {userData?.type[0] == "admin" ?
+                                   {userData?.type[0] === "admin" ?
                                           <button className='mr-5 btn'
                                                  onClick={() => { navigate('/admin/roadmap/list') }}>
                                                  Admin Panel

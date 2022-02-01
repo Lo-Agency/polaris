@@ -16,7 +16,7 @@ const ReferenceInput = ({ name, reference, formValues, actionName }) => {
 
     if (formValues) {
         if (Array.isArray(formValues[name])) {
-            formValues[name].map(id => values.push(options.filter(option => option["value"] == id)[0]));
+            formValues[name].map(id => values.push(options.filter(option => option["value"] === id)[0]));
             if (values.length != 0) {
                 defaultValues = values;
             }
