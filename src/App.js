@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router";
 import config from "./util/config";
-import AuthProvider from "./components/providers/auth.provider";
 import React, { lazy, Suspense } from "react";
 import CrudProvider from "./components/providers/crud.provider";
 import PrivateRoute from "./components/routes/private-routes";
@@ -10,7 +9,6 @@ import NotFound from "./pages/404";
 
 function App() {
   return (
-    <AuthProvider>
       <Routes>
         {
           Object.keys(config.routes).map(routeConfig => {
@@ -35,7 +33,6 @@ function App() {
         }
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </AuthProvider>
   );
 }
 

@@ -14,7 +14,7 @@ import CheckBox from "../molecules/check-box";
 
 
 const EntityForm = ({ entityName, actionName, editID, formValues }) => {
-    
+
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const crud = useCrud();
@@ -45,8 +45,10 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
         event.preventDefault()
         const form = new FormData(event.target)
         const values = entityFields.map(field => {
-
-            return form.getAll(field)
+            if (config.entities[entityName].fields[field].isArray) {
+                return form.getAll(field)
+            }
+            return form.getAll(field)[0]
         })
 
         if (!values.includes(null)) {

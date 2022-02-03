@@ -7,7 +7,7 @@
 }
 
 .btn-form {
-  @apply focus:scale-50 animate-bounce py-2 mt-4 sm:mt-4 xsm:mt-2 text-white bg-black xsm:w-48 sm:w-60 w-80;
+  @apply py-2 mt-4 sm:mt-4 xsm:mt-2 text-white bg-black xsm:w-48 sm:w-60 w-80;
 }
 
 .btn{
