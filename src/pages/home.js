@@ -10,9 +10,12 @@ import TableView from '../components/molecules/table-roadmap';
 import { useAuth } from '../components/providers/auth.provider';
 import { ViewMode } from "gantt-task-react";
 import { useCrud } from '../components/providers/crud.provider';
+import LoadingPage from '../components/molecules/loading-page';
 
 export function Home() {
-       const crud = useCrud()
+       const crud = useCrud();
+       const auth = useAuth();
+       const navigate = useNavigate();
        const dataState = crud.dataState
 
        const view = localStorage.getItem('viewtype');
@@ -20,13 +23,11 @@ export function Home() {
        const [selectedRoadmap, setSelectedRoadmap] = useState(null);
        const [viewType, setViewType] = useState(view)
 
-       const roadmaps = extractDataFromEntity("roadmap",dataState);
-       const projects = extractDataFromEntity("project",dataState);
-       const phases = extractDataFromEntity("phase",dataState);
-       const groups = extractDataFromEntity("group",dataState);
-       const users = extractDataFromEntity("user",dataState);
-       const auth = useAuth();
-       const navigate = useNavigate();
+       const roadmaps = extractDataFromEntity("roadmap", dataState);
+       const projects = extractDataFromEntity("project", dataState);
+       const phases = extractDataFromEntity("phase", dataState);
+       const groups = extractDataFromEntity("group", dataState);
+       const users = extractDataFromEntity("user", dataState);
        const userData = users && users[auth.user.uid];
 
        let startDate = null;
@@ -46,7 +47,7 @@ export function Home() {
        // create options for roadmaps select box
        let options = roadmaps && Object.entries(roadmaps).map(roadmap => ({ "value": roadmap[0], "label": roadmap[1]["title"] }))
 
-       if (userData?.type[0] !== "admin" && userData?.group!=="") {
+       if (userData?.type === "user" && userData?.group !== "") {
               const userGroup = groups && userData.group.map(id => (Object.entries(groups).filter(group => group[0] === id)[0]))
               let userOptions = []
               userGroup && userGroup.forEach(group => group[1].roadmap.forEach(id => userOptions.push(options.filter(selectOption => selectOption.value == id)[0])))
@@ -84,12 +85,12 @@ export function Home() {
               phases[phaseId]["project"].forEach(projectId => phaseProjectsName.push(projects[projectId]["title"][0]))
        }
 
-       return (
+       return <>{!auth.isLoading ?
               <div className="flex flex-col">
                      <header className="navbar fixed w-full">
                             <h1 className="text-2xl">Polaris</h1>
                             <div>
-                                   {userData?.type[0] === "admin" ?
+                                   {userData?.type === "admin" ?
                                           <button className='mr-5 btn'
                                                  onClick={() => { navigate('/admin/roadmap/list') }}>
                                                  Admin Panel
@@ -211,7 +212,8 @@ export function Home() {
                             </div>
                      }
               </div>
-       )
+              : <LoadingPage />}
+       </>
 }
 export default Home;
 

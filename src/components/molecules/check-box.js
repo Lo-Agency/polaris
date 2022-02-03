@@ -5,7 +5,7 @@ const CheckBox = ({ name, formValues }) => {
     const [checked, setChecked] = useState(null)
 
     if (formValues && checked === null) {
-        if (formValues[name] && formValues[name][0] === "true") {
+        if (formValues[name] && formValues[name] === "true") {
             setChecked(true);
         } else {
             setChecked(false);

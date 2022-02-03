@@ -17,7 +17,6 @@ function Login() {
 
 		try {
 			await auth.signIn(email, password)
-			navigate('/')
 		} catch (e) {
 			setError(e.message)
 		}
