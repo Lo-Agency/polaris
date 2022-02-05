@@ -73,7 +73,7 @@ const Entity = () => {
                         ? <Select
                             className="w-96 mx-10 mt-5 self-end max-w-lg"
                             classNamePrefix="select"
-                            closeMenuOnSelect={false}
+                            closeMenuOnSelect={true}
                             onChange={(value) => setUsersGroup(value.label)}
                             theme={(theme) => ({
                                 ...theme,

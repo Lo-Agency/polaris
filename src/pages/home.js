@@ -122,7 +122,7 @@ export function Home() {
                                                  })}
                                                  className="p-2 w-96 max-w-lg"
                                                  classNamePrefix="select"
-                                                 closeMenuOnSelect={false}
+                                                 closeMenuOnSelect={true}
                                                  name={"roadmap"}
                                                  options={options}>
                                           </Select>
@@ -169,7 +169,7 @@ export function Home() {
                                                                })}
                                                                className=" w-96 max-w-lg"
                                                                classNamePrefix="select"
-                                                               closeMenuOnSelect={false}
+                                                               closeMenuOnSelect={true}
                                                                name={"roadmap"}
                                                                options={options}>
                                                         </Select>

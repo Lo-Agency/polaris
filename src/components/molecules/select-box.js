@@ -19,7 +19,7 @@ const SelectBox = ({ name, entityName, formValues, actionName }) => {
 					className="basic-multi-select my-3 rounded-lg w-full "
 					classNamePrefix="select"
 					defaultValue={defaultValue}
-					closeMenuOnSelect={false}
+					closeMenuOnSelect={true}
 					theme={(theme) => ({
 						...theme,
 						borderRadius: 0,
