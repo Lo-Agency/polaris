@@ -56,8 +56,8 @@ const TableView = ({ roadmapId }) => {
     const renderPhaseData = (id, roadmap) => {
         const phaseId = Object.keys(phases).find(phaseId => phaseId === id)
 
-        if (startDate == null) {
-            (Object.values(roadmap))[1]
+        if (startDate === null) {
+            startDate = (Object.values(roadmap))[1]
         }
         else {
             startDate = endDate

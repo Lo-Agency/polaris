@@ -1,15 +1,15 @@
-import { useNavigate } from "react-router";
 import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthLayout from "../components/layouts/auth-layout";
+import Button from "../components/atoms/button";
 
 function Login() {
-	const navigate = useNavigate();
 	const auth = useAuth();
 	const [error, setError] = useState(null);
 
 	const handleSubmit = async (event) => {
+		setError(null)
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const email = formData.get("email");
@@ -39,9 +39,7 @@ function Login() {
 						<input className="py-2 px-3 xsm:w-48 sm:w-60 w-80 border-2 border-black" name="password" type="password" />
 					</div>
 
-					<button className="btn-form w-2/12 flex justify-center items-center" type="submit">
-						Login
-					</button>
+					<Button className={"btn-form w-2/12 flex justify-center items-center"} loading={auth.isLoading} actionName={"Login"} />
 
 					<Link to='/forgot-password' className="py-2">Forgot Password</Link>
 					<Link to='/signup'>Dont have an account yet?</Link>
