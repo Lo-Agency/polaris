@@ -28,7 +28,7 @@ const AdminLayout = ({ children }) => {
 
     return (
         <div className="relative">
-            <aside className="admin-sidebar bg-black fixed h-screen text-white justify-between flex-col flex z-20">
+            <aside className="w-60 bg-black fixed h-screen text-white justify-between flex-col flex z-20">
                 <div>
                     <h1 className="text-center text-2xl m-5">Polaris.</h1>
                     <ul className="flex justify-start flex-col">
@@ -48,7 +48,7 @@ const AdminLayout = ({ children }) => {
 
             <div className="absolute">
                 <header className="fixed navbar min-w-full">
-                    <p className="px-4 admin-content">{title(entityName)}</p>
+                    <p className="px-4 ml-60">{title(entityName)}</p>
                     <div>
                         <Link className="mx-2" to={`/`}>Home</Link>
                         <Link className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>

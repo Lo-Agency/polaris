@@ -11,11 +11,11 @@
 }
 
 .btn{
-  @apply bg-black text-white py-1  px-2  cursor-pointer 
+  @apply bg-black text-white py-1 px-2 cursor-pointer; 
 }
 
 .navbar{
-  @apply bg-white z-10 shadow-md flex justify-between h-16 items-center
+  @apply bg-white z-10 shadow-md flex justify-between h-16 items-center;
 }
 
 html,body{
@@ -66,11 +66,4 @@ html,body{
 
 .rotate{
   transform: rotate(90deg);
-}
-
-.admin-sidebar{
-width: 240px;
-}
-.admin-content{
-  margin-left: 240px;
 }
