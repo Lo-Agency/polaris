@@ -87,7 +87,7 @@ export function Home() {
 
        return <>{!auth.isLoading ?
               <div className="flex flex-col">
-                     <header className="navbar fixed w-full">
+                     <header className="navbar fixed w-full px-4">
                             <h1 className="text-2xl">Polaris</h1>
                             <div>
                                    {userData?.type === "admin" ?
