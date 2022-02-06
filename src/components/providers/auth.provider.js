@@ -49,13 +49,13 @@ const AuthProvider = ({ children }) => {
 			setIsLoading(false)
 			switch (error.code) {
 				case 'auth/user-not-found':
-					throw new WrongCredentialsException('User not found.');
+					throw new WrongCredentialsException('User not found');
 				case 'auth/wrong-password':
-					throw new WrongCredentialsException('Password is incorrect.');
+					throw new WrongCredentialsException('Password is incorrect');
 				default:
 					throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
-		
+
 		}
 		setIsLoading(false)
 	};
@@ -65,11 +65,14 @@ const AuthProvider = ({ children }) => {
 	};
 
 	const forgotPassword = async (email) => {
+		setIsLoading(true)
 		try {
 			await sendPasswordResetEmail(auth, email);
 		} catch (error) {
-			throw new WrongCredentialsException('We cant find a user with that e-mail address.');
+			setIsLoading(false)
+			throw new WrongCredentialsException('We cant find a user with that e-mail address');
 		}
+		setIsLoading(false)
 	};
 
 	const signup = async (email, password) => {
@@ -91,9 +94,10 @@ const AuthProvider = ({ children }) => {
 			});
 
 		} catch (error) {
+			setIsLoading(false)
 			switch (error.code) {
 				case 'auth/email-already-in-use':
-					throw new WrongCredentialsException('This email is already exist.');
+					throw new WrongCredentialsException('This email is already exist');
 				default:
 					throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}

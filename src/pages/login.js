@@ -9,6 +9,7 @@ function Login() {
 	const [error, setError] = useState(null);
 
 	const handleSubmit = async (event) => {
+		setError(null)
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const email = formData.get("email");
