@@ -39,7 +39,7 @@ function Login() {
 						<input className="py-2 px-3 xsm:w-48 sm:w-60 w-80 border-2 border-black" name="password" type="password" />
 					</div>
 
-					<Button style={"btn-form w-2/12 flex justify-center items-center"} loading={auth.isLoading} actionName={"Login"} />
+					<Button className={"btn-form w-2/12 flex justify-center items-center"} loading={auth.isLoading} actionName={"Login"} />
 
 					<Link to='/forgot-password' className="py-2">Forgot Password</Link>
 					<Link to='/signup'>Dont have an account yet?</Link>
