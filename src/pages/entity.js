@@ -16,10 +16,10 @@ const Entity = () => {
     const { entityName, actionName } = useParams();
     const crud = useCrud();
     const dataState = crud.dataState
-    const data = extractDataFromEntity(entityName,dataState);
+    const data = extractDataFromEntity(entityName, dataState);
     const Ids = data && Object.keys(data);
     const configFields = entityConfigFiels(entityName)
-    const groups = extractDataFromEntity("group",dataState)
+    const groups = extractDataFromEntity("group", dataState)
 
     //create options for filter users
     let filterUsersOptions = [{ value: "*", label: "All Users" }]
@@ -29,7 +29,7 @@ const Entity = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
             if (dataItem[field] && dataItem[field][0]!== "" ) {
                 if (config.entities[entityName].fields[field].isArray) {
-                    let fieldData = extractDataFromEntity(field,dataState)
+                    let fieldData = extractDataFromEntity(field, dataState)
                     const titles = dataItem[field].map(id => fieldData[id]["title"])
                     return titles.join(", ")
                 }
@@ -68,10 +68,10 @@ const Entity = () => {
             return <AdminLayout><EntityForm entityName={entityName} actionName={actionName} /></AdminLayout>
         default:
             return <AdminLayout>
-                <div className="flex flex-col min-w-full justify-center sm:px-6 lg:px-8 h-auto items-centerm-2 py-2 overflow-hidden mt-20" >
+                <div className="flex justify-center items-center left-60 right-0 mx-5 top-20 flex-col absolute">
                     {entityName === "user"
                         ? <Select
-                            className="w-96 mx-10 mt-5 self-end max-w-lg"
+                            className="w-96 mt-5 self-end max-w-lg absolute"
                             classNamePrefix="select"
                             closeMenuOnSelect={false}
                             onChange={(value) => setUsersGroup(value.label)}
@@ -89,7 +89,7 @@ const Entity = () => {
                             options={filterUsersOptions}
                         />
                         : null}
-                    {data ? <table className="mx-10 my-5 self-end border-b w-11/12 border-gray-200 shadow-md ">
+                    {data ? <table className="my-5 border-b mx-5 w-full border-gray-200 shadow-md">
                         <thead className="bg-black w-full">
                             <tr>
                                 {configFields.map(field => {

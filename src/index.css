@@ -11,11 +11,11 @@
 }
 
 .btn{
-  @apply bg-black text-white py-1  px-2  cursor-pointer 
+  @apply bg-black text-white py-1 px-2 cursor-pointer; 
 }
 
 .navbar{
-  @apply bg-white z-10 shadow-md flex justify-between h-16 items-center px-7
+  @apply bg-white z-10 shadow-md flex justify-between h-16 items-center;
 }
 
 html,body{

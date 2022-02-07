@@ -21,17 +21,17 @@ const AdminLayout = ({ children }) => {
 
     const getSelectedEntityClassName = (key) => {
         if (key === entityName) {
-            return "w-full bg-white text-black text-lg tracking-wide py-3 px-4 transition-colors text-left px-2"
+            return "w-full bg-white text-black tracking-wide text-sm py-3 px-4 transition-colors"
         }
-        return "w-full hover:bg-gray-800 tracking-wide py-3 text-lg px-4 transition-colors text-left px-2"
+        return "w-full hover:bg-gray-800 tracking-wide text-sm py-3 px-4 transition-colors"
     }
 
     return (
         <div className="relative">
-            <aside className="bg-black fixed h-screen border border-black text-white w-1/6 justify-between flex-col flex">
+            <aside className="w-60 bg-black fixed h-screen text-white justify-between flex-col flex z-20">
                 <div>
-                    <h1 className="text-center text-2xl m-5 ">Polaris.</h1>
-                    <ul className="flex justify-start flex-col text-base">
+                    <h1 className="text-center text-2xl m-5">Polaris.</h1>
+                    <ul className="flex justify-start flex-col">
                         {
                             Object.keys(config.entities).map(key =>
                                 <li className={getSelectedEntityClassName(key)} key={key}>
@@ -43,21 +43,20 @@ const AdminLayout = ({ children }) => {
                         }
                     </ul>
                 </div>
-                <button className="text-center text-base p-5 hover:bg-gray-800" onClick={logOut}>Logout</button>
+                <button className="text-center text-sm p-5 hover:bg-gray-800" onClick={logOut}>Logout</button>
             </aside>
 
-            <div className="top-0 absolute right-0 w-5/6">
-
-                <header className="fixed navbar w-5/6">
-                    <p className="px-4">{title(entityName)}</p>
+            <div className="absolute">
+                <header className="fixed navbar min-w-full">
+                    <p className="px-4 ml-60">{title(entityName)}</p>
                     <div>
                         <Link className="mx-2" to={`/`}>Home</Link>
                         <Link className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
                     </div>
                 </header>
-
-                {children}
             </div>
+
+            {children}
             <ToastContainer />
         </div>
     )

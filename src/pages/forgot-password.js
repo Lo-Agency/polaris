@@ -2,21 +2,23 @@ import { useAuth } from "../components/providers/auth.provider";
 import { useState } from "react";
 import AuthLayout from "../components/layouts/auth-layout"
 import { Link } from "react-router-dom";
+import Button from "../components/atoms/button";
 
 function ForgotPassword() {
 	const auth = useAuth();
-	const [error, setAllert] = useState();
+	const [alert, setAlert] = useState(null);
 
 	const sendResetPassEmail = async (event) => {
+		setAlert(null)
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const email = formData.get("email");
 
 		try {
 			await auth.forgotPassword(email)
-			setAllert("Link send to your email check it")
+			setAlert({ message: "Link send to your email check it", style: 'flex items-center text-green-500 text-sm font-bold px-4 py-3' })
 		} catch (e) {
-			setAllert(e.message)
+			setAlert({ message: e.message, style: 'flex items-center text-red-500 text-sm font-bold px-4 py-3' })
 		}
 
 	};
@@ -33,18 +35,15 @@ function ForgotPassword() {
 						<input className="py-2 px-3 xsm:w-48 sm:w-60 w-80 border-2 border-black" name="email" type="email" />
 					</div>
 
-					<button className="btn-form w-2/12 flex justify-center items-center" type="submit">
-						Reset password
-					</button>
-
+					<Button className={"btn-form w-2/12 flex justify-center items-center"} loading={auth.isLoading} actionName={"Reset password"} />
 
 					<Link to='/login' className="py-2">Login</Link>
-					{error && <div className="flex items-center text-blue-500 text-sm font-bold px-4 py-3" role="alert">
-						<p>{error}</p>
+					
+					{alert && <div className={alert.style}>
+						<p>{alert.message}</p>
 					</div>}
 				</div>
 			</form>
-
 		</AuthLayout>
 	);
 }

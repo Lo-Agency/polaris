@@ -8,7 +8,6 @@ import DateInput from "../molecules/date-input";
 import ReferenceInput from "../molecules/reference-input";
 import { entityConfigFiels } from "../../util/extract-data";
 import { useState } from "react";
-import { title } from "case";
 import Button from "../atoms/button";
 import CheckBox from "../molecules/check-box";
 import * as yup from 'yup';
@@ -94,7 +93,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
                         <p>{error}</p>
                     </div>
                     : null}
-                <Button loading={loading} actionName={actionName} />
+                <Button  className={"w-2/12 mt-10 flex justify-center items-center transition-colors text-white bg-black py-2 hover:text-gray-500"} loading={loading} actionName={actionName} />
             </form>
         </div>
     )
