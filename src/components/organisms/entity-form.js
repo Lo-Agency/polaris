@@ -11,11 +11,12 @@ import { useState } from "react";
 import { title } from "case";
 import Button from "../atoms/button";
 import CheckBox from "../molecules/check-box";
-
+import * as yup from 'yup';
 
 const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const crud = useCrud();
     const entityFields = entityConfigFiels(entityName);
@@ -40,36 +41,59 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
                 return <p key={field}>field type for &quot;{field}&quot; not recognized</p>;
         }
     });
-    const handleSubmit = async (event) => {
-        setLoading(true)
-        event.preventDefault()
-        const form = new FormData(event.target)
-        const values = entityFields.map(field => {
-            if (config.entities[entityName].fields[field].isArray) {
-                return form.getAll(field)
-            }
-            return form.getAll(field)[0]
-        })
 
-        if (!values.includes(null)) {
-            if (actionName === "create") {
-                await crud.insertNewItem(values, entityName);
-                setLoading(false);
-            } else {
-                await crud.updateItem(values, entityName, editID);
-                setLoading(false);
-            }
-            navigate(`/admin/${entityName}/list`, { replace: true })
+    const formValidation = async (values) => {
+        let schema = yup.object().shape(config.entities[entityName].validation)
 
-        } return
+        const isValid = await schema.isValid(values)
+        if (!isValid) {
+            setError(`Inputs are not valid!`)
+        }
+        return isValid
     }
 
+    const handleSubmit = async (event) => {
+        const form = new FormData(event.target)
+        let values = {}
+        setError(null)
+        setLoading(true)
+        event.preventDefault()
+
+        entityFields.forEach((field) => {
+            if (config.entities[entityName].fields[field].isArray) {
+                if (!form.getAll(field).includes("")) {
+                    values[`${field}`] = form.getAll(field)
+                }
+            } else {
+                values[`${field}`] = form.getAll(field)[0]
+            }
+        })
+
+        const valid = await formValidation(values)
+
+        if (valid) {
+            if (actionName === "create") {
+                await crud.insertNewItem(values, entityName);
+            } else {
+                await crud.updateItem(values, entityName, editID);
+            }
+            setLoading(false);
+            navigate(`/admin/${entityName}/list`, { replace: true })
+            return
+        }
+        setLoading(false)
+    }
 
     return (
         <div className="top-0 absolute right-0 w-5/6">
             <form className="flex flex-col h-auto justify-center items-center w-5/6 mt-40"
                 onSubmit={handleSubmit}>
                 {fields}
+                {error ?
+                    <div className="flex items-center text-red-500 text-sm font-bold px-4 pt-3" role="alert">
+                        <p>{error}</p>
+                    </div>
+                    : null}
                 <Button loading={loading} actionName={actionName} />
             </form>
         </div>

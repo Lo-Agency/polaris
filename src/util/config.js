@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+
 export default {
 	firebase: {
 		apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -41,7 +43,7 @@ export default {
 	},
 
 	entities: {
-	
+
 		roadmap: {
 			fields: {
 				title: {
@@ -57,6 +59,11 @@ export default {
 					type: "date",
 					isArray: false,
 				},
+			},
+			validation: {
+				title: yup.string().required(),
+				phase: yup.array().required(),
+				startingDate: yup.date().required()
 			},
 			list: ["phase"],
 			readfields: {
@@ -101,6 +108,12 @@ export default {
 					reference: "project"
 				}
 			},
+			validation: {
+				title: yup.string().required(),
+				learning: yup.array().required(),
+				project: yup.array().required()
+
+			},
 			list: ["learning", "project"]
 		},
 
@@ -124,6 +137,12 @@ export default {
 					isArray: false,
 					value: ["Low", "Medium", "High"]
 				}
+			},
+			validation: {
+				title: yup.string().required(),
+				category: yup.string().required(),
+				resources: yup.string().required(),
+				priority: yup.string().required(),
 			}
 		},
 
@@ -147,6 +166,12 @@ export default {
 					isArray: false,
 
 				}
+			},
+			validation: {
+				title: yup.string().required(),
+				days: yup.number().required(),
+				projectType: yup.string().required(),
+				learningDay: yup.number().required()
 			}
 		},
 		group: {
@@ -169,7 +194,13 @@ export default {
 					isArray: true
 				}
 			},
-			list:["roadmap"]
+			validation: {
+				title: yup.string().required(),
+				description: yup.string().required(),
+				slug: yup.string().required(),
+				roadmap: yup.array().required()
+			},
+			list: ["roadmap"]
 
 		},
 		user: {
@@ -192,6 +223,12 @@ export default {
 					type: "boolean",
 					isArray: false
 				},
+			},
+			validation: {
+				email: yup.string().email().required(),
+				group: yup.array(),
+				type: yup.string().required(),
+				isApproved: yup.boolean()
 			},
 			list: ["group"]
 		},

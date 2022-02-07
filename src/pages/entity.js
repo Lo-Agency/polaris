@@ -27,7 +27,7 @@ const Entity = () => {
 
     const sortData = () => {
         const sortedData = Object.values(data).map(dataItem => configFields.map(field => {
-            if (dataItem[field] && dataItem[field]!== "" ) {
+            if (dataItem[field] && dataItem[field][0]!== "" ) {
                 if (config.entities[entityName].fields[field].isArray) {
                     let fieldData = extractDataFromEntity(field,dataState)
                     const titles = dataItem[field].map(id => fieldData[id]["title"])

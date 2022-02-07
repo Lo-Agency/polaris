@@ -60,14 +60,8 @@ const CrudProvider = ({ children }) => {
 
   //create new data
   const insertNewItem = async (values, entity) => {
-    const items = Object.keys(config.entities[entity].fields);
-    let result = values.reduce(function (result, field, index) {
-      result[items[index]] = field;
-      return result;
-    }, {})
-
     try {
-      await push(ref(database, `${entity}`), result);
+      await push(ref(database, `${entity}`), values);
       sendNotification("success", `New ${entity} is successfully created.`)
       setChange(!change)
 
@@ -130,17 +124,13 @@ const CrudProvider = ({ children }) => {
 
   //update
   const updateItem = async (values, entityName, editID) => {
-    const items = Object.keys(config.entities[entityName].fields);
-    var result = values.reduce(function (result, field, index) {
-      result[items[index]] = field;
-      return result;
-    }, {})
     try {
-      await set(ref(database, `${entityName}/${editID}`), result);
+      await set(ref(database, `${entityName}/${editID}`), values);
       sendNotification("success", 'successfully updated.')
       setChange(!change)
 
     } catch (error) {
+      console.log(error , "uperr")
       sendNotification("error", 'Somthing went wrong, please try again.')
     }
   }
