@@ -64,7 +64,11 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
                     values[`${field}`] = form.getAll(field)
                 }
             } else {
-                values[`${field}`] = form.getAll(field)[0]
+                if (config.entities[entityName].fields[field].type === "boolean") {
+                    values[`${field}`] = `${Boolean(form.getAll(field)[0])}`
+                } else {
+                    values[`${field}`] = form.getAll(field)[0]
+                }
             }
         })
 
@@ -93,7 +97,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
                         <p>{error}</p>
                     </div>
                     : null}
-                <Button  className={"w-2/12 mt-10 flex justify-center items-center transition-colors text-white bg-black py-2 hover:text-gray-500"} loading={loading} actionName={actionName} />
+                <Button className={"w-2/12 mt-10 flex justify-center items-center transition-colors text-white bg-black py-2 hover:text-gray-500"} loading={loading} actionName={actionName} />
             </form>
         </div>
     )

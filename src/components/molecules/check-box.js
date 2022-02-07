@@ -21,7 +21,6 @@ const CheckBox = ({ name, formValues }) => {
                     checked={checked}
                     name={name}
                     onChange={() => { setChecked(!checked) }}
-
                     value={checked}
                 />
             </div>
