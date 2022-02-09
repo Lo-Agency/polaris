@@ -51,7 +51,10 @@ const AdminLayout = ({ children }) => {
                     <p className="px-4 ml-60">{title(entityName)}</p>
                     <div>
                         <Link className="mx-2" to={`/`}>Home</Link>
-                        <Link className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
+                        {entityName !== "user"
+                            ? <Link className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400" to={`/admin/${entityName}/create`}>Create new</Link>
+                            : null
+                        }
                     </div>
                 </header>
             </div>

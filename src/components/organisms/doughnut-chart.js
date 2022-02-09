@@ -21,7 +21,7 @@ const DoughnutChart = ({ selectedRoadmap }) => {
 
     const renderPhaseData = (id, roadmap) => {
         const phaseId = Object.keys(phases).find(phaseId => phaseId === id)
-        { startDate == null ? startDate = (Object.values(roadmap))[1] : startDate = endDate }
+        { startDate === null ? startDate = (Object.values(roadmap))[1] : startDate = endDate }
         endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))))
         phases[phaseId]["project"].forEach(projectId => phaseProjectsName.push(projects[projectId]["title"][0]))
     }

@@ -56,7 +56,7 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
   }
 
   const createStartEndProject = (roadmap, projectDuration) => {
-    if (projectStartDate == null) {
+    if (projectStartDate === null) {
       projectStartDate = (Object.values(roadmap))[1]
     }
     else {
@@ -93,7 +93,7 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
   const renderPhaseData = (id, roadmap) => {
     const phaseId = Object.keys(phases).find(phaseId => phaseId === id)
 
-    if (phaseStartDate == null) {
+    if (phaseStartDate === null) {
       phaseStartDate = (Object.values(roadmap))[1]
     }
     else {

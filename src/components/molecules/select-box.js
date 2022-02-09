@@ -8,8 +8,8 @@ const SelectBox = ({ name, entityName, formValues, actionName }) => {
 	const animatedComponents = makeAnimated();
 	const selectvalue = config.entities[entityName].fields[name].value;
 	const selectOptions = selectvalue && selectvalue.map((option) => ({ value: option, label: option }));
-	const defaultValue = formValues && selectOptions.filter((option) => option['value'] == formValues[name]);
-	const showForm = defaultValue || actionName == "create";
+	const defaultValue = formValues && selectOptions.filter((option) => option['value'] === formValues[name]);
+	const showForm = defaultValue || actionName === "create";
 
 	return <>
 		{showForm ?
@@ -19,7 +19,7 @@ const SelectBox = ({ name, entityName, formValues, actionName }) => {
 					className="basic-multi-select my-3 rounded-lg w-full "
 					classNamePrefix="select"
 					defaultValue={defaultValue}
-					closeMenuOnSelect={false}
+					closeMenuOnSelect={true}
 					theme={(theme) => ({
 						...theme,
 						borderRadius: 0,

@@ -88,7 +88,7 @@ export function Home() {
        return <>{!auth.isLoading ?
               <div className="flex flex-col">
                      <header className="navbar fixed w-full px-4">
-                            <h1 className="text-2xl">Polaris</h1>
+                            <h1 className="text-2xl">Polaris.</h1>
                             <div>
                                    {userData?.type === "admin" ?
                                           <button className='mr-5 btn'
@@ -122,7 +122,7 @@ export function Home() {
                                                  })}
                                                  className="p-2 w-96 max-w-lg"
                                                  classNamePrefix="select"
-                                                 closeMenuOnSelect={false}
+                                                 closeMenuOnSelect={true}
                                                  name={"roadmap"}
                                                  options={options}>
                                           </Select>
@@ -169,7 +169,7 @@ export function Home() {
                                                                })}
                                                                className=" w-96 max-w-lg"
                                                                classNamePrefix="select"
-                                                               closeMenuOnSelect={false}
+                                                               closeMenuOnSelect={true}
                                                                name={"roadmap"}
                                                                options={options}>
                                                         </Select>

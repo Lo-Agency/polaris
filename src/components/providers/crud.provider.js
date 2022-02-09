@@ -15,7 +15,7 @@ const CrudProvider = ({ children }) => {
 
   //send notifications
   const sendNotification = (type, message) => {
-    if (type == "success")
+    if (type === "success")
       return toast.success(message, {
         position: "top-center",
         autoClose: 5000,
@@ -60,14 +60,8 @@ const CrudProvider = ({ children }) => {
 
   //create new data
   const insertNewItem = async (values, entity) => {
-    const items = Object.keys(config.entities[entity].fields);
-    let result = values.reduce(function (result, field, index) {
-      result[items[index]] = field;
-      return result;
-    }, {})
-
     try {
-      await push(ref(database, `${entity}`), result);
+      await push(ref(database, entity), values);
       sendNotification("success", `New ${entity} is successfully created.`)
       setChange(!change)
 
@@ -97,8 +91,8 @@ const CrudProvider = ({ children }) => {
   //delete data from others entities
 
   const deleteDependency = async (deleteEntity, id) => {
-    let data = dataState.filter(elem => Object.keys(elem) == deleteEntity);
-    data = Object.entries((Object.values(data[0]))[0]);
+    let data = dataState.filter(elem => Object.keys(elem) === deleteEntity);
+    data =data && Object.entries((Object.values(data[0]))[0]);
     data = data.map(record => ({ [record[0]]: record[1] }));
     const updateData = data.filter(record => Object.values(record)[0][entityName].includes(id));
 
@@ -130,13 +124,8 @@ const CrudProvider = ({ children }) => {
 
   //update
   const updateItem = async (values, entityName, editID) => {
-    const items = Object.keys(config.entities[entityName].fields);
-    var result = values.reduce(function (result, field, index) {
-      result[items[index]] = field;
-      return result;
-    }, {})
     try {
-      await set(ref(database, `${entityName}/${editID}`), result);
+      await set(ref(database, `${entityName}/${editID}`), values);
       sendNotification("success", 'successfully updated.')
       setChange(!change)
 

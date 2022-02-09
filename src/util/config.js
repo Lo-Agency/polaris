@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+
 export default {
 	firebase: {
 		apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -41,23 +43,27 @@ export default {
 	},
 
 	entities: {
-	
+
 		roadmap: {
 			fields: {
 				title: {
 					type: "text",
 					isArray: false,
+					validate:  yup.string().required()
 				},
 				phase: {
 					type: "ref",
 					reference: "phase",
 					isArray: true,
+					validate: yup.array().required()
 				},
 				startingDate: {
 					type: "date",
 					isArray: false,
+					validate: yup.date().required()
 				},
 			},
+
 			list: ["phase"],
 			readfields: {
 				duration: {
@@ -88,19 +94,23 @@ export default {
 					type: "text",
 					required: true,
 					isArray: false,
+					validate:  yup.string().required()
 				},
 
 				learning: {
 					type: "ref",
 					isArray: true,
-					reference: "learning"
+					reference: "learning",
+					validate: yup.array().required()
 				},
 				project: {
 					type: "ref",
 					isArray: true,
-					reference: "project"
+					reference: "project",
+					validate: yup.array().required()
 				}
 			},
+
 			list: ["learning", "project"]
 		},
 
@@ -109,22 +119,27 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
+					validate: yup.string().required()
 				},
 				category: {
 					type: "select",
 					isArray: false,
-					value: ["Frontend", "Backend", "General", "Soft Skills"]
+					value: ["Frontend", "Backend", "General", "Soft Skills"],
+					validate: yup.string().required()
 				},
 				resources: {
 					type: "text",
 					isArray: false,
+					validate: yup.string().required()
 				},
 				priority: {
 					type: "select",
 					isArray: false,
-					value: ["Low", "Medium", "High"]
+					value: ["Low", "Medium", "High"],
+					validate: yup.string().required()
 				}
-			}
+			},
+
 		},
 
 		project: {
@@ -132,65 +147,78 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
+					validate: yup.string().required()
 				},
 				days: {
 					type: "number",
 					isArray: false,
+					validate: yup.number().required()
 				},
 				projectType: {
 					type: "select",
 					isArray: false,
-					value: ["Real", "Team", "Personal", "Optional"]
+					value: ["Real", "Team", "Personal", "Optional"],
+					validate: yup.string().required()
 				},
 				learningDay: {
 					type: "number",
 					isArray: false,
+					validate: yup.number().required()
 
 				}
-			}
+			},
 		},
 		group: {
 			fields: {
 				title: {
 					type: "text",
-					isArray: false
+					isArray: false,
+					validate: yup.string().required()
 				},
 				description: {
 					type: "text",
-					isArray: false
+					isArray: false,
+					validate: yup.string().required()
 				},
 				slug: {
 					type: "text",
-					isArray: false
+					isArray: false,
+					validate: yup.string().required()
 				},
 				roadmap: {
 					type: "ref",
 					reference: "roadmap",
-					isArray: true
+					isArray: true,
+					validate: yup.array().required()
 				}
 			},
-			list:["roadmap"]
+
+			list: ["roadmap"]
 
 		},
 		user: {
 			fields: {
 				email: {
 					type: "text",
-					isArray: false
+					isArray: false,
+					validate: yup.string().email().required()
 				},
 				group: {
 					type: "ref",
 					reference: "group",
 					isArray: true,
+					validate: yup.array()
 				},
 				type: {
 					type: "select",
 					isArray: false,
-					value: ["admin", "user"]
+					value: ["admin", "user"],
+					validate: yup.string().required()
 				},
 				isApproved: {
 					type: "boolean",
-					isArray: false
+					isArray: false,
+					validate: yup.boolean()
 				},
 			},
 			list: ["group"]
