@@ -42,7 +42,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
     });
 
     const formValidation = async (value, field) => {
-        let schema = yup.object().shape(config.entities[entityName].fields[field].validate)
+        let schema = yup.object().shape({[field]: config.entities[entityName].fields[field].validate})
 
         const isValid = await schema.isValid({ [field]: value })
         if (!isValid) {

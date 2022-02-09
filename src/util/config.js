@@ -49,24 +49,18 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
-					validate: {
-						title: yup.string().required()
-					}
+					validate:  yup.string().required()
 				},
 				phase: {
 					type: "ref",
 					reference: "phase",
 					isArray: true,
-					validate: {
-						phase:  yup.array().required()
-					}
+					validate: yup.array().required()
 				},
 				startingDate: {
 					type: "date",
 					isArray: false,
-					validate: {
-						startingDate: yup.date().required()
-					}
+					validate: yup.date().required()
 				},
 			},
 
@@ -100,26 +94,20 @@ export default {
 					type: "text",
 					required: true,
 					isArray: false,
-					validate: {
-						title: yup.string().required()
-					}
+					validate:  yup.string().required()
 				},
 
 				learning: {
 					type: "ref",
 					isArray: true,
 					reference: "learning",
-					validate: {
-						learning: yup.array().required()
-					}
+					validate: yup.array().required()
 				},
 				project: {
 					type: "ref",
 					isArray: true,
 					reference: "project",
-					validate: {
-						project: yup.array().required()
-					}
+					validate: yup.array().required()
 				}
 			},
 
@@ -131,32 +119,24 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
-					validate: {
-						title: yup.string().required()
-					}
+					validate: yup.string().required()
 				},
 				category: {
 					type: "select",
 					isArray: false,
 					value: ["Frontend", "Backend", "General", "Soft Skills"],
-					validate: {
-						category: yup.string().required()
-					}
+					validate: yup.string().required()
 				},
 				resources: {
 					type: "text",
 					isArray: false,
-					validate: {
-						resources:  yup.string().required()
-					}
+					validate: yup.string().required()
 				},
 				priority: {
 					type: "select",
 					isArray: false,
 					value: ["Low", "Medium", "High"],
-					validate: {
-						priority: yup.string().required()
-					}
+					validate: yup.string().required()
 				}
 			},
 
@@ -167,31 +147,23 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
-					validate: {
-						title: yup.string().required()
-					}
+					validate: yup.string().required()
 				},
 				days: {
 					type: "number",
 					isArray: false,
-					validate: {
-						days: yup.number().required()
-					}
+					validate: yup.number().required()
 				},
 				projectType: {
 					type: "select",
 					isArray: false,
 					value: ["Real", "Team", "Personal", "Optional"],
-					validate: {
-						projectType: yup.string().required()
-					}
+					validate: yup.string().required()
 				},
 				learningDay: {
 					type: "number",
 					isArray: false,
-					validate: {
-						learningDay: yup.number().required()
-					}
+					validate: yup.number().required()
 
 				}
 			},
@@ -201,31 +173,23 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
-					validate: {
-						title: yup.string().required()
-					}
+					validate: yup.string().required()
 				},
 				description: {
 					type: "text",
 					isArray: false,
-					validate: {
-						description: yup.string().required()
-					}
+					validate: yup.string().required()
 				},
 				slug: {
 					type: "text",
 					isArray: false,
-					validate: {
-						slug: yup.string().required()
-					}
+					validate: yup.string().required()
 				},
 				roadmap: {
 					type: "ref",
 					reference: "roadmap",
 					isArray: true,
-					validate: {
-						roadmap: yup.array().required()
-					}
+					validate: yup.array().required()
 				}
 			},
 
@@ -237,32 +201,24 @@ export default {
 				email: {
 					type: "text",
 					isArray: false,
-					validate: {
-						email: yup.string().email().required()
-					},
+					validate: yup.string().email().required()
 				},
 				group: {
 					type: "ref",
 					reference: "group",
 					isArray: true,
-					validate: {
-						group: yup.array()
-					},
+					validate: yup.array()
 				},
 				type: {
 					type: "select",
 					isArray: false,
 					value: ["admin", "user"],
-					validate: {
-						type: yup.string().required()
-					},
+					validate: yup.string().required()
 				},
 				isApproved: {
 					type: "boolean",
 					isArray: false,
-					validate: {
-						isApproved: yup.boolean()
-					},
+					validate: yup.boolean()
 				},
 			},
 			list: ["group"]
