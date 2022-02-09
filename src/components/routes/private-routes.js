@@ -19,12 +19,12 @@ function PrivateRoute({ children }) {
 
     const userData = users && users[user.uid]
 
-    if (userData?.type[0] == "admin") {
+    if (userData?.type[0] === "admin") {
         if (from && !from.startsWith('/admin')) {
             return <Navigate to={'/admin/roadmap/list'} state={{ from: location }} />;
         }
     }
-    if (userData?.type[0] == "user" && location.pathname != '/') {
+    if (userData?.type[0] === "user" && location.pathname !== '/') {
         return <Navigate to={config.routes.home.pathname} state={{ from: location }} />;
     }
 

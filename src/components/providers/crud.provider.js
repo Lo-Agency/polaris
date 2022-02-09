@@ -15,7 +15,7 @@ const CrudProvider = ({ children }) => {
 
   //send notifications
   const sendNotification = (type, message) => {
-    if (type == "success")
+    if (type === "success")
       return toast.success(message, {
         position: "top-center",
         autoClose: 5000,
@@ -61,7 +61,7 @@ const CrudProvider = ({ children }) => {
   //create new data
   const insertNewItem = async (values, entity) => {
     try {
-      await push(ref(database, `${entity}`), values);
+      await push(ref(database, entity), values);
       sendNotification("success", `New ${entity} is successfully created.`)
       setChange(!change)
 
@@ -91,8 +91,8 @@ const CrudProvider = ({ children }) => {
   //delete data from others entities
 
   const deleteDependency = async (deleteEntity, id) => {
-    let data = dataState.filter(elem => Object.keys(elem) == deleteEntity);
-    data = Object.entries((Object.values(data[0]))[0]);
+    let data = dataState.filter(elem => Object.keys(elem) === deleteEntity);
+    data =data && Object.entries((Object.values(data[0]))[0]);
     data = data.map(record => ({ [record[0]]: record[1] }));
     const updateData = data.filter(record => Object.values(record)[0][entityName].includes(id));
 
@@ -130,7 +130,6 @@ const CrudProvider = ({ children }) => {
       setChange(!change)
 
     } catch (error) {
-      console.log(error , "uperr")
       sendNotification("error", 'Somthing went wrong, please try again.')
     }
   }

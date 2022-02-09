@@ -49,22 +49,27 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
+					validate: {
+						title: yup.string().required()
+					}
 				},
 				phase: {
 					type: "ref",
 					reference: "phase",
 					isArray: true,
+					validate: {
+						phase:  yup.array().required()
+					}
 				},
 				startingDate: {
 					type: "date",
 					isArray: false,
+					validate: {
+						startingDate: yup.date().required()
+					}
 				},
 			},
-			validation: {
-				title: yup.string().required(),
-				phase: yup.array().required(),
-				startingDate: yup.date().required()
-			},
+
 			list: ["phase"],
 			readfields: {
 				duration: {
@@ -95,25 +100,29 @@ export default {
 					type: "text",
 					required: true,
 					isArray: false,
+					validate: {
+						title: yup.string().required()
+					}
 				},
 
 				learning: {
 					type: "ref",
 					isArray: true,
-					reference: "learning"
+					reference: "learning",
+					validate: {
+						learning: yup.array().required()
+					}
 				},
 				project: {
 					type: "ref",
 					isArray: true,
-					reference: "project"
+					reference: "project",
+					validate: {
+						project: yup.array().required()
+					}
 				}
 			},
-			validation: {
-				title: yup.string().required(),
-				learning: yup.array().required(),
-				project: yup.array().required()
 
-			},
 			list: ["learning", "project"]
 		},
 
@@ -122,28 +131,35 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
+					validate: {
+						title: yup.string().required()
+					}
 				},
 				category: {
 					type: "select",
 					isArray: false,
-					value: ["Frontend", "Backend", "General", "Soft Skills"]
+					value: ["Frontend", "Backend", "General", "Soft Skills"],
+					validate: {
+						category: yup.string().required()
+					}
 				},
 				resources: {
 					type: "text",
 					isArray: false,
+					validate: {
+						resources:  yup.string().required()
+					}
 				},
 				priority: {
 					type: "select",
 					isArray: false,
-					value: ["Low", "Medium", "High"]
+					value: ["Low", "Medium", "High"],
+					validate: {
+						priority: yup.string().required()
+					}
 				}
 			},
-			validation: {
-				title: yup.string().required(),
-				category: yup.string().required(),
-				resources: yup.string().required(),
-				priority: yup.string().required(),
-			}
+
 		},
 
 		project: {
@@ -151,55 +167,68 @@ export default {
 				title: {
 					type: "text",
 					isArray: false,
+					validate: {
+						title: yup.string().required()
+					}
 				},
 				days: {
 					type: "number",
 					isArray: false,
+					validate: {
+						days: yup.number().required()
+					}
 				},
 				projectType: {
 					type: "select",
 					isArray: false,
-					value: ["Real", "Team", "Personal", "Optional"]
+					value: ["Real", "Team", "Personal", "Optional"],
+					validate: {
+						projectType: yup.string().required()
+					}
 				},
 				learningDay: {
 					type: "number",
 					isArray: false,
+					validate: {
+						learningDay: yup.number().required()
+					}
 
 				}
 			},
-			validation: {
-				title: yup.string().required(),
-				days: yup.number().required(),
-				projectType: yup.string().required(),
-				learningDay: yup.number().required()
-			}
 		},
 		group: {
 			fields: {
 				title: {
 					type: "text",
-					isArray: false
+					isArray: false,
+					validate: {
+						title: yup.string().required()
+					}
 				},
 				description: {
 					type: "text",
-					isArray: false
+					isArray: false,
+					validate: {
+						description: yup.string().required()
+					}
 				},
 				slug: {
 					type: "text",
-					isArray: false
+					isArray: false,
+					validate: {
+						slug: yup.string().required()
+					}
 				},
 				roadmap: {
 					type: "ref",
 					reference: "roadmap",
-					isArray: true
+					isArray: true,
+					validate: {
+						roadmap: yup.array().required()
+					}
 				}
 			},
-			validation: {
-				title: yup.string().required(),
-				description: yup.string().required(),
-				slug: yup.string().required(),
-				roadmap: yup.array().required()
-			},
+
 			list: ["roadmap"]
 
 		},
@@ -207,28 +236,34 @@ export default {
 			fields: {
 				email: {
 					type: "text",
-					isArray: false
+					isArray: false,
+					validate: {
+						email: yup.string().email().required()
+					},
 				},
 				group: {
 					type: "ref",
 					reference: "group",
 					isArray: true,
+					validate: {
+						group: yup.array()
+					},
 				},
 				type: {
 					type: "select",
 					isArray: false,
-					value: ["admin", "user"]
+					value: ["admin", "user"],
+					validate: {
+						type: yup.string().required()
+					},
 				},
 				isApproved: {
 					type: "boolean",
-					isArray: false
+					isArray: false,
+					validate: {
+						isApproved: yup.boolean()
+					},
 				},
-			},
-			validation: {
-				email: yup.string().email().required(),
-				group: yup.array(),
-				type: yup.string().required(),
-				isApproved: yup.boolean()
 			},
 			list: ["group"]
 		},

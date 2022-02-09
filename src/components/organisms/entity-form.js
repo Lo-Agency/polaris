@@ -19,7 +19,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
     const navigate = useNavigate();
     const crud = useCrud();
     const entityFields = entityConfigFiels(entityName);
-
+    const validations = []
     const fields = entityFields.map(field => {
         const { type, reference } = config.entities[entityName].fields[field];
 
@@ -41,14 +41,14 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
         }
     });
 
-    const formValidation = async (values) => {
-        let schema = yup.object().shape(config.entities[entityName].validation)
+    const formValidation = async (value, field) => {
+        let schema = yup.object().shape(config.entities[entityName].fields[field].validate)
 
-        const isValid = await schema.isValid(values)
+        const isValid = await schema.isValid({ [field]: value })
         if (!isValid) {
-            setError(`Inputs are not valid!`)
+            setError(`${field} is not valid!`)
         }
-        return isValid
+        validations.push(isValid)
     }
 
     const handleSubmit = async (event) => {
@@ -58,23 +58,22 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
         setLoading(true)
         event.preventDefault()
 
-        entityFields.forEach((field) => {
+        for (const field of entityFields) {
             if (config.entities[entityName].fields[field].isArray) {
                 if (!form.getAll(field).includes("")) {
-                    values[`${field}`] = form.getAll(field)
+                    values[field] = form.getAll(field)
                 }
             } else {
                 if (config.entities[entityName].fields[field].type === "boolean") {
-                    values[`${field}`] = `${Boolean(form.getAll(field)[0])}`
+                    values[field] = `${Boolean(form.getAll(field)[0])}`
                 } else {
-                    values[`${field}`] = form.getAll(field)[0]
+                    values[field] = form.getAll(field)[0]
                 }
             }
-        })
+            await formValidation(values[field], field)
+        }
 
-        const valid = await formValidation(values)
-
-        if (valid) {
+        if (!validations.includes(false)) {
             if (actionName === "create") {
                 await crud.insertNewItem(values, entityName);
             } else {
