@@ -41,9 +41,9 @@ const ReferenceInput = ({ name, reference, formValues, actionName }) => {
                         borderRadius: 0,
                         colors: {
                             ...theme.colors,
-                            primary25: 'neutral10',
-                            primary: 'black',
-                            primary50: 'neutral20'
+                            primary25: '#C0C0C0',
+							primary50: '#C0C0C0',
+							primary: 'black',
                         },
                     })}
                     name={reference} options={options} >

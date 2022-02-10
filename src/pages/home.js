@@ -91,7 +91,7 @@ export function Home() {
                             <h1 className="text-2xl">Polaris.</h1>
                             <div>
                                    {userData?.type === "admin" ?
-                                          <button className='mr-5 btn'
+                                          <button className='mr-4 btn'
                                                  onClick={() => { navigate('/admin/roadmap/list') }}>
                                                  Admin Panel
                                           </button>

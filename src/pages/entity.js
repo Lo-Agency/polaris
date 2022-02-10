@@ -111,12 +111,12 @@ const Entity = () => {
                                 return (
                                     <tr className="text-center p-4 text-sm" key={index}>{items.map((item, index) => {
                                         return (
-                                            <td className="flex-shrink-0 mx-10 max-w-xs px-8 py-5 text-left" key={index}>
+                                            <td className="flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left" key={index}>
                                                 {item}
                                             </td>
                                         )
                                     })}
-                                        <td className="flex m-2 py-5">
+                                        <td className="flex px-6 py-5">
                                             <svg onClick={() => handleDelete(Ids[index])} className="w-6 h-6 mr-2 cursor-pointer" fill="none" stroke="Gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                             <Link to={`/admin/${entityName}/edit`}>
                                                 <svg onClick={() => handleEdit(Ids[index])} className="w-6 h-6 cursor-pointer" stroke="Gray" fill="gray" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>

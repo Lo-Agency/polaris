@@ -97,9 +97,9 @@ const AuthProvider = ({ children }) => {
 			setIsLoading(false)
 			switch (error.code) {
 				case 'auth/email-already-in-use':
-					throw new WrongCredentialsException('This email is already exist');
+					throw new WrongCredentialsException('Email has already been taken.');
 				default:
-					throw new WrongCredentialsException('Something went Wrong contact admin!');
+					throw new WrongCredentialsException('Network error!');
 			}
 		}
 	}
