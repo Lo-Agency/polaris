@@ -10,7 +10,7 @@ import AuthProvider from './components/providers/auth.provider';
 Sentry.init({
 	dsn: process.env.REACT_APP_DSN_URL,
 	integrations: [new Integrations.BrowserTracing()],
-	tracesSampleRate: 1.0
+	tracesSampleRate: 1.0,
 });
 
 ReactDOM.render(
@@ -21,5 +21,5 @@ ReactDOM.render(
 			</AuthProvider>
 		</BrowserRouter>
 	</React.StrictMode>,
-	document.getElementById('root')
+	document.getElementById('root'),
 );

@@ -3,40 +3,42 @@ import {
 	signInWithEmailAndPassword,
 	sendPasswordResetEmail,
 	getAuth,
-	createUserWithEmailAndPassword
+	createUserWithEmailAndPassword,
 } from 'firebase/auth';
-import { ref, set, child, getDatabase, get } from "@firebase/database";
-import { database } from "../../util/firebase";
+import { ref, set, child, getDatabase, get } from '@firebase/database';
+import { database } from '../../util/firebase';
 import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { WrongCredentialsException } from '../../exceptions/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
-	const [isLoading, setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(false);
 	const auth = getAuth();
-	const navigate = useNavigate()
-	const [user, loading, error] = useAuthState(auth);
+	const navigate = useNavigate();
+	const [user] = useAuthState(auth);
 
 	const signIn = async (email, password) => {
-		setIsLoading(true)
+		setIsLoading(true);
 		try {
 			const dbRef = ref(getDatabase());
 			let userData;
 			await signInWithEmailAndPassword(auth, email, password);
-			await get(child(dbRef, `user/${auth.currentUser.uid}`)).then((snapshot) => { userData = snapshot.val() })
-			if (userData.type === "admin") {
-				navigate('/admin/roadmap/list')
+			await get(child(dbRef, `user/${auth.currentUser.uid}`)).then((snapshot) => {
+				userData = snapshot.val();
+			});
+			if (userData.type === 'admin') {
+				navigate('/admin/roadmap/list');
 			} else if (userData.isApproved === 'true') {
-				navigate('/')
+				navigate('/');
 			} else {
-				await logOut()
+				await logOut();
 				toast.error('You are not approved yet.', {
-					position: "top-center",
+					position: 'top-center',
 					autoClose: 5000,
 					hideProgressBar: false,
 					closeOnClick: true,
@@ -46,7 +48,7 @@ const AuthProvider = ({ children }) => {
 				});
 			}
 		} catch (error) {
-			setIsLoading(false)
+			setIsLoading(false);
 			switch (error.code) {
 				case 'auth/user-not-found':
 					throw new WrongCredentialsException('User not found');
@@ -55,9 +57,8 @@ const AuthProvider = ({ children }) => {
 				default:
 					throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
-
 		}
-		setIsLoading(false)
+		setIsLoading(false);
 	};
 
 	const logOut = async () => {
@@ -65,26 +66,26 @@ const AuthProvider = ({ children }) => {
 	};
 
 	const forgotPassword = async (email) => {
-		setIsLoading(true)
+		setIsLoading(true);
 		try {
 			await sendPasswordResetEmail(auth, email);
 		} catch (error) {
-			setIsLoading(false)
+			setIsLoading(false);
 			throw new WrongCredentialsException('We cant find a user with that e-mail address');
 		}
-		setIsLoading(false)
+		setIsLoading(false);
 	};
 
 	const signup = async (email, password) => {
-		setIsLoading(true)
+		setIsLoading(true);
 		try {
 			const data = await createUserWithEmailAndPassword(auth, email, password);
-			const userId = data.user.uid
-			await set(ref(database, `user/${userId}`), { email, isApproved: "false", type: "user", group: "" });
-			await logOut()
-			setIsLoading(false)
+			const userId = data.user.uid;
+			await set(ref(database, `user/${userId}`), { email, isApproved: 'false', type: 'user', group: '' });
+			await logOut();
+			setIsLoading(false);
 			toast.success('Your Email address is successfully registered. Please wait for admin approval verification.', {
-				position: "top-center",
+				position: 'top-center',
 				autoClose: 5000,
 				hideProgressBar: false,
 				closeOnClick: true,
@@ -92,9 +93,8 @@ const AuthProvider = ({ children }) => {
 				draggable: true,
 				progress: undefined,
 			});
-
 		} catch (error) {
-			setIsLoading(false)
+			setIsLoading(false);
 			switch (error.code) {
 				case 'auth/email-already-in-use':
 					throw new WrongCredentialsException('This email is already exist');
@@ -102,7 +102,7 @@ const AuthProvider = ({ children }) => {
 					throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
 		}
-	}
+	};
 
 	return (
 		<AuthContext.Provider
@@ -112,7 +112,7 @@ const AuthProvider = ({ children }) => {
 				signIn,
 				logOut,
 				forgotPassword,
-				isLoading
+				isLoading,
 			}}>
 			{children}
 		</AuthContext.Provider>

@@ -6,5 +6,5 @@ import { getDatabase } from 'firebase/database';
 const app = initializeApp(config.firebase);
 export const database = getDatabase(app);
 export const auth = initializeAuth(app, {
-	persistence: browserLocalPersistence
+	persistence: browserLocalPersistence,
 });
