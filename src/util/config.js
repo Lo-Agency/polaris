@@ -128,7 +128,7 @@ export default {
 				resources: {
 					type: 'text',
 					isArray: false,
-					validate: yup.string().required(),
+					validate: yup.string().url().required(),
 				},
 				priority: {
 					type: 'select',
@@ -194,7 +194,7 @@ export default {
 		user: {
 			fields: {
 				email: {
-					type: 'text',
+					type: 'email',
 					isArray: false,
 					validate: yup.string().email().required(),
 				},
