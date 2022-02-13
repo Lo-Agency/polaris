@@ -194,7 +194,7 @@ export default {
 		user: {
 			fields: {
 				email: {
-					type: 'email',
+					type: 'text',
 					isArray: false,
 					validate: yup.string().email().required(),
 				},
