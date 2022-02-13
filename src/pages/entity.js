@@ -129,7 +129,7 @@ const Entity = () => {
 											<tr className="text-center p-4 text-sm" key={index}>
 												{items.map((item, index) => {
 													return (
-														<td className="flex-shrink-0 mx-10 max-w-xs px-8 py-5 text-left" key={index}>
+														<td className="flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left" key={index}>
 															{item}
 														</td>
 													);

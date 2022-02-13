@@ -50,13 +50,11 @@ const AdminLayout = ({ children }) => {
 				<header className="fixed navbar min-w-full">
 					<p className="px-4 ml-60">{title(entityName)}</p>
 					<div>
-						<Link className="mx-2" to={`/`}>
+						<Link className="px-4" to={`/`}>
 							Home
 						</Link>
 						{entityName !== 'user' ? (
-							<Link
-								className="py-2 px-4 mx-2 text-center bg-black text-white transition-colors hover:text-gray-400"
-								to={`/admin/${entityName}/create`}>
+							<Link className="py-2 px-4 mr-4 text-center btn" to={`/admin/${entityName}/create`}>
 								Create new
 							</Link>
 						) : null}

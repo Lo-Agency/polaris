@@ -68,7 +68,7 @@ export function Home() {
 						<div>
 							{userData?.type === 'admin' ? (
 								<button
-									className="mr-5 btn"
+									className="mr-4 btn"
 									onClick={() => {
 										navigate('/admin/roadmap/list');
 									}}>
