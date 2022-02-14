@@ -57,7 +57,7 @@ const CrudProvider = ({ children }) => {
 					});
 			});
 		});
-		return await Promise.all(allPromises);
+		return Promise.all(allPromises);
 	};
 
 	//create new data
@@ -76,7 +76,7 @@ const CrudProvider = ({ children }) => {
 		const entitiesWithList = Object.keys(config.entities).filter((item) => config.entities[item]['list'] != undefined);
 		const deleteEntity = entitiesWithList.filter((entity) => config.entities[entity]['list'].includes(entityName));
 		if (deleteEntity.length != 0) {
-			deleteEntity.map((entity) => deleteDependency(entity, id));
+			deleteEntity.forEach((entity) => deleteDependency(entity, id));
 		}
 		try {
 			const response = await remove(ref(database, `${entityName}/${id}`));
@@ -91,18 +91,18 @@ const CrudProvider = ({ children }) => {
 	//delete data from others entities
 
 	const deleteDependency = async (deleteEntity, id) => {
-		let data = dataState.filter((elem) => Object.keys(elem) === deleteEntity);
+		let data = dataState.filter((elem) => Object.keys(elem)[0] === deleteEntity);
 		data = data && Object.entries(Object.values(data[0])[0]);
 		data = data.map((record) => ({ [record[0]]: record[1] }));
 		const updateData = data.filter((record) => Object.values(record)[0][entityName].includes(id));
 
 		if (updateData.length > 0) {
-			for (let i = 0; i < updateData.length; i++) {
-				const newEntityInput = Object.values(updateData[i])[0][entityName].filter((entityId) => entityId != id);
+			updateData.forEach(async (item, index) => {
+				const newEntityInput = Object.values(item)[0][entityName].filter((entityId) => entityId != id);
 				const updateId = updateData.map((data) => Object.keys(data));
-				await set(ref(database, `${deleteEntity}/${updateId[i][0]}/${entityName}`), newEntityInput);
+				await set(ref(database, `${deleteEntity}/${updateId[index][0]}/${entityName}`), newEntityInput);
 				setChange(!change);
-			}
+			});
 		}
 	};
 

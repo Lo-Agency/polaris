@@ -11,6 +11,7 @@ import { useState } from 'react';
 import Button from '../atoms/button';
 import CheckBox from '../molecules/check-box';
 import * as yup from 'yup';
+import EmailInput from '../molecules/email-input';
 
 const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 	const [loading, setLoading] = useState(false);
@@ -25,6 +26,8 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 		switch (type) {
 			case 'text':
 				return <TextInput name={field} key={field} formValues={formValues} />;
+			case 'email':
+				return <EmailInput name={field} key={field} formValues={formValues} />;
 			case 'number':
 				return <NumberInput name={field} key={field} formValues={formValues} />;
 			case 'select':

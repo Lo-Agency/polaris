@@ -48,7 +48,7 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
 		let phaseProjects = phaseData[1];
 		let phaseDuration = 0;
 		phaseProjects.forEach((id) => {
-			let projectId = Object.keys(projects).find((projectId) => projectId === id);
+			let projectId = Object.keys(projects).find((projectID) => projectID === id);
 			phaseDuration += Number(projects[projectId]['learningDay']) + Number(projects[projectId]['days']);
 		});
 
@@ -90,7 +90,7 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
 	};
 
 	const renderPhaseData = (id, roadmap) => {
-		const phaseId = Object.keys(phases).find((phaseId) => phaseId === id);
+		const phaseId = Object.keys(phases).find((phaseID) => phaseID === id);
 
 		if (phaseStartDate === null) {
 			phaseStartDate = Object.values(roadmap)[1];

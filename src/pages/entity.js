@@ -26,7 +26,7 @@ const Entity = () => {
 		Object.entries(groups).forEach((group) => filterUsersOptions.push({ value: group[0], label: group[1]['title'] }));
 
 	const sortData = () => {
-		const sortedData = Object.values(data).map((dataItem) =>
+		return Object.values(data).map((dataItem) =>
 			configFields.map((field) => {
 				if (dataItem[field] && dataItem[field][0] !== '') {
 					if (config.entities[entityName].fields[field].isArray) {
@@ -38,7 +38,6 @@ const Entity = () => {
 				}
 			}),
 		);
-		return sortedData;
 	};
 
 	let entityContent = data && sortData();
@@ -51,7 +50,6 @@ const Entity = () => {
 		if (confirm(`Are you sure you want to delete this ${entityName}?`)) {
 			crud.deleteItem(item);
 		}
-		return;
 	};
 
 	const handleEdit = (item) => {

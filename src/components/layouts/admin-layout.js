@@ -1,8 +1,7 @@
 import { title } from 'case';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import config from '../../util/config';
-import { useNavigate } from 'react-router';
 import { useAuth } from '../providers/auth.provider';
 import { ToastContainer } from 'react-toastify';
 

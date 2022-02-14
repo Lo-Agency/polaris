@@ -2,8 +2,8 @@ import { Route, Routes } from 'react-router';
 import config from './util/config';
 import React, { lazy, Suspense } from 'react';
 import CrudProvider from './components/providers/crud.provider';
-import PrivateRoute from './components/routes/private-routes';
-import PublicRoute from './components/routes/public-routes';
+import PrivateRoute from './components/routes/private-route';
+import PublicRoute from './components/routes/public-route';
 import LoadingPage from './components/molecules/loading-page';
 import NotFound from './pages/404';
 

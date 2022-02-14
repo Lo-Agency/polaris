@@ -1,11 +1,10 @@
 import Select from 'react-select';
-import { useState } from 'react';
+import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
 import DoughnutChart from '../components/organisms/doughnut-chart';
 import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/organisms/gantt-chart';
-import TableView from '../components/molecules/table-roadmap';
+import TableView from '../components/molecules/table-view';
 import { useAuth } from '../components/providers/auth.provider';
 import { ViewMode } from 'gantt-task-react';
 import { useCrud } from '../components/providers/crud.provider';
@@ -40,33 +39,82 @@ export function Home() {
 	let options =
 		roadmaps && Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
 
-	if (userData?.type === 'user' && userData?.group !== '') {
-		const userGroup =
-			groups && userData.group.map((id) => Object.entries(groups).filter((group) => group[0] === id)[0]);
+	if (userData?.type === 'user' && userData.group !== '') {
+		const userGroup = userData.group.map((id) => Object.entries(groups).filter((group) => group[0] === id)[0]);
 		let userOptions = [];
-		userGroup &&
-			userGroup.forEach((group) =>
-				group[1].roadmap.forEach((id) =>
-					userOptions.push(options.filter((selectOption) => selectOption.value == id)[0]),
-				),
-			);
+
+		userGroup.forEach((group) =>
+			group[1].roadmap.forEach((id) => userOptions.push(options.filter((selectOption) => selectOption.value == id)[0])),
+		);
 		options = userOptions;
 	}
 
 	const RoadmapView = (viewtype) => {
 		localStorage.setItem('viewtype', viewtype);
-		const view = localStorage.getItem('viewtype');
-		setViewType(view);
+		setViewType(viewtype);
+	};
+
+	const createSelectBox = () => {
+		return (
+			<form>
+				<Select
+					onChange={(value) => {
+						setSelectedRoadmap(value.value);
+					}}
+					theme={(theme) => ({
+						...theme,
+						borderRadius: 0,
+						colors: {
+							...theme.colors,
+							primary25: '#C0C0C0',
+							primary50: '#C0C0C0',
+							primary: 'black',
+						},
+					})}
+					className="p-2 w-96 max-w-lg"
+					classNamePrefix="select"
+					closeMenuOnSelect={true}
+					name={'roadmap'}
+					options={options}></Select>
+			</form>
+		);
+	};
+
+	const createGanttChartViewButtons = () => {
+		return (
+			<div className="flex self-center">
+				<button className="btn" onClick={() => setView(ViewMode.Day)}>
+					Day
+				</button>
+				<button className="btn mx-2" onClick={() => setView(ViewMode.Week)}>
+					Week
+				</button>
+				<button className="btn mx-2" onClick={() => setView(ViewMode.Month)}>
+					Month
+				</button>
+			</div>
+		);
+	};
+
+	const createRoadmap = (viewType) => {
+		switch (viewType) {
+			case 'table':
+				return <TableView roadmapId={selectedRoadmap} />;
+			case 'gantt':
+				return <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap} />;
+			case 'doughnut':
+				return <DoughnutChart selectedRoadmap={selectedRoadmap} />;
+		}
 	};
 
 	return (
 		<>
-			{!auth.isLoading ? (
+			{!auth.isLoading && crud.dataState ? (
 				<div className="flex flex-col">
 					<header className="navbar fixed w-full px-4">
 						<h1 className="text-2xl">Polaris.</h1>
 						<div>
-							{userData?.type === 'admin' ? (
+							{userData.type === 'admin' ? (
 								<button
 									className="mr-4 btn"
 									onClick={() => {
@@ -80,44 +128,12 @@ export function Home() {
 					</header>
 
 					{!selectedRoadmap ? (
-						<div className="flex h-full items-center justify-center mt-72">
-							<form>
-								<Select
-									onChange={(value) => {
-										setSelectedRoadmap(value.value);
-									}}
-									theme={(theme) => ({
-										...theme,
-										borderRadius: 0,
-										colors: {
-											...theme.colors,
-											primary25: '#C0C0C0',
-											primary50: '#C0C0C0',
-											primary: 'black',
-										},
-									})}
-									className="p-2 w-96 max-w-lg"
-									classNamePrefix="select"
-									closeMenuOnSelect={true}
-									name={'roadmap'}
-									options={options}></Select>
-							</form>
-						</div>
+						<div className="flex h-full items-center justify-center mt-72">{createSelectBox()}</div>
 					) : (
 						<div className="px-4 mt-20 mb-10">
 							<div className="flex justify-between mb-3">
 								{viewType === 'gantt' ? (
-									<div className="flex self-center">
-										<button className="btn" onClick={() => setView(ViewMode.Day)}>
-											Day
-										</button>
-										<button className="btn mx-2" onClick={() => setView(ViewMode.Week)}>
-											Week
-										</button>
-										<button className="btn mx-2" onClick={() => setView(ViewMode.Month)}>
-											Month
-										</button>
-									</div>
+									createGanttChartViewButtons()
 								) : (
 									<div className="flex self-center">
 										{' '}
@@ -126,28 +142,7 @@ export function Home() {
 								)}
 
 								<div className="flex">
-									<form className="mr-3">
-										<Select
-											onChange={(value) => {
-												setSelectedRoadmap(value.value);
-											}}
-											theme={(theme) => ({
-												...theme,
-												borderRadius: 0,
-												colors: {
-													...theme.colors,
-													primary25: '#C0C0C0',
-													primary50: '#C0C0C0',
-													primary: 'black',
-												},
-											})}
-											className=" w-96 max-w-lg"
-											classNamePrefix="select"
-											closeMenuOnSelect={true}
-											name={'roadmap'}
-											options={options}></Select>
-									</form>
-
+									{createSelectBox()}
 									<button onClick={() => RoadmapView('table')}>
 										<svg
 											className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
@@ -200,9 +195,7 @@ export function Home() {
 									</button>
 								</div>
 							</div>
-							{viewType === 'table' && <TableView roadmapId={selectedRoadmap} />}
-							{viewType === 'gantt' && <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap} />}
-							{viewType === 'doughnut' && <DoughnutChart selectedRoadmap={selectedRoadmap} />}
+							{createRoadmap(viewType)}
 						</div>
 					)}
 				</div>

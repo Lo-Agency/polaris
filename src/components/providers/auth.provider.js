@@ -49,13 +49,12 @@ const AuthProvider = ({ children }) => {
 			}
 		} catch (error) {
 			setIsLoading(false);
-			switch (error.code) {
-				case 'auth/user-not-found':
-					throw new WrongCredentialsException('User not found');
-				case 'auth/wrong-password':
-					throw new WrongCredentialsException('Password is incorrect');
-				default:
-					throw new WrongCredentialsException('Something went Wrong contact admin!');
+			if (error.code === 'auth/user-not-found') {
+				throw new WrongCredentialsException('User not found');
+			} else if (error.code === 'auth/wrong-password') {
+				throw new WrongCredentialsException('Password is incorrect');
+			} else {
+				throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
 		}
 		setIsLoading(false);
