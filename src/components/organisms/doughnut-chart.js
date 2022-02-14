@@ -1,7 +1,6 @@
 import React from 'react';
-import { compareDesc } from 'date-fns';
+import { compareDesc, format } from 'date-fns';
 import Charts from '../molecules/doughnut-chart-helper';
-import { format } from 'date-fns';
 import { extractDataFromEntity } from '../../util/extract-data';
 import addDays from 'date-fns/addDays';
 import { useCrud } from '../providers/crud.provider';
@@ -20,17 +19,19 @@ const DoughnutChart = ({ selectedRoadmap }) => {
 	let endDates = [];
 
 	const renderPhaseData = (id, roadmap) => {
-		const phaseId = Object.keys(phases).find((phaseId) => phaseId === id);
-		{
-			startDate === null ? (startDate = Object.values(roadmap)[1]) : (startDate = endDate);
+		const phaseId = Object.keys(phases).find((phaseID) => phaseID === id);
+		if (startDate === null) {
+			startDate = Object.values(roadmap)[1];
+		} else {
+			startDate = endDate;
 		}
 		endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))));
 		phases[phaseId]['project'].forEach((projectId) => phaseProjectsName.push(projects[projectId]['title'][0]));
 	};
 
 	//calculate ent date of phase
-	const calculatePhaseEndDate = (startDate, duration) => {
-		endDate = addDays(new Date(startDate), duration);
+	const calculatePhaseEndDate = (date, duration) => {
+		endDate = addDays(new Date(date), duration);
 		return endDate;
 	};
 	//calculate phase duration
@@ -38,7 +39,7 @@ const DoughnutChart = ({ selectedRoadmap }) => {
 		let phaseDuration = 0;
 		let projectsPhase = phaseData[1];
 		projectsPhase.forEach((id) => {
-			let projectId = Object.keys(projects).find((projectId) => projectId === id);
+			let projectId = Object.keys(projects).find((projectID) => projectID === id);
 			phaseDuration += Number(projects[projectId]['learningDay']) + Number(projects[projectId]['days']);
 		});
 

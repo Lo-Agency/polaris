@@ -57,7 +57,7 @@ const CrudProvider = ({ children }) => {
 					});
 			});
 		});
-		return await Promise.all(allPromises);
+		return Promise.all(allPromises);
 	};
 
 	//create new data
@@ -76,7 +76,7 @@ const CrudProvider = ({ children }) => {
 		const entitiesWithList = Object.keys(config.entities).filter((item) => config.entities[item]['list'] != undefined);
 		const deleteEntity = entitiesWithList.filter((entity) => config.entities[entity]['list'].includes(entityName));
 		if (deleteEntity.length != 0) {
-			deleteEntity.map((entity) => deleteDependency(entity, id));
+			deleteEntity.forEach((entity) => deleteDependency(entity, id));
 		}
 		try {
 			const response = await remove(ref(database, `${entityName}/${id}`));

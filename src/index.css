@@ -29,6 +29,7 @@ html,body{
 /* header of table */
 ._9w8d5{
   font-size: 12px !important;
+  fill: white !important;
 }
 
 ._WuQ0f{
@@ -43,9 +44,6 @@ html,body{
 }
 ._2eZzQ{
   border-right: none !important;
-}
-._9w8d5{
-  fill: white !important;
 }
 ._1rLuZ{
   stroke: black !important;
