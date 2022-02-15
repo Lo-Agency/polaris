@@ -36,15 +36,20 @@ export function Home() {
 	};
 
 	let options;
-	if (roadmaps) {
-		options = Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
+	if (roadmaps && userData) {
+		const allOptions = Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
+
+		if (userData?.type === 'admin') {
+			options = allOptions;
+		}
+
 		if (userData?.type === 'user' && userData.group !== '') {
 			const userGroup = userData.group.map((id) => Object.entries(groups).filter((group) => group[0] === id)[0]);
 			let userOptions = [];
 
 			userGroup.forEach((group) =>
 				group[1].roadmap.forEach((id) =>
-					userOptions.push(options.filter((selectOption) => selectOption.value == id)[0]),
+					userOptions.push(allOptions.filter((selectOption) => selectOption.value == id)[0]),
 				),
 			);
 			options = userOptions;
@@ -177,7 +182,7 @@ export function Home() {
 
 									<button onClick={() => RoadmapView('doughnut')}>
 										<svg
-											className="w-10 h-10 hover:bg-gray-200 hover:rounded-lg p-1 rounded"
+											className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
