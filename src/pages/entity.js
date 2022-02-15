@@ -132,7 +132,7 @@ const Entity = () => {
 														</td>
 													);
 												})}
-												<td className="flex m-2 py-5">
+												<td className="flex pl-6 py-5">
 													<svg
 														onClick={() => handleDelete(Ids[index])}
 														className="w-6 h-6 mr-2 cursor-pointer"

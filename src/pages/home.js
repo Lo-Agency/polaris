@@ -35,23 +35,38 @@ export function Home() {
 		}
 	};
 
-	// create options for roadmaps select box
-	let options =
-		roadmaps && Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
+	let options;
+	if (roadmaps && userData) {
+		const allOptions = Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
 
-	if (userData?.type === 'user' && userData.group !== '') {
-		const userGroup = userData.group.map((id) => Object.entries(groups).filter((group) => group[0] === id)[0]);
-		let userOptions = [];
+		if (userData?.type === 'admin') {
+			options = allOptions;
+		}
 
-		userGroup.forEach((group) =>
-			group[1].roadmap.forEach((id) => userOptions.push(options.filter((selectOption) => selectOption.value == id)[0])),
-		);
-		options = userOptions;
+		if (userData?.type === 'user' && userData.group !== '') {
+			const userGroup = userData.group.map((id) => Object.entries(groups).filter((group) => group[0] === id)[0]);
+			let userOptions = [];
+
+			userGroup.forEach((group) =>
+				group[1].roadmap.forEach((id) =>
+					userOptions.push(allOptions.filter((selectOption) => selectOption.value == id)[0]),
+				),
+			);
+			options = userOptions;
+		}
 	}
 
 	const RoadmapView = (viewtype) => {
 		localStorage.setItem('viewtype', viewtype);
 		setViewType(viewtype);
+		getSelectedEntityClassName(viewtype);
+	};
+
+	const getSelectedEntityClassName = (type) => {
+		if (type === viewType) {
+			return 'view-roadmap ';
+		}
+		return 'view-roadmap-hover';
 	};
 
 	const createSelectBox = () => {
@@ -145,7 +160,7 @@ export function Home() {
 									{createSelectBox()}
 									<button onClick={() => RoadmapView('table')}>
 										<svg
-											className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
+											className={getSelectedEntityClassName('table')}
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
@@ -160,7 +175,7 @@ export function Home() {
 
 									<button className="rotate" onClick={() => RoadmapView('gantt')}>
 										<svg
-											className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
+											className={getSelectedEntityClassName('gantt')}
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
@@ -175,7 +190,7 @@ export function Home() {
 
 									<button onClick={() => RoadmapView('doughnut')}>
 										<svg
-											className="w-10 h-10 hover:bg-gray-200 hover:rounded-lg p-1 rounded"
+											className={getSelectedEntityClassName('doughnut')}
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"

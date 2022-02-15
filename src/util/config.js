@@ -128,7 +128,7 @@ export default {
 				resources: {
 					type: 'text',
 					isArray: false,
-					validate: yup.string().url().required(),
+					validate: yup.string().required(),
 				},
 				priority: {
 					type: 'select',

@@ -12,7 +12,11 @@ const ReferenceInput = ({ name, reference, formValues, actionName }) => {
 	const selectBoxData = referenceData && Object.entries(referenceData);
 	const values = [];
 	let defaultValues = null;
-	const options = selectBoxData && selectBoxData.map((data) => ({ value: data[0], label: data[1].title }));
+
+	let options;
+	if (selectBoxData) {
+		options = selectBoxData.map((data) => ({ value: data[0], label: data[1].title }));
+	}
 
 	if (formValues) {
 		if (Array.isArray(formValues[name])) {
