@@ -59,6 +59,14 @@ export function Home() {
 	const RoadmapView = (viewtype) => {
 		localStorage.setItem('viewtype', viewtype);
 		setViewType(viewtype);
+		getSelectedEntityClassName(viewtype);
+	};
+
+	const getSelectedEntityClassName = (type) => {
+		if (type === viewType) {
+			return 'view-roadmap ';
+		}
+		return 'view-roadmap-hover';
 	};
 
 	const createSelectBox = () => {
@@ -152,7 +160,7 @@ export function Home() {
 									{createSelectBox()}
 									<button onClick={() => RoadmapView('table')}>
 										<svg
-											className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
+											className={getSelectedEntityClassName('table')}
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
@@ -167,7 +175,7 @@ export function Home() {
 
 									<button className="rotate" onClick={() => RoadmapView('gantt')}>
 										<svg
-											className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
+											className={getSelectedEntityClassName('gantt')}
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
@@ -182,7 +190,7 @@ export function Home() {
 
 									<button onClick={() => RoadmapView('doughnut')}>
 										<svg
-											className="w-10 h-10 p-1 hover:bg-gray-200 hover:rounded-lg rounded"
+											className={getSelectedEntityClassName('doughnut')}
 											fill="none"
 											stroke="currentColor"
 											viewBox="0 0 24 24"
