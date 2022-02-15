@@ -35,8 +35,6 @@ export function Home() {
 		}
 	};
 
-	// create options for roadmaps select box
-	// let options = roadmaps && Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
 	let options;
 	if (roadmaps) {
 		options = Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
