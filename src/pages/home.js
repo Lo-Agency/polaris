@@ -36,17 +36,21 @@ export function Home() {
 	};
 
 	// create options for roadmaps select box
-	let options =
-		roadmaps && Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
+	// let options = roadmaps && Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
+	let options;
+	if (roadmaps) {
+		options = Object.entries(roadmaps).map((roadmap) => ({ value: roadmap[0], label: roadmap[1]['title'] }));
+		if (userData?.type === 'user' && userData.group !== '') {
+			const userGroup = userData.group.map((id) => Object.entries(groups).filter((group) => group[0] === id)[0]);
+			let userOptions = [];
 
-	if (userData?.type === 'user' && userData.group !== '') {
-		const userGroup = userData.group.map((id) => Object.entries(groups).filter((group) => group[0] === id)[0]);
-		let userOptions = [];
-
-		userGroup.forEach((group) =>
-			group[1].roadmap.forEach((id) => userOptions.push(options.filter((selectOption) => selectOption.value == id)[0])),
-		);
-		options = userOptions;
+			userGroup.forEach((group) =>
+				group[1].roadmap.forEach((id) =>
+					userOptions.push(options.filter((selectOption) => selectOption.value == id)[0]),
+				),
+			);
+			options = userOptions;
+		}
 	}
 
 	const RoadmapView = (viewtype) => {
