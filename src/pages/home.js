@@ -45,7 +45,7 @@ export function Home() {
 			options = allOptions;
 		}
 
-		if (userData?.type === 'user' && userData.group !== '') {
+		if (userData?.type === 'user' && userData.group) {
 			const userGroup = userData.group.map((id) => Object.entries(groups).filter((group) => group[0] === id)[0]);
 			let userOptions = [];
 

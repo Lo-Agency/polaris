@@ -80,7 +80,7 @@ const AuthProvider = ({ children }) => {
 		try {
 			const data = await createUserWithEmailAndPassword(auth, email, password);
 			const userId = data.user.uid;
-			await set(ref(database, `user/${userId}`), { email, isApproved: 'false', type: 'user', group: '' });
+			await set(ref(database, `user/${userId}`), { email, isApproved: 'false', type: 'user' });
 			await logOut();
 			setFunctionIsLoading(false);
 			toast.success('Your Email address is successfully registered. Please wait for admin approval verification.', {

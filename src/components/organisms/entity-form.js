@@ -105,7 +105,6 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 				<Button
 					className={'w-2/12 mt-10 flex justify-center items-center transition-colors text-white bg-black py-2'}
 					loading={loading}
-					actionName={actionName}
 				/>
 				{error ? (
 					<div className="flex items-center text-red-500 text-sm font-bold px-4 pt-3" role="alert">
