@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+
 export default {
 	firebase: {
 		apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -5,196 +7,216 @@ export default {
 		projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 		storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
 		messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-		appId: process.env.REACT_APP_FIREBASE_APP_ID
+		appId: process.env.REACT_APP_FIREBASE_APP_ID,
 	},
 	routes: {
 		home: {
-			pathname: "/",
+			pathname: '/',
 			isCaseSensitive: false,
-			isProtected: true
+			isProtected: true,
 		},
 		login: {
-			pathname: "/login",
+			pathname: '/login',
 			isCaseSensitive: false,
-			isProtected: false
+			isProtected: false,
 		},
 		entity: {
 			pathname: '/admin/:entityName/:actionName',
 			isCaseSensitive: true,
-			isProtected: true
+			isProtected: true,
 		},
 		admin: {
-			pathname: "/admin",
+			pathname: '/admin',
 			isCaseSensitive: true,
-			isProtected: true
+			isProtected: true,
 		},
-		"forgot-password": {
-			pathname: "/forgot-password",
+		'forgot-password': {
+			pathname: '/forgot-password',
 			isCaseSensitive: true,
-			isProtected: false
+			isProtected: false,
 		},
 		signup: {
-			pathname: "/signup",
+			pathname: '/signup',
 			isCaseSensitive: true,
-			isProtected: false
+			isProtected: false,
 		},
 	},
 
 	entities: {
-	
 		roadmap: {
 			fields: {
 				title: {
-					type: "text",
+					type: 'text',
 					isArray: false,
+					validate: yup.string().required(),
 				},
 				phase: {
-					type: "ref",
-					reference: "phase",
+					type: 'ref',
+					reference: 'phase',
 					isArray: true,
+					validate: yup.array().required(),
 				},
 				startingDate: {
-					type: "date",
+					type: 'date',
 					isArray: false,
+					validate: yup.date().required(),
 				},
 			},
-			list: ["phase"],
+
+			list: ['phase'],
 			readfields: {
 				duration: {
-					type: "text"
+					type: 'text',
 				},
 				topic: {
-					type: "text"
+					type: 'text',
 				},
 				category: {
-					type: "text"
+					type: 'text',
 				},
 				resources: {
-					type: "text"
+					type: 'text',
 				},
 				priority: {
-					type: "text"
+					type: 'text',
 				},
 				projects: {
-					type: "text"
+					type: 'text',
 				},
-
-			}
+			},
 		},
 
 		phase: {
 			fields: {
 				title: {
-					type: "text",
+					type: 'text',
 					required: true,
 					isArray: false,
+					validate: yup.string().required(),
 				},
 
 				learning: {
-					type: "ref",
+					type: 'ref',
 					isArray: true,
-					reference: "learning"
+					reference: 'learning',
+					validate: yup.array().required(),
 				},
 				project: {
-					type: "ref",
+					type: 'ref',
 					isArray: true,
-					reference: "project"
-				}
+					reference: 'project',
+					validate: yup.array().required(),
+				},
 			},
-			list: ["learning", "project"]
+
+			list: ['learning', 'project'],
 		},
 
 		learning: {
 			fields: {
 				title: {
-					type: "text",
+					type: 'text',
 					isArray: false,
+					validate: yup.string().required(),
 				},
 				category: {
-					type: "select",
+					type: 'select',
 					isArray: false,
-					value: ["Frontend", "Backend", "General", "Soft Skills"]
+					value: ['Frontend', 'Backend', 'General', 'Soft Skills'],
+					validate: yup.string().required(),
 				},
 				resources: {
-					type: "text",
+					type: 'text',
 					isArray: false,
+					validate: yup.string().required(),
 				},
 				priority: {
-					type: "select",
+					type: 'select',
 					isArray: false,
-					value: ["Low", "Medium", "High"]
-				}
-			}
+					value: ['Low', 'Medium', 'High'],
+					validate: yup.string().required(),
+				},
+			},
 		},
 
 		project: {
 			fields: {
 				title: {
-					type: "text",
+					type: 'text',
 					isArray: false,
+					validate: yup.string().required(),
 				},
 				days: {
-					type: "number",
+					type: 'number',
 					isArray: false,
+					validate: yup.number().required(),
 				},
 				projectType: {
-					type: "select",
+					type: 'select',
 					isArray: false,
-					value: ["Real", "Team", "Personal", "Optional"]
+					value: ['Real', 'Team', 'Personal', 'Optional'],
+					validate: yup.string().required(),
 				},
 				learningDay: {
-					type: "number",
+					type: 'number',
 					isArray: false,
-
-				}
-			}
+					validate: yup.number().required(),
+				},
+			},
 		},
 		group: {
 			fields: {
 				title: {
-					type: "text",
-					isArray: false
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
 				},
 				description: {
-					type: "text",
-					isArray: false
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
 				},
 				slug: {
-					type: "text",
-					isArray: false
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
 				},
 				roadmap: {
-					type: "ref",
-					reference: "roadmap",
-					isArray: true
-				}
+					type: 'ref',
+					reference: 'roadmap',
+					isArray: true,
+					validate: yup.array().required(),
+				},
 			},
-			list:["roadmap"]
 
+			list: ['roadmap'],
 		},
 		user: {
 			fields: {
 				email: {
-					type: "text",
-					isArray: false
+					type: 'email',
+					isArray: false,
+					validate: yup.string().email().required(),
 				},
 				group: {
-					type: "ref",
-					reference: "group",
+					type: 'ref',
+					reference: 'group',
 					isArray: true,
+					validate: yup.array(),
 				},
 				type: {
-					type: "select",
+					type: 'select',
 					isArray: false,
-					value: ["admin", "user"]
+					value: ['admin', 'user'],
+					validate: yup.string().required(),
 				},
 				isApproved: {
-					type: "boolean",
-					isArray: false
+					type: 'boolean',
+					isArray: false,
+					validate: yup.boolean(),
 				},
 			},
-			list: ["group"]
+			list: ['group'],
 		},
-
-	}
+	},
 };

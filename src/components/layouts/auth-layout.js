@@ -1,13 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 const AuthLayout = ({ children }) => {
-    return (
-        <div className="center-content bg-black">
-            <div className="bg-gray-50 p-10 flex flex-col justify-center items-center border-blue-40 border-4 xsm:text-sm">
-                {children}
-            </div>
-        </div>
-    )
-}
+	return (
+		<div className="center-content">
+			<div className="p-10 flex flex-col justify-center items-center shadow-2xl xsm:text-sm">{children}</div>
+			<ToastContainer />
+		</div>
+	);
+};
 
 export default AuthLayout;
