@@ -1,6 +1,6 @@
 import Select from 'react-select';
 import { React, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DoughnutChart from '../components/organisms/doughnut-chart';
 import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/organisms/gantt-chart';
@@ -16,15 +16,17 @@ export function Home() {
 	const navigate = useNavigate();
 	const dataState = crud.dataState;
 
-	const view = localStorage.getItem('viewtype');
 	const [viewcalendar, setView] = useState(ViewMode.Month);
 	const [selectedRoadmap, setSelectedRoadmap] = useState(null);
-	const [viewType, setViewType] = useState(view);
+	const [viewType, setViewType] = useState(localStorage.getItem('viewtype'));
 
 	const roadmaps = extractDataFromEntity('roadmap', dataState);
 	const groups = extractDataFromEntity('group', dataState);
 	const users = extractDataFromEntity('user', dataState);
 	const userData = users && users[auth.user.uid];
+	if (!viewType) {
+		setViewType('table');
+	}
 
 	const logOut = async () => {
 		try {
@@ -74,8 +76,9 @@ export function Home() {
 			<form>
 				<Select
 					onChange={(value) => {
-						setSelectedRoadmap(value.value);
+						setSelectedRoadmap(value);
 					}}
+					defaultValue={selectedRoadmap}
 					theme={(theme) => ({
 						...theme,
 						borderRadius: 0,
@@ -114,20 +117,22 @@ export function Home() {
 	const createRoadmap = (viewType) => {
 		switch (viewType) {
 			case 'table':
-				return <TableView roadmapId={selectedRoadmap} />;
+				return <TableView roadmapId={selectedRoadmap.value} />;
 			case 'gantt':
-				return <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap} />;
+				return <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap.value} />;
 			case 'doughnut':
-				return <DoughnutChart selectedRoadmap={selectedRoadmap} />;
+				return <DoughnutChart selectedRoadmap={selectedRoadmap.value} />;
 		}
 	};
 
 	return (
 		<>
-			{!auth.isLoading && crud.dataState ? (
+			{!auth.functionIsLoading && crud.dataState ? (
 				<div className="flex flex-col">
 					<header className="navbar fixed w-full px-4">
-						<h1 className="text-2xl">Polaris.</h1>
+						<Link className="text-2xl" to={'/'}>
+							Polaris.
+						</Link>
 						<div>
 							{userData.type === 'admin' ? (
 								<button
@@ -152,7 +157,7 @@ export function Home() {
 								) : (
 									<div className="flex self-center">
 										{' '}
-										<p>Starting Date {Object.values(roadmaps[selectedRoadmap])[1]} </p>{' '}
+										<p>Starting Date {Object.values(roadmaps[selectedRoadmap.value])[1]} </p>{' '}
 									</div>
 								)}
 

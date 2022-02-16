@@ -2,10 +2,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../providers/auth.provider';
 
 function PublicRoute({ children }) {
-	const { user, isLoading } = useAuth();
+	const { user, functionIsLoading } = useAuth();
 	const location = useLocation();
 	let from = location.state?.from?.pathname;
-	if (user && !isLoading) {
+	if (user && !functionIsLoading) {
 		if (from) {
 			return <Navigate to={from} state={{ from: location }} />;
 		}

@@ -39,9 +39,11 @@ const AdminLayout = ({ children }) => {
 			{userData?.type === 'admin' ? (
 				<div className="relative">
 					<aside className="w-60 bg-black fixed h-screen text-white justify-between flex-col flex z-20">
-						<div>
-							<h1 className="text-center text-2xl m-5">Polaris.</h1>
-							<ul className="flex justify-start flex-col">
+						<div className="mt-5">
+							<Link className="text-center text-2xl m-5" to={'/'}>
+								Polaris.
+							</Link>
+							<ul className="flex justify-start flex-col mt-5">
 								{Object.keys(config.entities).map((key) => (
 									<li className={getSelectedEntityClassName(key)} key={key}>
 										<Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
@@ -60,7 +62,7 @@ const AdminLayout = ({ children }) => {
 						<header className="fixed navbar min-w-full">
 							<p className="px-4 ml-60">{title(entityName)}</p>
 							<div>
-								<Link className="px-4" to={`/`}>
+								<Link className="px-4" to={'/'}>
 									Home
 								</Link>
 								{entityName !== 'user' ? (
