@@ -54,7 +54,7 @@ export default {
 					type: 'ref',
 					reference: 'phase',
 					isArray: true,
-					validate: yup.array().required(),
+					validate: yup.array(),
 				},
 				startingDate: {
 					type: 'date',
@@ -99,13 +99,13 @@ export default {
 					type: 'ref',
 					isArray: true,
 					reference: 'learning',
-					validate: yup.array().required(),
+					validate: yup.array(),
 				},
 				project: {
 					type: 'ref',
 					isArray: true,
 					reference: 'project',
-					validate: yup.array().required(),
+					validate: yup.array(),
 				},
 			},
 
@@ -185,7 +185,7 @@ export default {
 					type: 'ref',
 					reference: 'roadmap',
 					isArray: true,
-					validate: yup.array().required(),
+					validate: yup.array(),
 				},
 			},
 
