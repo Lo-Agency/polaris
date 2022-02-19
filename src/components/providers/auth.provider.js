@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
 				userData = snapshot.val();
 			});
 			if (userData.type === 'admin') {
-				navigate('/admin/roadmap/list');
+				navigate('/admin/learning/list');
 			} else if (userData.isApproved === 'true') {
 				navigate('/');
 			} else {
