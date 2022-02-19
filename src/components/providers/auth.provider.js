@@ -82,6 +82,7 @@ const AuthProvider = ({ children }) => {
 			const userId = data.user.uid;
 			await set(ref(database, `user/${userId}`), { email, isApproved: 'false', type: 'user' });
 			await logOut();
+			navigate('/login');
 			setFunctionIsLoading(false);
 			toast.success('Your Email address is successfully registered. Please wait for admin approval verification.', {
 				position: 'top-center',
