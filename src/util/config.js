@@ -43,75 +43,6 @@ export default {
 	},
 
 	entities: {
-		roadmap: {
-			fields: {
-				title: {
-					type: 'text',
-					isArray: false,
-					validate: yup.string().required(),
-				},
-				phase: {
-					type: 'ref',
-					reference: 'phase',
-					isArray: true,
-					validate: yup.array().required(),
-				},
-				startingDate: {
-					type: 'date',
-					isArray: false,
-					validate: yup.date().required(),
-				},
-			},
-
-			list: ['phase'],
-			readfields: {
-				duration: {
-					type: 'text',
-				},
-				topic: {
-					type: 'text',
-				},
-				category: {
-					type: 'text',
-				},
-				resources: {
-					type: 'text',
-				},
-				priority: {
-					type: 'text',
-				},
-				projects: {
-					type: 'text',
-				},
-			},
-		},
-
-		phase: {
-			fields: {
-				title: {
-					type: 'text',
-					required: true,
-					isArray: false,
-					validate: yup.string().required(),
-				},
-
-				learning: {
-					type: 'ref',
-					isArray: true,
-					reference: 'learning',
-					validate: yup.array().required(),
-				},
-				project: {
-					type: 'ref',
-					isArray: true,
-					reference: 'project',
-					validate: yup.array().required(),
-				},
-			},
-
-			list: ['learning', 'project'],
-		},
-
 		learning: {
 			fields: {
 				title: {
@@ -164,6 +95,75 @@ export default {
 				},
 			},
 		},
+
+		phase: {
+			fields: {
+				title: {
+					type: 'text',
+					required: true,
+					isArray: false,
+					validate: yup.string().required(),
+				},
+
+				learning: {
+					type: 'ref',
+					isArray: true,
+					reference: 'learning',
+					validate: yup.array().required(),
+				},
+				project: {
+					type: 'ref',
+					isArray: true,
+					reference: 'project',
+					validate: yup.array().required(),
+				},
+			},
+
+			list: ['learning', 'project'],
+		},
+		roadmap: {
+			fields: {
+				title: {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
+				},
+				phase: {
+					type: 'ref',
+					reference: 'phase',
+					isArray: true,
+					validate: yup.array().required(),
+				},
+				startingDate: {
+					type: 'date',
+					isArray: false,
+					validate: yup.date().required(),
+				},
+			},
+
+			list: ['phase'],
+			readfields: {
+				duration: {
+					type: 'text',
+				},
+				topic: {
+					type: 'text',
+				},
+				category: {
+					type: 'text',
+				},
+				resources: {
+					type: 'text',
+				},
+				priority: {
+					type: 'text',
+				},
+				projects: {
+					type: 'text',
+				},
+			},
+		},
+
 		group: {
 			fields: {
 				title: {
@@ -185,7 +185,7 @@ export default {
 					type: 'ref',
 					reference: 'roadmap',
 					isArray: true,
-					validate: yup.array().required(),
+					validate: yup.array(),
 				},
 			},
 

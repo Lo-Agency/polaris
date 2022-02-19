@@ -38,7 +38,7 @@ function SignUp() {
 
 					<Button
 						className={'btn-form w-2/12 flex justify-center items-center'}
-						loading={auth.isLoading}
+						loading={auth.functionIsLoading}
 						actionName={'signup'}
 					/>
 

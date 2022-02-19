@@ -25,21 +25,21 @@ const TableView = ({ roadmapId }) => {
 			<>
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLearnings.map((id) => (
-						<p key={id} className="py-5 h-10">
+						<p key={id} className="py-5 h-10 flex items-center">
 							{learnings[id].title}
 						</p>
 					))}
 				</td>
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLearnings.map((id) => (
-						<p key={id} className="py-5 h-10">
+						<p key={id} className="py-5 h-10 flex items-center">
 							{learnings[id].category}
 						</p>
 					))}
 				</td>
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLearnings.map((id) => (
-						<p key={id} className="py-5 h-10 truncate max-w-xs">
+						<p key={id} className="py-5 h-10 truncate max-w-xs flex items-center">
 							<a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>
 								{learnings[id].resources}
 							</a>
@@ -48,7 +48,7 @@ const TableView = ({ roadmapId }) => {
 				</td>
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLearnings.map((id) => (
-						<p key={id} className="py-5 h-10">
+						<p key={id} className="py-5 h-10 flex items-center">
 							{learnings[id].priority}
 						</p>
 					))}
@@ -93,7 +93,7 @@ const TableView = ({ roadmapId }) => {
 					<td className="px-6 py-4 whitespace-nowrap">
 						<ul>
 							{phases[phaseId]['project'].map((proj) => (
-								<li className="py-5 h-20" key={proj}>
+								<li className="py-5 h-10 flex justify-center" key={proj}>
 									{projects[proj].title}
 								</li>
 							))}
