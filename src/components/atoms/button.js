@@ -1,10 +1,8 @@
-import { title } from 'case';
-
 const Button = ({ className, loading, actionName }) => {
 	return (
 		<button className={className} type="submit">
 			{!loading ? (
-				title(actionName)
+				actionName
 			) : (
 				<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff">
 					<g transform="translate(1 1)" strokeWidth="2">
