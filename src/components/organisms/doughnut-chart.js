@@ -26,7 +26,7 @@ const DoughnutChart = ({ selectedRoadmap }) => {
 			startDate = endDate;
 		}
 		endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))));
-		phases[phaseId]['project'].forEach((projectId) => phaseProjectsName.push(projects[projectId]['title'][0]));
+		phases[phaseId]['project'].forEach((projectId) => phaseProjectsName.push(projects[projectId]['title']));
 	};
 
 	//calculate ent date of phase
