@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useCallback } from 'react';
-import { ViewMode, Gantt } from 'gantt-task-react';
+import { Gantt } from 'gantt-task-react';
 import { extractDataFromEntity } from '../../util/extract-data';
 import addDays from 'date-fns/addDays';
 import GanttModal from '../molecules/gantt-chart-modal';
@@ -36,9 +36,9 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
 	const phases = extractDataFromEntity('phase', dataState);
 
 	let columnWidth = 60;
-	if (viewcalendar === ViewMode.Month) {
+	if (viewcalendar === 'Month') {
 		columnWidth = 200;
-	} else if (viewcalendar === ViewMode.Week) {
+	} else if (viewcalendar === 'Week') {
 		columnWidth = 150;
 	}
 
@@ -133,7 +133,7 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
 		//phases
 		ganttData.push({
 			id: phaseId,
-			name: phases[phaseId]['title'][0],
+			name: phases[phaseId]['title'],
 			type: 'project',
 			hideChildren: false,
 			start: phasesStartDates[phaseIndex],
@@ -145,7 +145,7 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
 			ganttData.push({
 				//every id of projects must be unique in this gantt chart
 				id: projectId + phaseId,
-				name: projects[projectId]['title'][0],
+				name: projects[projectId]['title'],
 				type: 'task',
 				start: projectsStartDates[phaseIndex][projectIndex],
 				end: projectsEndDates[phaseIndex][projectIndex],
