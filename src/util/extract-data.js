@@ -6,5 +6,7 @@ export const extractDataFromEntity = (entityName, dataState) => {
 };
 
 export const entityConfigFiels = (entityName) => {
-	return Object.keys(config.entities[entityName].fields);
+	if (config.entities[entityName]) {
+		return Object.keys(config.entities[entityName].fields);
+	}
 };

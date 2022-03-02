@@ -6,7 +6,6 @@ import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/organisms/gantt-chart';
 import TableView from '../components/molecules/table-view';
 import { useAuth } from '../components/providers/auth.provider';
-import { ViewMode } from 'gantt-task-react';
 import { useCrud } from '../components/providers/crud.provider';
 import LoadingPage from '../components/molecules/loading-page';
 
@@ -16,7 +15,7 @@ export function Home() {
 	const navigate = useNavigate();
 	const dataState = crud.dataState;
 
-	const [viewcalendar, setView] = useState(ViewMode.Month);
+	const [viewcalendar, setView] = useState('Month');
 	const [selectedRoadmap, setSelectedRoadmap] = useState(null);
 	const [viewType, setViewType] = useState(localStorage.getItem('viewtype'));
 
@@ -98,22 +97,6 @@ export function Home() {
 		);
 	};
 
-	const createGanttChartViewButtons = () => {
-		return (
-			<div className="flex self-center">
-				<button className="btn" onClick={() => setView(ViewMode.Day)}>
-					Day
-				</button>
-				<button className="btn mx-2" onClick={() => setView(ViewMode.Week)}>
-					Week
-				</button>
-				<button className="btn mx-2" onClick={() => setView(ViewMode.Month)}>
-					Month
-				</button>
-			</div>
-		);
-	};
-
 	const createRoadmap = (viewType) => {
 		switch (viewType) {
 			case 'table':
@@ -148,19 +131,25 @@ export function Home() {
 					</header>
 
 					{!selectedRoadmap ? (
-						<div className="flex h-full items-center justify-center mt-72">{createSelectBox()}</div>
+						<div className="flex h-full items-center justify-center mt-72">
+							{options ? createSelectBox() : <p>You dont have any group yet!</p>}
+						</div>
 					) : (
 						<div className="px-4 mt-20 mb-10">
 							<div className="flex justify-between mb-3">
-								{viewType === 'gantt' ? (
-									createGanttChartViewButtons()
-								) : (
-									<div className="flex self-center">
-										{' '}
-										<p>Starting Date {Object.values(roadmaps[selectedRoadmap.value])[1]} </p>{' '}
-									</div>
-								)}
-
+								<div className="flex self-center">
+									{viewType === 'gantt' ? (
+										['Day', 'Week', 'Month'].map((item) => {
+											return (
+												<button key={item} className="btn m-2" onClick={() => setView(item)}>
+													{item}
+												</button>
+											);
+										})
+									) : (
+										<p> Starting Date {Object.values(roadmaps[selectedRoadmap.value])[1]} </p>
+									)}
+								</div>
 								<div className="flex">
 									{createSelectBox()}
 									<button onClick={() => RoadmapView('table')}>
