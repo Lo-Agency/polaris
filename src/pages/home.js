@@ -117,7 +117,7 @@ export function Home() {
 							Polaris.
 						</Link>
 						<div>
-							{userData.type === 'admin' ? (
+							{userData.type === 'admin' && (
 								<button
 									className="mr-4 btn"
 									onClick={() => {
@@ -125,7 +125,7 @@ export function Home() {
 									}}>
 									Admin Panel
 								</button>
-							) : null}
+							)}
 							<button onClick={logOut}>Logout</button>
 						</div>
 					</header>

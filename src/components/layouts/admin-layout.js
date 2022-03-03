@@ -65,11 +65,11 @@ const AdminLayout = ({ children }) => {
 								<Link className="px-4" to={'/'}>
 									Home
 								</Link>
-								{entityName !== 'user' ? (
+								{entityName !== 'user' && (
 									<Link className="py-2 px-4 mr-4 text-center btn" to={`/admin/${entityName}/create`}>
 										Create new
 									</Link>
-								) : null}
+								)}
 							</div>
 						</header>
 					</div>

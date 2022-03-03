@@ -107,11 +107,11 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 					loading={loading}
 					actionName="Save"
 				/>
-				{error ? (
+				{error && (
 					<div className="flex items-center text-red-500 text-sm font-bold px-4 pt-3" role="alert">
 						<p>{error}</p>
 					</div>
-				) : null}
+				)}
 			</form>
 		</div>
 	);
