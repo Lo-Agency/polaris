@@ -1,4 +1,4 @@
-const GanttModal = ({ onCancel, project }) => {
+const GanttChartModal = ({ onCancel, project }) => {
 	return (
 		<>
 			<div onClick={onCancel} className="fixed z-10 inset-0 overflow-y-auto">
@@ -45,4 +45,4 @@ const GanttModal = ({ onCancel, project }) => {
 	);
 };
 
-export default GanttModal;
+export default GanttChartModal;

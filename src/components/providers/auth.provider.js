@@ -95,11 +95,10 @@ const AuthProvider = ({ children }) => {
 			});
 		} catch (error) {
 			setFunctionIsLoading(false);
-			switch (error.code) {
-				case 'auth/email-already-in-use':
-					throw new WrongCredentialsException('Email has already been taken.');
-				default:
-					throw new WrongCredentialsException('Something went Wrong contact admin!');
+			if (error.code === 'auth/email-already-in-use') {
+				throw new WrongCredentialsException('Email has already been taken.');
+			} else {
+				throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
 		}
 	};

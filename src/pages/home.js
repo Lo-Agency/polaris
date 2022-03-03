@@ -97,8 +97,8 @@ export function Home() {
 		);
 	};
 
-	const createRoadmap = (viewType) => {
-		switch (viewType) {
+	const createRoadmap = (type) => {
+		switch (type) {
 			case 'table':
 				return <TableView roadmapId={selectedRoadmap.value} />;
 			case 'gantt':
