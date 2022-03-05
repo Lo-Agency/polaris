@@ -44,12 +44,10 @@ const AdminLayout = ({ children }) => {
 								Polaris.
 							</Link>
 							<ul className="flex justify-start flex-col mt-5">
-								{Object.keys(config.entities).map((key) => (
-									<li className={getSelectedEntityClassName(key)} key={key}>
-										<Link className="flex justify-start items-center" to={`/admin/${key.toLowerCase()}/list`}>
-											{title(key)}
-										</Link>
-									</li>
+								{Object.keys(config.entities).map((entity) => (
+									<Link key={entity} to={`/admin/${entity.toLowerCase()}/list`}>
+										<li className={getSelectedEntityClassName(entity)}>{title(entity)}</li>
+									</Link>
 								))}
 							</ul>
 						</div>
@@ -65,11 +63,11 @@ const AdminLayout = ({ children }) => {
 								<Link className="px-4" to={'/'}>
 									Home
 								</Link>
-								{entityName !== 'user' ? (
+								{entityName !== 'user' && (
 									<Link className="py-2 px-4 mr-4 text-center btn" to={`/admin/${entityName}/create`}>
 										Create new
 									</Link>
-								) : null}
+								)}
 							</div>
 						</header>
 					</div>

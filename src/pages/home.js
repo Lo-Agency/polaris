@@ -97,8 +97,8 @@ export function Home() {
 		);
 	};
 
-	const createRoadmap = (viewType) => {
-		switch (viewType) {
+	const createRoadmap = (type) => {
+		switch (type) {
 			case 'table':
 				return <TableView roadmapId={selectedRoadmap.value} />;
 			case 'gantt':
@@ -117,7 +117,7 @@ export function Home() {
 							Polaris.
 						</Link>
 						<div>
-							{userData.type === 'admin' ? (
+							{userData.type === 'admin' && (
 								<button
 									className="mr-4 btn"
 									onClick={() => {
@@ -125,16 +125,18 @@ export function Home() {
 									}}>
 									Admin Panel
 								</button>
-							) : null}
+							)}
 							<button onClick={logOut}>Logout</button>
 						</div>
 					</header>
 
-					{!selectedRoadmap ? (
+					{!selectedRoadmap && (
 						<div className="flex h-full items-center justify-center mt-72">
 							{options ? createSelectBox() : <p>You dont have any group yet!</p>}
 						</div>
-					) : (
+					)}
+
+					{selectedRoadmap && (
 						<div className="px-4 mt-20 mb-10">
 							<div className="flex justify-between mb-3">
 								<div className="flex self-center">
