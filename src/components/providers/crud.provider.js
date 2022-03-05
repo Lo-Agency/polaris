@@ -99,7 +99,7 @@ const CrudProvider = ({ children }) => {
 		if (updateData.length > 0) {
 			updateData.forEach(async (item, index) => {
 				const newEntityInput = Object.values(item)[0][entityName].filter((entityId) => entityId != id);
-				const updateId = updateData.map((data) => Object.keys(data));
+				const updateId = updateData.map((updateItem) => Object.keys(updateItem));
 				await set(ref(database, `${deleteEntity}/${updateId[index][0]}/${entityName}`), newEntityInput);
 				setChange(!change);
 			});
@@ -124,9 +124,9 @@ const CrudProvider = ({ children }) => {
 	};
 
 	//update
-	const updateItem = async (values, entityName, editID) => {
+	const updateItem = async (values, entity, editID) => {
 		try {
-			await set(ref(database, `${entityName}/${editID}`), values);
+			await set(ref(database, `${entity}/${editID}`), values);
 			sendNotification('success', 'successfully updated.');
 			setChange(!change);
 		} catch (error) {
