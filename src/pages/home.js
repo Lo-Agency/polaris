@@ -130,11 +130,13 @@ export function Home() {
 						</div>
 					</header>
 
-					{!selectedRoadmap ? (
+					{!selectedRoadmap && (
 						<div className="flex h-full items-center justify-center mt-72">
 							{options ? createSelectBox() : <p>You dont have any group yet!</p>}
 						</div>
-					) : (
+					)}
+
+					{selectedRoadmap && (
 						<div className="px-4 mt-20 mb-10">
 							<div className="flex justify-between mb-3">
 								<div className="flex self-center">
