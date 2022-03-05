@@ -1,5 +1,5 @@
 # Polaris
-A Roadmap creator.
+An open source roadmap creator for anyone who has a course.
 
 ## Features
 - Build roadmaps by admin.
