@@ -125,9 +125,9 @@ const Entity = () => {
 									{entityContent.map((items, index) => {
 										return (
 											<tr className="text-center p-4 text-sm" key={index}>
-												{items.map((item, index) => {
+												{items.map((item, idx) => {
 													return (
-														<td className="flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left" key={index}>
+														<td className="flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left" key={idx}>
 															{item}
 														</td>
 													);

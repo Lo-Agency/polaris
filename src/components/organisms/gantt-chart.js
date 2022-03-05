@@ -6,12 +6,13 @@ import GanttModal from '../molecules/gantt-chart-modal';
 import 'gantt-task-react/dist/index.css';
 import { useCrud } from '../providers/crud.provider';
 
-const GanttChart = ({ roadmapId, viewcalendar }) => {
+const GanttChart = ({ roadmapId }) => {
 	const crud = useCrud();
 	const dataState = crud.dataState;
 
 	const ganttData = [];
 	const [tasks, setTasks] = useState(ganttData);
+	const [view, setView] = useState('Month');
 	const [project, setProject] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 
@@ -36,9 +37,9 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
 	const phases = extractDataFromEntity('phase', dataState);
 
 	let columnWidth = 60;
-	if (viewcalendar === 'Month') {
+	if (view === 'Month') {
 		columnWidth = 200;
-	} else if (viewcalendar === 'Week') {
+	} else if (view === 'Week') {
 		columnWidth = 150;
 	}
 
@@ -124,6 +125,16 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
 		}
 	};
 
+	const createViewButtons = () => {
+		return ['Day', 'Week', 'Month'].map((item) => {
+			return (
+				<button key={item} className="btn m-2" onClick={() => setView(item)}>
+					{item}
+				</button>
+			);
+		});
+	};
+
 	roadmapId &&
 		Object.values(roadmaps[roadmapId])[0].map((phaseId) => {
 			return renderPhaseData(phaseId, roadmaps[roadmapId]);
@@ -157,9 +168,10 @@ const GanttChart = ({ roadmapId, viewcalendar }) => {
 
 	return (
 		<>
+			{createViewButtons()}
 			<Gantt
 				tasks={tasks}
-				viewMode={viewcalendar}
+				viewMode={view}
 				onSelect={handleSelect}
 				onExpanderClick={handleExpanderClick}
 				columnWidth={columnWidth}

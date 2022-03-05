@@ -15,7 +15,6 @@ export function Home() {
 	const navigate = useNavigate();
 	const dataState = crud.dataState;
 
-	const [viewcalendar, setView] = useState('Month');
 	const [selectedRoadmap, setSelectedRoadmap] = useState(null);
 	const [viewType, setViewType] = useState(localStorage.getItem('viewtype'));
 
@@ -71,30 +70,33 @@ export function Home() {
 	};
 
 	const createSelectBox = () => {
-		return (
-			<form>
-				<Select
-					onChange={(value) => {
-						setSelectedRoadmap(value);
-					}}
-					defaultValue={selectedRoadmap}
-					theme={(theme) => ({
-						...theme,
-						borderRadius: 0,
-						colors: {
-							...theme.colors,
-							primary25: '#C0C0C0',
-							primary50: '#C0C0C0',
-							primary: 'black',
-						},
-					})}
-					className="p-2 w-96 max-w-lg"
-					classNamePrefix="select"
-					closeMenuOnSelect={true}
-					name={'roadmap'}
-					options={options}></Select>
-			</form>
-		);
+		if (options) {
+			return (
+				<form>
+					<Select
+						onChange={(value) => {
+							setSelectedRoadmap(value);
+						}}
+						defaultValue={selectedRoadmap}
+						theme={(theme) => ({
+							...theme,
+							borderRadius: 0,
+							colors: {
+								...theme.colors,
+								primary25: '#C0C0C0',
+								primary50: '#C0C0C0',
+								primary: 'black',
+							},
+						})}
+						className="p-2 w-96 max-w-lg"
+						classNamePrefix="select"
+						closeMenuOnSelect={true}
+						name={'roadmap'}
+						options={options}></Select>
+				</form>
+			);
+		}
+		return <p>You dont have any group yet!</p>;
 	};
 
 	const createRoadmap = (type) => {
@@ -102,7 +104,7 @@ export function Home() {
 			case 'table':
 				return <TableView roadmapId={selectedRoadmap.value} />;
 			case 'gantt':
-				return <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap.value} />;
+				return <GanttChart roadmapId={selectedRoadmap.value} />;
 			case 'doughnut':
 				return <DoughnutChart selectedRoadmap={selectedRoadmap.value} />;
 		}
@@ -129,28 +131,11 @@ export function Home() {
 							<button onClick={logOut}>Logout</button>
 						</div>
 					</header>
-
-					{!selectedRoadmap && (
-						<div className="flex h-full items-center justify-center mt-72">
-							{options ? createSelectBox() : <p>You dont have any group yet!</p>}
-						</div>
-					)}
-
-					{selectedRoadmap && (
+					{selectedRoadmap ? (
 						<div className="px-4 mt-20 mb-10">
 							<div className="flex justify-between mb-3">
 								<div className="flex self-center">
-									{viewType === 'gantt' ? (
-										['Day', 'Week', 'Month'].map((item) => {
-											return (
-												<button key={item} className="btn m-2" onClick={() => setView(item)}>
-													{item}
-												</button>
-											);
-										})
-									) : (
-										<p> Starting Date {Object.values(roadmaps[selectedRoadmap.value])[1]} </p>
-									)}
+									<p> Starting Date {Object.values(roadmaps[selectedRoadmap.value])[1]} </p>
 								</div>
 								<div className="flex">
 									{createSelectBox()}
@@ -208,6 +193,8 @@ export function Home() {
 							</div>
 							{createRoadmap(viewType)}
 						</div>
+					) : (
+						<div className="flex h-full items-center justify-center mt-72">{createSelectBox()}</div>
 					)}
 				</div>
 			) : (
