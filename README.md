@@ -2,11 +2,11 @@
 An open source roadmap creator for anyone who has a course.
 
 ## Features
-- Build roadmaps by admin.
-- Show road map in three different views (table, gantt chart, doughnat chart).
-- Ability to group users by admin.
-- Show all roadmaps to admin.
-- Show the roadmap of each group only to its members.
+- Build roadmaps by an admin.
+- Show road maps in three different views (table, Gantt chart, doughnut chart).
+- Ability to group users.
+- Admin can see all roadmaps.
+- Users of each group can see their assigned roadmaps.
 
 ## Setup & Run
 ### Create Database
@@ -37,9 +37,9 @@ $ yarn start
 ```
 
 ## Usage
-If you want to use Polaris for the first time, you have no admin, first sign up and then go to your firebase project. In the realtime database section you can see all of your data, open user, change the `isApproved` field to `true` and the `type` to `admin`. Now you are an admin. If another person wants to be an admin, all you have to do is go to the users section in admin panel and change him type as admin.
+If you want to use Polaris for the first time, you have no admin, first sign up and then go to your firebase project. In the real-time database section, you can see all of your data, open user, change the `isApproved` field to `true` and the `type` to `admin`. Now you are an admin. If another person wants to be an admin, you have to go to the users' section in the admin panel and change his type as admin.
 
-Note: No one can login without admins permission, after each user registered, admin must approved the user through his panel.
+**Note**: No one can log in without the admin's permission after each user registers; an admin must approve the user through his panel.
 
 ### Create Roadmap
 1. Create your categories.
