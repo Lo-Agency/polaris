@@ -42,10 +42,9 @@ If you want to use Polaris for the first time, you have no admin, first sign up 
 **Note**: No one can log in without the admin's permission after each user registers; an admin must approve the user through his panel.
 
 ### Create Roadmap
-1. Create your categories.
-2. Create your learnings.
-3. Create your projects.
-4. Create your phases based on learnings and projects.
-5. Create your roadmap using relevent phases.
-6. Create group and asign the relevent roadmap to it.
-7. Asign groups to relevent users.
+1. Create your learnings.
+2. Create your projects.
+3. Create your phases based on learnings and projects.
+4. Create your roadmap using relevent phases.
+5. Create group and asign the relevent roadmap to it.
+6. Asign groups to relevent users.
