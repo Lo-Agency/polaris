@@ -8,6 +8,7 @@ import TableView from '../components/molecules/table-view';
 import { useAuth } from '../components/providers/auth.provider';
 import { useCrud } from '../components/providers/crud.provider';
 import LoadingPage from '../components/molecules/loading-page';
+import { format } from 'date-fns';
 
 export function Home() {
 	const crud = useCrud();
@@ -110,14 +111,6 @@ export function Home() {
 		}
 	};
 
-	function padTo2Digits(num) {
-		return num.toString().padStart(2, '0');
-	}
-
-	function formatDate(date) {
-		return [padTo2Digits(date.getDate()), padTo2Digits(date.getMonth() + 1), date.getFullYear()].join('/');
-	}
-
 	return (
 		<>
 			{!auth.functionIsLoading && crud.dataState ? (
@@ -143,8 +136,7 @@ export function Home() {
 						<div className="px-4 mt-20 mb-10">
 							<div className="flex justify-between mb-3">
 								<div className="flex self-center">
-									<p> Starting Date {formatDate(new Date(Object.values(roadmaps[selectedRoadmap.value])[1]))} </p>
-									{/* <p> Starting Date {format(new Date(Object.values(roadmaps[selectedRoadmap.value])[1]), 'P')} </p> */}
+									<p> Starting Date {format(new Date(Object.values(roadmaps[selectedRoadmap.value])[1]), 'PPP')} </p>
 								</div>
 								<div className="flex">
 									{createSelectBox()}
