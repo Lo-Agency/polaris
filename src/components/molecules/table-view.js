@@ -93,7 +93,7 @@ const TableView = ({ roadmapId }) => {
 					<td className="px-6 py-4 whitespace-nowrap">
 						<ul>
 							{phases[phaseId]['project'].map((proj) => (
-								<li className="py-5 h-10 flex justify-center" key={proj}>
+								<li className="py-5" key={proj}>
 									{projects[proj].title}
 								</li>
 							))}
