@@ -52,6 +52,7 @@ function Login() {
 								Forgot Password
 							</Link>
 							<Link to="/signup">Dont have an account yet?</Link>
+
 							{error && (
 								<div className="flex items-center text-red-500 text-sm font-bold px-4 py-3" role="alert">
 									<p>{error}</p>
@@ -59,6 +60,7 @@ function Login() {
 							)}
 						</div>
 					</form>
+					<button onClick={auth.loginWithGitHub}>login with Github</button>
 				</AuthLayout>
 			) : (
 				<LoadingPage />

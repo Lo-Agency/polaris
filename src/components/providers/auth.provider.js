@@ -4,6 +4,8 @@ import {
 	sendPasswordResetEmail,
 	getAuth,
 	createUserWithEmailAndPassword,
+	signInWithPopup,
+	GithubAuthProvider,
 } from 'firebase/auth';
 import { ref, set, child, getDatabase, get } from '@firebase/database';
 import { database } from '../../util/firebase';
@@ -75,6 +77,18 @@ const AuthProvider = ({ children }) => {
 		setFunctionIsLoading(false);
 	};
 
+	const loginWithGitHub = async () => {
+		const provider = new GithubAuthProvider();
+		signInWithPopup(auth, provider)
+			.then((result) => {
+				console.log(result);
+			})
+			.catch((error) => {
+				console.log(provider, auth);
+				console.log(error);
+			});
+	};
+
 	const signup = async (email, password) => {
 		setFunctionIsLoading(true);
 		try {
@@ -113,6 +127,7 @@ const AuthProvider = ({ children }) => {
 				forgotPassword,
 				functionIsLoading,
 				loading,
+				loginWithGitHub,
 			}}>
 			{children}
 		</AuthContext.Provider>
