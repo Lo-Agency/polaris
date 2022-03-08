@@ -3,10 +3,25 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { title } from 'case';
 import LoadingPage from './loading-page';
+import { extractDataFromEntity } from '../../util/extract-data';
+import { useCrud } from '../providers/crud.provider';
 
 const SelectBox = ({ name, entityName, formValues, actionName }) => {
+	const crud = useCrud();
+	const dataState = crud.dataState;
+
+	const categories = extractDataFromEntity('category', dataState);
 	const animatedComponents = makeAnimated();
-	const selectvalue = config.entities[entityName].fields[name].value;
+	// const selectvalue = config.entities[entityName].fields[name].value;
+	let selectvalue;
+	let categoryarray = [];
+	if (config.entities[entityName].fields[name].value) {
+		selectvalue = config.entities[entityName].fields[name].value;
+	} else {
+		Object.values(categories).map((x) => categoryarray.push(x['title']));
+		selectvalue = categoryarray;
+	}
+	console.log(selectvalue);
 	const selectOptions = selectvalue && selectvalue.map((option) => ({ value: option, label: option }));
 	const defaultValue = formValues && selectOptions.filter((option) => option['value'] === formValues[name]);
 	const showForm = defaultValue || actionName === 'create';
