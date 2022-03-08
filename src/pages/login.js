@@ -29,7 +29,7 @@ function Login() {
 			{!auth.loading ? (
 				<AuthLayout>
 					<form onSubmit={handleSubmit}>
-						<div className="flex flex-col p-3 justify-center items-center ">
+						<div className="flex flex-col justify-center items-center ">
 							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 								<label className="py-2">Email:</label>
 								<input className="py-2 px-3 xsm:w-48 sm:w-60 w-80 border-2 border-black" name="email" type="email" />
@@ -86,20 +86,21 @@ function Login() {
 								loading={auth.functionIsLoading}
 								actionName={'Login'}
 							/>
-
-							<Link to="/forgot-password" className="py-2">
-								Forgot Password
-							</Link>
-							<Link to="/signup">Dont have an account yet?</Link>
-
-							{error && (
-								<div className="flex items-center text-red-500 text-sm font-bold px-4 py-3" role="alert">
-									<p>{error}</p>
-								</div>
-							)}
 						</div>
 					</form>
-					<button onClick={auth.loginWithGitHub}>login with Github</button>
+					<button className={'btn-form w-2/12 flex justify-center items-center'} onClick={auth.loginWithGitHub}>
+						<img src="/github.png" className={'w-6 mr-3'} /> Login with Github
+					</button>
+					<Link to="/forgot-password" className="py-2">
+						Forgot Password
+					</Link>
+					<Link to="/signup">Dont have an account yet?</Link>
+
+					{error && (
+						<div className="flex items-center text-red-500 text-sm font-bold px-4 py-2" role="alert">
+							<p>{error}</p>
+						</div>
+					)}
 				</AuthLayout>
 			) : (
 				<LoadingPage />

@@ -78,15 +78,45 @@ const AuthProvider = ({ children }) => {
 	};
 
 	const loginWithGitHub = async () => {
+		setFunctionIsLoading(true);
+		const dbRef = ref(getDatabase());
 		const provider = new GithubAuthProvider();
-		signInWithPopup(auth, provider)
-			.then((result) => {
-				console.log(result);
-			})
-			.catch((error) => {
-				console.log(provider, auth);
-				console.log(error);
+		const result = await signInWithPopup(auth, provider);
+		const user = result.user;
+		const userMetaData = await get(child(dbRef, `user/${user.uid}`));
+		if (userMetaData.exists()) {
+			setFunctionIsLoading(false);
+			if (userMetaData.val().type === 'admin') {
+				navigate('/admin/learning/list');
+			} else if (userMetaData.val().isApproved === 'true') {
+				navigate('/');
+			} else {
+				await logOut();
+				setFunctionIsLoading(false);
+				toast.error('You are not approved yet.', {
+					position: 'top-center',
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+			}
+		} else {
+			await logOut();
+			await set(ref(database, `user/${user.uid}`), { email: user.email, isApproved: 'false', type: 'user' });
+			toast.success('Your are successfully registered. Please wait for admin approval verification.', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
 			});
+			setFunctionIsLoading(false);
+		}
 	};
 
 	const signup = async (email, password) => {
