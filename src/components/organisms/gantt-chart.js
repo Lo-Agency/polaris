@@ -125,10 +125,18 @@ const GanttChart = ({ roadmapId }) => {
 		}
 	};
 
+	const getSelectedViewClassName = (viewMode) => {
+		if (viewMode === view) {
+			return 'btn m-2';
+		} else {
+			return 'bg-gray-300 text-black py-1 px-2 cursor-pointer hover:bg-gray-400 m-2';
+		}
+	};
+
 	const createViewButtons = () => {
 		return ['Day', 'Week', 'Month'].map((item) => {
 			return (
-				<button key={item} className="btn m-2" onClick={() => setView(item)}>
+				<button key={item} className={getSelectedViewClassName(item)} onClick={() => setView(item)}>
 					{item}
 				</button>
 			);

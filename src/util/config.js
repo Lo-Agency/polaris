@@ -91,7 +91,7 @@ export default {
 				days: {
 					type: 'number',
 					isArray: false,
-					validate: yup.number().required(),
+					validate: yup.number().min(1).required(),
 				},
 				projectType: {
 					type: 'select',
@@ -102,7 +102,7 @@ export default {
 				learningDay: {
 					type: 'number',
 					isArray: false,
-					validate: yup.number().required(),
+					validate: yup.number().min(1).required(),
 				},
 			},
 		},
