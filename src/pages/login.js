@@ -41,12 +41,7 @@ function Login() {
 							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 								<label className="py-2">Password:</label>
 								<div className="border-2 border-black w-80 relative">
-									<input
-										// type={showPassword ? 'text' : 'password'}
-										type={getTypeOfPassword()}
-										className="py-2 px-3 outline-none w-full"
-										name="password"
-									/>
+									<input type={getTypeOfPassword()} className="py-2 px-3 outline-none w-full" name="password" />
 									<label
 										onClick={() => setShowPassword(!showPassword)}
 										className="absolute right-3 top-2 cursor-pointer">
