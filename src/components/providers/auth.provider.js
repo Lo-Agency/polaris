@@ -74,8 +74,8 @@ const AuthProvider = ({ children }) => {
 		}
 		try {
 			const result = await signInWithPopup(auth, provider);
-			const user = result.user;
-			const userMetaData = await get(child(dbRef, `user/${user.uid}`));
+			const userData = result.user;
+			const userMetaData = await get(child(dbRef, `user/${userData.uid}`));
 			if (userMetaData.exists()) {
 				await checkUserMetaData(userMetaData.val());
 			} else {
