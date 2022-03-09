@@ -43,6 +43,16 @@ export default {
 	},
 
 	entities: {
+		category: {
+			fields: {
+				title: {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
+				},
+			},
+		},
+
 		learning: {
 			fields: {
 				title: {
@@ -51,10 +61,10 @@ export default {
 					validate: yup.string().required(),
 				},
 				category: {
-					type: 'select',
-					isArray: false,
-					value: ['Frontend', 'Backend', 'General', 'Soft Skills'],
-					validate: yup.string().required(),
+					type: 'ref',
+					isArray: true,
+					reference: 'category',
+					validate: yup.array().required(),
 				},
 				resources: {
 					type: 'text',
@@ -64,10 +74,11 @@ export default {
 				priority: {
 					type: 'select',
 					isArray: false,
-					value: ['Low', 'Medium', 'High'],
+					value: ['High', 'Medium', 'Low'],
 					validate: yup.string().required(),
 				},
 			},
+			list: ['category'],
 		},
 
 		project: {
@@ -121,6 +132,7 @@ export default {
 
 			list: ['learning', 'project'],
 		},
+
 		roadmap: {
 			fields: {
 				title: {
@@ -191,6 +203,7 @@ export default {
 
 			list: ['roadmap'],
 		},
+
 		user: {
 			fields: {
 				email: {

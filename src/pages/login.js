@@ -24,6 +24,10 @@ function Login() {
 		}
 	};
 
+	const getTypeOfPassword = () => {
+		return showPassword ? 'text' : 'password';
+	};
+
 	return (
 		<>
 			{!auth.loading ? (
@@ -37,15 +41,11 @@ function Login() {
 							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 								<label className="py-2">Password:</label>
 								<div className="border-2 border-black w-80 relative">
-									<input
-										type={showPassword ? 'text' : 'password'}
-										className="py-2 px-3 outline-none w-full"
-										name="password"
-									/>
+									<input type={getTypeOfPassword()} className="py-2 px-3 outline-none w-full" name="password" />
 									<label
 										onClick={() => setShowPassword(!showPassword)}
 										className="absolute right-3 top-2 cursor-pointer">
-										{showPassword ? (
+										{showPassword && (
 											<svg
 												className="w-6 h-6"
 												fill="none"
@@ -63,7 +63,8 @@ function Login() {
 													strokeWidth="2"
 													d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
 											</svg>
-										) : (
+										)}
+										{!showPassword && (
 											<svg
 												className="w-6 h-6"
 												fill="none"
