@@ -6,6 +6,7 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithPopup,
 	GithubAuthProvider,
+	GoogleAuthProvider,
 } from 'firebase/auth';
 import { ref, set, child, getDatabase, get } from '@firebase/database';
 import { database } from '../../util/firebase';
@@ -33,22 +34,7 @@ const AuthProvider = ({ children }) => {
 			await get(child(dbRef, `user/${auth.currentUser.uid}`)).then((snapshot) => {
 				userData = snapshot.val();
 			});
-			if (userData.type === 'admin') {
-				navigate('/admin/learning/list');
-			} else if (userData.isApproved === 'true') {
-				navigate('/');
-			} else {
-				await logOut();
-				toast.error('You are not approved yet.', {
-					position: 'top-center',
-					autoClose: 5000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-				});
-			}
+			await checkUserMetaData(userData);
 		} catch (error) {
 			setFunctionIsLoading(false);
 			if (error.code === 'auth/user-not-found') {
@@ -77,23 +63,25 @@ const AuthProvider = ({ children }) => {
 		setFunctionIsLoading(false);
 	};
 
-	const loginWithGitHub = async () => {
+	const loginWithOAuthSystem = async (providerName) => {
 		setFunctionIsLoading(true);
 		const dbRef = ref(getDatabase());
-		const provider = new GithubAuthProvider();
-		const result = await signInWithPopup(auth, provider);
-		const user = result.user;
-		const userMetaData = await get(child(dbRef, `user/${user.uid}`));
-		if (userMetaData.exists()) {
-			setFunctionIsLoading(false);
-			if (userMetaData.val().type === 'admin') {
-				navigate('/admin/learning/list');
-			} else if (userMetaData.val().isApproved === 'true') {
-				navigate('/');
+		let provider;
+		if (providerName === 'github') {
+			provider = new GithubAuthProvider();
+		} else {
+			provider = new GoogleAuthProvider();
+		}
+		try {
+			const result = await signInWithPopup(auth, provider);
+			const user = result.user;
+			const userMetaData = await get(child(dbRef, `user/${user.uid}`));
+			if (userMetaData.exists()) {
+				await checkUserMetaData(userMetaData.val());
 			} else {
 				await logOut();
-				setFunctionIsLoading(false);
-				toast.error('You are not approved yet.', {
+				await set(ref(database, `user/${user.uid}`), { email: user.email, isApproved: 'false', type: 'user' });
+				toast.success('Your are successfully registered. Please wait for admin approval verification.', {
 					position: 'top-center',
 					autoClose: 5000,
 					hideProgressBar: false,
@@ -102,20 +90,15 @@ const AuthProvider = ({ children }) => {
 					draggable: true,
 					progress: undefined,
 				});
+				setFunctionIsLoading(false);
 			}
-		} else {
-			await logOut();
-			await set(ref(database, `user/${user.uid}`), { email: user.email, isApproved: 'false', type: 'user' });
-			toast.success('Your are successfully registered. Please wait for admin approval verification.', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
+		} catch (error) {
 			setFunctionIsLoading(false);
+			if (error.code === 'auth/account-exists-with-different-credential') {
+				throw new WrongCredentialsException('This email is already exist with different credential!');
+			} else {
+				throw new WrongCredentialsException('Something went Wrong contact admin!');
+			}
 		}
 	};
 
@@ -147,6 +130,26 @@ const AuthProvider = ({ children }) => {
 		}
 	};
 
+	const checkUserMetaData = async (userData) => {
+		if (userData.type === 'admin') {
+			navigate('/admin/learning/list');
+		} else if (userData.isApproved === 'true') {
+			navigate('/');
+		} else {
+			await logOut();
+			toast.error('You are not approved yet.', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+			setFunctionIsLoading(false);
+		}
+	};
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -157,7 +160,7 @@ const AuthProvider = ({ children }) => {
 				forgotPassword,
 				functionIsLoading,
 				loading,
-				loginWithGitHub,
+				loginWithOAuthSystem,
 			}}>
 			{children}
 		</AuthContext.Provider>
