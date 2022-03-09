@@ -131,6 +131,7 @@ const AuthProvider = ({ children }) => {
 	};
 
 	const checkUserMetaData = async (userData) => {
+		setFunctionIsLoading(false);
 		if (userData.type === 'admin') {
 			navigate('/admin/category/list');
 		} else if (userData.isApproved === 'true') {
@@ -146,7 +147,6 @@ const AuthProvider = ({ children }) => {
 				draggable: true,
 				progress: undefined,
 			});
-			setFunctionIsLoading(false);
 		}
 	};
 
