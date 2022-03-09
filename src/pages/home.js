@@ -124,7 +124,7 @@ export function Home() {
 								<button
 									className="mr-4 btn"
 									onClick={() => {
-										navigate('/admin/learning/list');
+										navigate('/admin/category/list');
 									}}>
 									Admin Panel
 								</button>

@@ -23,7 +23,7 @@ function PrivateRoute({ children }) {
 	}
 	if (userData?.type === 'admin') {
 		if (from && !from.startsWith('/admin')) {
-			return <Navigate to={'/admin/learning/list'} state={{ from: location }} />;
+			return <Navigate to={'/admin/category/list'} state={{ from: location }} />;
 		}
 	}
 

@@ -132,7 +132,7 @@ const AuthProvider = ({ children }) => {
 
 	const checkUserMetaData = async (userData) => {
 		if (userData.type === 'admin') {
-			navigate('/admin/learning/list');
+			navigate('/admin/category/list');
 		} else if (userData.isApproved === 'true') {
 			navigate('/');
 		} else {
