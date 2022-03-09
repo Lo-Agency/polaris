@@ -99,7 +99,7 @@ const CrudProvider = ({ children }) => {
 		if (updateData.length > 0) {
 			updateData.forEach(async (item, index) => {
 				const newEntityInput = Object.values(item)[0][entityName].filter((entityId) => entityId != id);
-				const updateId = updateData.map((updateItem) => Object.keys(updateItem));
+				const updateId = updateData.map((updateItemData) => Object.keys(updateItemData));
 				await set(ref(database, `${deleteEntity}/${updateId[index][0]}/${entityName}`), newEntityInput);
 				setChange(!change);
 			});

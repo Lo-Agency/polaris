@@ -28,8 +28,8 @@ function Login() {
 		setError(null);
 		try {
 			await auth.loginWithOAuthSystem(providerName);
-		} catch (error) {
-			setError(error.message);
+		} catch (e) {
+			setError(e.message);
 		}
 	};
 	const getTypeOfPassword = () => {

@@ -132,7 +132,7 @@ export function Home() {
 							<button onClick={logOut}>Logout</button>
 						</div>
 					</header>
-					{selectedRoadmap ? (
+					{selectedRoadmap && (
 						<div className="px-4 mt-20 mb-10">
 							<div className="flex justify-between mb-3">
 								<div className="flex self-center">
@@ -194,9 +194,8 @@ export function Home() {
 							</div>
 							{createRoadmap(viewType)}
 						</div>
-					) : (
-						<div className="flex h-full items-center justify-center mt-72">{createSelectBox()}</div>
 					)}
+					{!selectedRoadmap && <div className="flex h-full items-center justify-center mt-72">{createSelectBox()}</div>}
 				</div>
 			) : (
 				<LoadingPage />
