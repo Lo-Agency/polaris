@@ -1,6 +1,7 @@
 import config from '../util/config';
 
 export const extractDataFromEntity = (entityName, dataState) => {
+	console.log(entityName, dataState);
 	const entityData = dataState && dataState.filter((data) => Object.keys(data) == entityName);
 	return entityData && entityData[0][entityName];
 };
