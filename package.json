@@ -60,5 +60,8 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"postcss": "^7",
 		"prettier": "2.5.1"
+	},
+	"resolutions": {
+		"react-error-overlay": "6.0.9"
 	}
 }

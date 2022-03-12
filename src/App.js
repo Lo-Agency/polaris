@@ -5,7 +5,7 @@ import CrudProvider from './components/providers/crud.provider';
 import PrivateRoute from './components/routes/private-route';
 import PublicRoute from './components/routes/public-route';
 import LoadingPage from './components/molecules/loading-page';
-import NotFound from './pages/404';
+import NotFound from './pages/not-found';
 
 function App() {
 	return (

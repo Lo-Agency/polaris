@@ -13,10 +13,17 @@ const TableView = ({ roadmapId }) => {
 	const crud = useCrud();
 	const dataState = crud.dataState;
 
+	const categories = extractDataFromEntity('category', dataState);
 	const roadmaps = extractDataFromEntity('roadmap', dataState);
 	const learnings = extractDataFromEntity('learning', dataState);
 	const projects = extractDataFromEntity('project', dataState);
 	const phases = extractDataFromEntity('phase', dataState);
+
+	// categories title for table
+	const renderCategoriesData = (categoriesId) => {
+		const titles = categoriesId.map((id) => categories[id]['title']);
+		return titles.join(', ');
+	};
 
 	//learnings data for table
 	const renderLearningData = (phaseId) => {
@@ -33,7 +40,7 @@ const TableView = ({ roadmapId }) => {
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLearnings.map((id) => (
 						<p key={id} className="py-5 h-10 flex items-center">
-							{learnings[id].category}
+							{renderCategoriesData(learnings[id].category)}
 						</p>
 					))}
 				</td>
@@ -93,7 +100,7 @@ const TableView = ({ roadmapId }) => {
 					<td className="px-6 py-4 whitespace-nowrap">
 						<ul>
 							{phases[phaseId]['project'].map((proj) => (
-								<li className="py-5 h-10 flex justify-center" key={proj}>
+								<li className="py-5" key={proj}>
 									{projects[proj].title}
 								</li>
 							))}

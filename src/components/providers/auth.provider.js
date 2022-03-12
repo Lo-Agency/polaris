@@ -4,6 +4,9 @@ import {
 	sendPasswordResetEmail,
 	getAuth,
 	createUserWithEmailAndPassword,
+	signInWithPopup,
+	GithubAuthProvider,
+	GoogleAuthProvider,
 } from 'firebase/auth';
 import { ref, set, child, getDatabase, get } from '@firebase/database';
 import { database } from '../../util/firebase';
@@ -31,22 +34,7 @@ const AuthProvider = ({ children }) => {
 			await get(child(dbRef, `user/${auth.currentUser.uid}`)).then((snapshot) => {
 				userData = snapshot.val();
 			});
-			if (userData.type === 'admin') {
-				navigate('/admin/learning/list');
-			} else if (userData.isApproved === 'true') {
-				navigate('/');
-			} else {
-				await logOut();
-				toast.error('You are not approved yet.', {
-					position: 'top-center',
-					autoClose: 5000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-				});
-			}
+			await checkUserMetaData(userData);
 		} catch (error) {
 			setFunctionIsLoading(false);
 			if (error.code === 'auth/user-not-found') {
@@ -75,6 +63,45 @@ const AuthProvider = ({ children }) => {
 		setFunctionIsLoading(false);
 	};
 
+	const loginWithOAuthSystem = async (providerName) => {
+		setFunctionIsLoading(true);
+		const dbRef = ref(getDatabase());
+		let provider;
+		if (providerName === 'github') {
+			provider = new GithubAuthProvider();
+		} else {
+			provider = new GoogleAuthProvider();
+		}
+		try {
+			const result = await signInWithPopup(auth, provider);
+			const userData = result.user;
+			const userMetaData = await get(child(dbRef, `user/${userData.uid}`));
+			if (userMetaData.exists()) {
+				await checkUserMetaData(userMetaData.val());
+			} else {
+				await logOut();
+				await set(ref(database, `user/${user.uid}`), { email: user.email, isApproved: 'false', type: 'user' });
+				toast.success('Your are successfully registered. Please wait for admin approval verification.', {
+					position: 'top-center',
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+				setFunctionIsLoading(false);
+			}
+		} catch (error) {
+			setFunctionIsLoading(false);
+			if (error.code === 'auth/account-exists-with-different-credential') {
+				throw new WrongCredentialsException('This email is already exist with different credential!');
+			} else {
+				throw new WrongCredentialsException('Something went Wrong contact admin!');
+			}
+		}
+	};
+
 	const signup = async (email, password) => {
 		setFunctionIsLoading(true);
 		try {
@@ -95,12 +122,31 @@ const AuthProvider = ({ children }) => {
 			});
 		} catch (error) {
 			setFunctionIsLoading(false);
-			switch (error.code) {
-				case 'auth/email-already-in-use':
-					throw new WrongCredentialsException('Email has already been taken.');
-				default:
-					throw new WrongCredentialsException('Something went Wrong contact admin!');
+			if (error.code === 'auth/email-already-in-use') {
+				throw new WrongCredentialsException('Email has already been taken.');
+			} else {
+				throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
+		}
+	};
+
+	const checkUserMetaData = async (userData) => {
+		setFunctionIsLoading(false);
+		if (userData.type === 'admin') {
+			navigate('/admin/category/list');
+		} else if (userData.isApproved === 'true') {
+			navigate('/');
+		} else {
+			await logOut();
+			toast.error('You are not approved yet.', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
 		}
 	};
 
@@ -114,6 +160,7 @@ const AuthProvider = ({ children }) => {
 				forgotPassword,
 				functionIsLoading,
 				loading,
+				loginWithOAuthSystem,
 			}}>
 			{children}
 		</AuthContext.Provider>

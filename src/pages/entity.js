@@ -80,7 +80,7 @@ const Entity = () => {
 			return (
 				<AdminLayout>
 					<div className="flex justify-center items-center left-60 right-0 mx-5 top-20 flex-col absolute">
-						{entityName === 'user' ? (
+						{entityName === 'user' && (
 							<Select
 								className="w-96 mt-5 self-end max-w-lg absolute"
 								classNamePrefix="select"
@@ -99,7 +99,7 @@ const Entity = () => {
 								name={'groups'}
 								options={filterUsersOptions}
 							/>
-						) : null}
+						)}
 						{data ? (
 							<table className="my-5 border-b mx-5 w-full border-gray-200 shadow-md">
 								<thead className="bg-black w-full">
@@ -125,9 +125,9 @@ const Entity = () => {
 									{entityContent.map((items, index) => {
 										return (
 											<tr className="text-center p-4 text-sm" key={index}>
-												{items.map((item, index) => {
+												{items.map((item, idx) => {
 													return (
-														<td className="flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left" key={index}>
+														<td className="flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left" key={idx}>
 															{item}
 														</td>
 													);

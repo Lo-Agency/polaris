@@ -4,8 +4,8 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const Charts = ({ phaseProjects, projectList }) => {
-	const filteredProjects = Object.values(projectList).filter((item) => phaseProjects.indexOf(item.title[0]) >= 0);
+const DoughnutChartHelper = ({ phaseProjects, projectList }) => {
+	const filteredProjects = Object.values(projectList).filter((item) => phaseProjects.indexOf(item.title) >= 0);
 	const projectDays = Object.values(filteredProjects).map((item) => Number(item.days) + Number(item.learningDay));
 
 	const data = {
@@ -28,4 +28,4 @@ const Charts = ({ phaseProjects, projectList }) => {
 		</div>
 	);
 };
-export default Charts;
+export default DoughnutChartHelper;

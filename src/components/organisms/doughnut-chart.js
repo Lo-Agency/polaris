@@ -26,7 +26,7 @@ const DoughnutChart = ({ selectedRoadmap }) => {
 			startDate = endDate;
 		}
 		endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))));
-		phases[phaseId]['project'].forEach((projectId) => phaseProjectsName.push(projects[projectId]['title'][0]));
+		phases[phaseId]['project'].forEach((projectId) => phaseProjectsName.push(projects[projectId]['title']));
 	};
 
 	//calculate ent date of phase
@@ -62,7 +62,11 @@ const DoughnutChart = ({ selectedRoadmap }) => {
 			<div className="self-center">
 				{endDates.length !== 0 && compareDesc(new Date(endDates[endDates.length - 1]), new Date()) !== 1 && (
 					<p className="text-black text-center m-4">
-						This Roadmap ends on {format(new Date(endDates[endDates.length - 1]), 'P')}
+						This Roadmap ends on
+						<span className="underline underline-offset-8">
+							{' '}
+							{format(new Date(endDates[endDates.length - 1]), 'PPP')}
+						</span>
 					</p>
 				)}
 

@@ -6,9 +6,9 @@ import { extractDataFromEntity } from '../util/extract-data';
 import GanttChart from '../components/organisms/gantt-chart';
 import TableView from '../components/molecules/table-view';
 import { useAuth } from '../components/providers/auth.provider';
-import { ViewMode } from 'gantt-task-react';
 import { useCrud } from '../components/providers/crud.provider';
 import LoadingPage from '../components/molecules/loading-page';
+import { format } from 'date-fns';
 
 export function Home() {
 	const crud = useCrud();
@@ -16,7 +16,6 @@ export function Home() {
 	const navigate = useNavigate();
 	const dataState = crud.dataState;
 
-	const [viewcalendar, setView] = useState(ViewMode.Month);
 	const [selectedRoadmap, setSelectedRoadmap] = useState(null);
 	const [viewType, setViewType] = useState(localStorage.getItem('viewtype'));
 
@@ -72,54 +71,41 @@ export function Home() {
 	};
 
 	const createSelectBox = () => {
-		return (
-			<form>
-				<Select
-					onChange={(value) => {
-						setSelectedRoadmap(value);
-					}}
-					defaultValue={selectedRoadmap}
-					theme={(theme) => ({
-						...theme,
-						borderRadius: 0,
-						colors: {
-							...theme.colors,
-							primary25: '#C0C0C0',
-							primary50: '#C0C0C0',
-							primary: 'black',
-						},
-					})}
-					className="p-2 w-96 max-w-lg"
-					classNamePrefix="select"
-					closeMenuOnSelect={true}
-					name={'roadmap'}
-					options={options}></Select>
-			</form>
-		);
+		if (options) {
+			return (
+				<form>
+					<Select
+						onChange={(value) => {
+							setSelectedRoadmap(value);
+						}}
+						defaultValue={selectedRoadmap}
+						theme={(theme) => ({
+							...theme,
+							borderRadius: 0,
+							colors: {
+								...theme.colors,
+								primary25: '#C0C0C0',
+								primary50: '#C0C0C0',
+								primary: 'black',
+							},
+						})}
+						className="p-2 w-96 max-w-lg"
+						classNamePrefix="select"
+						closeMenuOnSelect={true}
+						name={'roadmap'}
+						options={options}></Select>
+				</form>
+			);
+		}
+		return <p>You dont have any group yet!</p>;
 	};
 
-	const createGanttChartViewButtons = () => {
-		return (
-			<div className="flex self-center">
-				<button className="btn" onClick={() => setView(ViewMode.Day)}>
-					Day
-				</button>
-				<button className="btn mx-2" onClick={() => setView(ViewMode.Week)}>
-					Week
-				</button>
-				<button className="btn mx-2" onClick={() => setView(ViewMode.Month)}>
-					Month
-				</button>
-			</div>
-		);
-	};
-
-	const createRoadmap = (viewType) => {
-		switch (viewType) {
+	const createRoadmap = (type) => {
+		switch (type) {
 			case 'table':
 				return <TableView roadmapId={selectedRoadmap.value} />;
 			case 'gantt':
-				return <GanttChart viewcalendar={viewcalendar} roadmapId={selectedRoadmap.value} />;
+				return <GanttChart roadmapId={selectedRoadmap.value} />;
 			case 'doughnut':
 				return <DoughnutChart selectedRoadmap={selectedRoadmap.value} />;
 		}
@@ -134,33 +120,24 @@ export function Home() {
 							Polaris.
 						</Link>
 						<div>
-							{userData.type === 'admin' ? (
+							{userData.type === 'admin' && (
 								<button
 									className="mr-4 btn"
 									onClick={() => {
-										navigate('/admin/learning/list');
+										navigate('/admin/category/list');
 									}}>
 									Admin Panel
 								</button>
-							) : null}
+							)}
 							<button onClick={logOut}>Logout</button>
 						</div>
 					</header>
-
-					{!selectedRoadmap ? (
-						<div className="flex h-full items-center justify-center mt-72">{createSelectBox()}</div>
-					) : (
+					{selectedRoadmap && (
 						<div className="px-4 mt-20 mb-10">
 							<div className="flex justify-between mb-3">
-								{viewType === 'gantt' ? (
-									createGanttChartViewButtons()
-								) : (
-									<div className="flex self-center">
-										{' '}
-										<p>Starting Date {Object.values(roadmaps[selectedRoadmap.value])[1]} </p>{' '}
-									</div>
-								)}
-
+								<div className="flex self-center">
+									<p> Starting Date {format(new Date(Object.values(roadmaps[selectedRoadmap.value])[1]), 'PPP')} </p>
+								</div>
 								<div className="flex">
 									{createSelectBox()}
 									<button onClick={() => RoadmapView('table')}>
@@ -218,6 +195,7 @@ export function Home() {
 							{createRoadmap(viewType)}
 						</div>
 					)}
+					{!selectedRoadmap && <div className="flex h-full items-center justify-center mt-72">{createSelectBox()}</div>}
 				</div>
 			) : (
 				<LoadingPage />
