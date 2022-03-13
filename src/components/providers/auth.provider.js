@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
 			const dbRef = ref(getDatabase());
 			let userData;
 			await signInWithEmailAndPassword(auth, email, password);
-			await get(child(dbRef, `user/${auth.currentUser.uid}`)).then((snapshot) => {
+			await get(child(dbRef, `member/${auth.currentUser.uid}`)).then((snapshot) => {
 				userData = snapshot.val();
 			});
 			await checkUserMetaData(userData);
@@ -75,12 +75,15 @@ const AuthProvider = ({ children }) => {
 		try {
 			const result = await signInWithPopup(auth, provider);
 			const userData = result.user;
-			const userMetaData = await get(child(dbRef, `user/${userData.uid}`));
+			const userMetaData = await get(child(dbRef, `member/${userData.uid}`));
 			if (userMetaData.exists()) {
 				await checkUserMetaData(userMetaData.val());
 			} else {
 				await logOut();
-				await set(ref(database, `user/${user.uid}`), { email: user.email, isApproved: 'false', type: 'user' });
+				await set(ref(database, `member/${userData.uid}`), {
+					email: userData.email,
+					type: 'user',
+				});
 				toast.success('Your are successfully registered. Please wait for admin approval verification.', {
 					position: 'top-center',
 					autoClose: 5000,
@@ -107,7 +110,7 @@ const AuthProvider = ({ children }) => {
 		try {
 			const data = await createUserWithEmailAndPassword(auth, email, password);
 			const userId = data.user.uid;
-			await set(ref(database, `user/${userId}`), { email, isApproved: 'false', type: 'user' });
+			await set(ref(database, `member/${userId}`), { email, type: 'user' });
 			await logOut();
 			navigate('/login');
 			setFunctionIsLoading(false);
@@ -133,20 +136,9 @@ const AuthProvider = ({ children }) => {
 	const checkUserMetaData = async (userData) => {
 		setFunctionIsLoading(false);
 		if (userData.type === 'admin') {
-			navigate('/admin/category/list');
-		} else if (userData.isApproved === 'true') {
-			navigate('/');
+			navigate('/admin/lesson-category/list');
 		} else {
-			await logOut();
-			toast.error('You are not approved yet.', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-			});
+			navigate('/');
 		}
 	};
 
