@@ -15,7 +15,7 @@ const AdminLayout = ({ children }) => {
 
 	const crud = useCrud();
 	const dataState = crud.dataState;
-	const users = extractDataFromEntity('user', dataState);
+	const users = extractDataFromEntity('member', dataState);
 	const userData = users && users[auth.user.uid];
 
 	const logOut = async () => {

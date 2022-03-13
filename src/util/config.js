@@ -43,9 +43,14 @@ export default {
 	},
 
 	entities: {
-		category: {
+		'lesson-category': {
 			fields: {
 				title: {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
+				},
+				slug: {
 					type: 'text',
 					isArray: false,
 					validate: yup.string().required(),
@@ -53,7 +58,7 @@ export default {
 			},
 		},
 
-		learning: {
+		lesson: {
 			fields: {
 				title: {
 					type: 'text',
@@ -63,7 +68,7 @@ export default {
 				category: {
 					type: 'ref',
 					isArray: true,
-					reference: 'category',
+					reference: 'lesson-category',
 					validate: yup.array().required(),
 				},
 				resources: {
@@ -71,40 +76,77 @@ export default {
 					isArray: false,
 					validate: yup.string().required(),
 				},
+				duration: {
+					type: 'number',
+					isArray: false,
+					validate: yup.number().min(1).required(),
+				},
 				priority: {
 					type: 'select',
 					isArray: false,
 					value: ['High', 'Medium', 'Low'],
 					validate: yup.string().required(),
 				},
+				dependency: {
+					type: 'ref',
+					isArray: true,
+					reference: 'lesson',
+					validate: yup.array().required(),
+				},
 			},
-			list: ['category'],
+			list: ['lesson-category'],
 		},
-
-		project: {
+		'target-type': {
 			fields: {
 				title: {
 					type: 'text',
 					isArray: false,
 					validate: yup.string().required(),
 				},
-				days: {
+				slug: {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
+				},
+			},
+		},
+
+		target: {
+			fields: {
+				title: {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
+				},
+				description: {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
+				},
+				duration: {
 					type: 'number',
 					isArray: false,
 					validate: yup.number().min(1).required(),
 				},
-				projectType: {
+				type: {
 					type: 'select',
 					isArray: false,
 					value: ['Real', 'Team', 'Personal', 'Optional'],
 					validate: yup.string().required(),
 				},
-				learningDay: {
-					type: 'number',
+				'acceptance-criteria': {
+					type: 'text',
 					isArray: false,
-					validate: yup.number().min(1).required(),
+					validate: yup.string().required(),
+				},
+				lesson: {
+					type: 'ref',
+					isArray: true,
+					reference: 'lesson',
+					validate: yup.array().required(),
 				},
 			},
+			list: ['lesson'],
 		},
 
 		phase: {
@@ -115,22 +157,20 @@ export default {
 					isArray: false,
 					validate: yup.string().required(),
 				},
-
-				learning: {
-					type: 'ref',
-					isArray: true,
-					reference: 'learning',
-					validate: yup.array().required(),
+				description: {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
 				},
-				project: {
+				target: {
 					type: 'ref',
 					isArray: true,
-					reference: 'project',
+					reference: 'target',
 					validate: yup.array().required(),
 				},
 			},
 
-			list: ['learning', 'project'],
+			list: ['target'],
 		},
 
 		roadmap: {
@@ -199,13 +239,29 @@ export default {
 					isArray: true,
 					validate: yup.array(),
 				},
+				member: {
+					type: 'ref',
+					reference: 'member',
+					isArray: true,
+					validate: yup.array(),
+				},
 			},
 
-			list: ['roadmap'],
+			list: ['roadmap', 'member'],
 		},
 
-		user: {
+		member: {
 			fields: {
+				'first-name': {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
+				},
+				'last-name': {
+					type: 'text',
+					isArray: false,
+					validate: yup.string().required(),
+				},
 				email: {
 					type: 'email',
 					isArray: false,
@@ -217,16 +273,11 @@ export default {
 					isArray: true,
 					validate: yup.array(),
 				},
-				type: {
+				role: {
 					type: 'select',
 					isArray: false,
-					value: ['admin', 'user'],
+					value: ['owner', 'admin', 'user'],
 					validate: yup.string().required(),
-				},
-				isApproved: {
-					type: 'boolean',
-					isArray: false,
-					validate: yup.boolean(),
 				},
 			},
 			list: ['group'],

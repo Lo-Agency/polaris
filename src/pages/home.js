@@ -21,7 +21,7 @@ export function Home() {
 
 	const roadmaps = extractDataFromEntity('roadmap', dataState);
 	const groups = extractDataFromEntity('group', dataState);
-	const users = extractDataFromEntity('user', dataState);
+	const users = extractDataFromEntity('member', dataState);
 	const userData = users && users[auth.user.uid];
 	if (!viewType) {
 		setViewType('table');
@@ -124,7 +124,7 @@ export function Home() {
 								<button
 									className="mr-4 btn"
 									onClick={() => {
-										navigate('/admin/category/list');
+										navigate('/admin/lesson-category/list');
 									}}>
 									Admin Panel
 								</button>

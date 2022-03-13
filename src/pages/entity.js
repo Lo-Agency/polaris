@@ -42,7 +42,7 @@ const Entity = () => {
 
 	let entityContent = data && sortData();
 
-	if (entityName === 'user' && usersGroup !== 'All Users') {
+	if (entityName === 'member' && usersGroup !== 'All Users') {
 		entityContent = entityContent && entityContent.filter((user) => user[1] && user[1].includes(usersGroup));
 	}
 
@@ -80,7 +80,7 @@ const Entity = () => {
 			return (
 				<AdminLayout>
 					<div className="flex justify-center items-center left-60 right-0 mx-5 top-20 flex-col absolute">
-						{entityName === 'user' && (
+						{entityName === 'member' && (
 							<Select
 								className="w-96 mt-5 self-end max-w-lg absolute"
 								classNamePrefix="select"
