@@ -20,8 +20,13 @@ export default {
 			isCaseSensitive: false,
 			isProtected: false,
 		},
+		workspace:{
+			pathname: '/admin/:workspaceId',
+			isCaseSensitive: true,
+			isProtected: true,
+		},
 		entity: {
-			pathname: '/admin/:entityName/:actionName',
+			pathname: '/admin/:workspaceId/:entityName/:actionName',
 			isCaseSensitive: true,
 			isProtected: true,
 		},

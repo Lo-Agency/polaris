@@ -11,7 +11,7 @@ function PrivateRoute({ children }) {
 
 	const { user } = useAuth();
 	const location = useLocation();
-	const users = extractDataFromEntity('user', dataState);
+	const users = extractDataFromEntity('member', dataState);
 	const from = location.state?.from?.pathname;
 
 	if (!user) return <Navigate to={config.routes.login.pathname} state={{ from: location }} />;
