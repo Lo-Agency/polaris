@@ -44,7 +44,7 @@ function Login() {
 						<div className="flex flex-col justify-center items-center ">
 							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 								<label className="py-2">Email:</label>
-								<input className="py-2 px-3 w-80 border-2 border-black" name="email" type="email" />
+								<input className="py-2 px-3 w-80 outline-none border-2 border-black" name="email" type="email" />
 							</div>
 							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 								<label className="py-2">Password:</label>
@@ -102,7 +102,7 @@ function Login() {
 						Forgot Password
 					</Link>
 					<Link to="/signup">Dont have an account yet?</Link>
-					<div className={'w-80 text-gray-500 m-4 h-4 border-b-2 text-center '}>
+					<div className={'w-80 text-gray-500 m-4 h-4 border-b-2 text-center p-1'}>
 						<span className={'bg-white p-2'}>OR</span>
 					</div>
 					<button
