@@ -135,11 +135,12 @@ const AuthProvider = ({ children }) => {
 
 	const checkUserMetaData = async (userData) => {
 		setFunctionIsLoading(false);
-		if (userData.type === 'admin') {
-			navigate('/admin/lesson-category/list');
-		} else {
-			navigate('/');
-		}
+		console.log(userData);
+		// if (userData.type === 'admin') {
+		// 	navigate('/admin/lesson-category/list');
+		// } else {
+		navigate('/');
+		// }
 	};
 
 	return (

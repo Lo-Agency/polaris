@@ -20,21 +20,21 @@ export default {
 			isCaseSensitive: false,
 			isProtected: false,
 		},
-		workspace:{
-			pathname: '/admin/:workspaceId',
+		workspace: {
+			pathname: '/:workspaceId',
 			isCaseSensitive: true,
 			isProtected: true,
 		},
 		entity: {
-			pathname: '/admin/:workspaceId/:entityName/:actionName',
+			pathname: '/:workspaceId/:entityName/:actionName',
 			isCaseSensitive: true,
 			isProtected: true,
 		},
-		admin: {
-			pathname: '/admin',
-			isCaseSensitive: true,
-			isProtected: true,
-		},
+		// admin: {
+		// 	pathname: '/admin',
+		// 	isCaseSensitive: true,
+		// 	isProtected: true,
+		// },
 		'forgot-password': {
 			pathname: '/forgot-password',
 			isCaseSensitive: true,

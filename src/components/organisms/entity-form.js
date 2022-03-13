@@ -92,7 +92,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 				await crud.updateItem(values, entityName, editID);
 			}
 			setLoading(false);
-			navigate(`/admin/${entityName}/list`, { replace: true });
+			navigate(`/${entityName}/list`, { replace: true });
 			return;
 		}
 		setLoading(false);
