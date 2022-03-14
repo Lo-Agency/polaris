@@ -104,7 +104,6 @@ const CrudProvider = ({ children }) => {
 		let data = Object.entries(userWorkspace).filter((elem) => elem[0] === deleteEntity);
 		data = data && Object.entries(data[0][1]);
 		data = data.map((record) => ({ [record[0]]: record[1] }));
-		data.map((record) => console.log(Object.values(record)[0][entityName]));
 		const updateData = data.filter((record) => Object.values(record)[0][entityName].includes(id));
 
 		if (updateData.length > 0) {

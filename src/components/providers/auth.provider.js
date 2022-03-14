@@ -133,9 +133,8 @@ const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const checkUserMetaData = async (userData) => {
+	const checkUserMetaData = async () => {
 		setFunctionIsLoading(false);
-		console.log(userData);
 		// if (userData.type === 'admin') {
 		// 	navigate('/admin/lesson-category/list');
 		// } else {
