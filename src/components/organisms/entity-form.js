@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import config from '../../util/config';
 import { useCrud } from '../providers/crud.provider';
 import TextInput from '../molecules/text-input';
@@ -20,6 +20,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 	const crud = useCrud();
 	const entityFields = entityConfigFiels(entityName);
 	const validations = [];
+	const { workspaceId } = useParams();
 	const fields = entityFields.map((field) => {
 		const { type, reference } = config.entities[entityName].fields[field];
 
@@ -92,7 +93,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 				await crud.updateItem(values, entityName, editID);
 			}
 			setLoading(false);
-			navigate(`/${entityName}/list`, { replace: true });
+			navigate(`/${workspaceId}/${entityName}/list`, { replace: true });
 			return;
 		}
 		setLoading(false);

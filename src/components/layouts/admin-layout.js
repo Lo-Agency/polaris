@@ -4,19 +4,11 @@ import { Link } from 'react-router-dom';
 import config from '../../util/config';
 import { useAuth } from '../providers/auth.provider';
 import { ToastContainer } from 'react-toastify';
-// import { extractDataFromEntity } from '../../util/extract-data';
-// import { useCrud } from '../providers/crud.provider';
-// import LoadingPage from '../molecules/loading-page';
 
 const AdminLayout = ({ children }) => {
 	const { workspaceId, entityName } = useParams();
 	const auth = useAuth();
 	const navigate = useNavigate();
-	console.log(workspaceId);
-	// const crud = useCrud();
-	// const dataState = crud.dataState;
-	// const users = extractDataFromEntity('member', dataState);
-	// const userData = users && users[auth.user.uid];
 
 	const logOut = async () => {
 		try {

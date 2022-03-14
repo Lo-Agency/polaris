@@ -5,22 +5,22 @@ import { useState } from 'react';
 import EntityForm from '../components/organisms/entity-form';
 import { useCrud } from '../components/providers/crud.provider';
 import { title } from 'case';
-import { extractDataFromEntity, entityConfigFiels } from '../util/extract-data';
+import { entityConfigFiels } from '../util/extract-data';
 import AdminLayout from '../components/layouts/admin-layout';
 import Select from 'react-select';
 
 const Entity = () => {
 	const [editID, setEditId] = useState(null);
 	const [usersGroup, setUsersGroup] = useState('All Users');
-	const { entityName, actionName } = useParams();
+	const { workspaceId, entityName, actionName } = useParams();
 	const crud = useCrud();
-	const dataState = crud.dataState;
-	const data = extractDataFromEntity(entityName, dataState);
+	const workspaceData = crud.userWorkspace;
+	const data = workspaceData && workspaceData[entityName];
 	const Ids = data && Object.keys(data);
 	const configFields = entityConfigFiels(entityName);
-	const groups = extractDataFromEntity('group', dataState);
+	const groups = workspaceData && workspaceData['group'];
 
-	//create options for filter users
+	// create options for filter users
 	let filterUsersOptions = [{ value: '*', label: 'All Users' }];
 	groups &&
 		Object.entries(groups).forEach((group) => filterUsersOptions.push({ value: group[0], label: group[1]['title'] }));
@@ -30,8 +30,8 @@ const Entity = () => {
 			configFields.map((field) => {
 				if (dataItem[field] && dataItem[field][0] !== '') {
 					if (config.entities[entityName].fields[field].isArray) {
-						let fieldData = extractDataFromEntity(field, dataState);
-						const titles = dataItem[field].map((id) => fieldData[id]['title']);
+						let fieldData = workspaceData[field];
+						const titles = fieldData && dataItem[field].map((id) => fieldData[id]['title']);
 						return titles.join(', ');
 					}
 					return dataItem[field];
@@ -147,7 +147,7 @@ const Entity = () => {
 															d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
 														/>
 													</svg>
-													<Link to={`/${entityName}/edit`}>
+													<Link to={`/${workspaceId}/${entityName}/edit`}>
 														<svg
 															onClick={() => handleEdit(Ids[index])}
 															className="w-6 h-6 cursor-pointer"
