@@ -3,7 +3,6 @@ import { title } from 'case';
 import { format } from 'date-fns';
 import config from '../../util/config';
 import addDays from 'date-fns/addDays';
-import { extractDataFromEntity } from '../../util/extract-data';
 import { useCrud } from '../providers/crud.provider';
 
 const TableView = ({ roadmapId }) => {
@@ -11,13 +10,12 @@ const TableView = ({ roadmapId }) => {
 	let endDate;
 
 	const crud = useCrud();
-	const dataState = crud.dataState;
-
-	const categories = extractDataFromEntity('category', dataState);
-	const roadmaps = extractDataFromEntity('roadmap', dataState);
-	const learnings = extractDataFromEntity('learning', dataState);
-	const projects = extractDataFromEntity('project', dataState);
-	const phases = extractDataFromEntity('phase', dataState);
+	const workspaceData = crud.userWorkspace;
+	const roadmaps = workspaceData && workspaceData['roadmap'];
+	const categories = workspaceData && workspaceData['lesson-category'];
+	const lessons = workspaceData && workspaceData['lesson'];
+	const targets = workspaceData && workspaceData['target'];
+	const phases = workspaceData && workspaceData['phase'];
 
 	// categories title for table
 	const renderCategoriesData = (categoriesId) => {
@@ -25,38 +23,42 @@ const TableView = ({ roadmapId }) => {
 		return titles.join(', ');
 	};
 
-	//learnings data for table
+	//lessons data for table
 	const renderLearningData = (phaseId) => {
-		const phaseLearnings = phases[phaseId]['learning'];
+		const phaseTargets = phases[phaseId]['target'];
+		let phaseLessons = [];
+		phaseTargets.forEach((targetId) => {
+			targets[targetId]['lesson'].forEach((id) => phaseLessons.push(id));
+		});
 		return (
 			<>
 				<td className="px-6 py-4 whitespace-nowrap">
-					{phaseLearnings.map((id) => (
+					{phaseLessons.map((id) => (
+							<p key={id} className="py-5 h-10 flex items-center">
+								{lessons[id].title}
+							</p>
+						))}
+				</td>
+				<td className="px-6 py-4 whitespace-nowrap">
+					{phaseLessons.map((id) => (
 						<p key={id} className="py-5 h-10 flex items-center">
-							{learnings[id].title}
+							{renderCategoriesData(lessons[id]['lesson-category'])}
 						</p>
 					))}
 				</td>
 				<td className="px-6 py-4 whitespace-nowrap">
-					{phaseLearnings.map((id) => (
-						<p key={id} className="py-5 h-10 flex items-center">
-							{renderCategoriesData(learnings[id].category)}
-						</p>
-					))}
-				</td>
-				<td className="px-6 py-4 whitespace-nowrap">
-					{phaseLearnings.map((id) => (
+					{phaseLessons.map((id) => (
 						<p key={id} className="py-5 h-10 truncate max-w-xs flex items-center">
-							<a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>
-								{learnings[id].resources}
+							<a className="overflow-ellipsis text-gray-500 underline" href={lessons[id].resources}>
+								{lessons[id].resources}
 							</a>
 						</p>
 					))}
 				</td>
 				<td className="px-6 py-4 whitespace-nowrap">
-					{phaseLearnings.map((id) => (
+					{phaseLessons.map((id) => (
 						<p key={id} className="py-5 h-10 flex items-center">
-							{learnings[id].priority}
+							{lessons[id].priority}
 						</p>
 					))}
 				</td>
@@ -64,15 +66,25 @@ const TableView = ({ roadmapId }) => {
 		);
 	};
 
+	// calculate lessons of each target duration
+	const calculateLessonsDuration = (projectLessons) => {
+		let duration = 0;
+		projectLessons.forEach((id) => {
+			duration += Number(lessons[id]['duration']);
+		});
+		return duration;
+	};
+
 	//calculate phase duration
 	const calculatePhaseDuration = (phaseData) => {
 		let phaseDuration = 0;
-		let phaseIdProjects = phaseData[1];
-		phaseIdProjects.forEach((id) => {
-			let projectId = Object.keys(projects).find((projectID) => projectID === id);
-			phaseDuration += Number(projects[projectId]['learningDay']) + Number(projects[projectId]['days']);
+		console.log(phaseData);
+		let phaseIdTargets = phaseData.filter((field) => field[0] === 'target');
+		phaseIdTargets[0][1].forEach((id) => {
+			let projectId = Object.keys(targets).find((projectID) => projectID === id);
+			phaseDuration +=
+				Number(targets[projectId]['duration']) + Number(calculateLessonsDuration(targets[projectId]['lesson']));
 		});
-
 		return phaseDuration;
 	};
 
@@ -95,13 +107,13 @@ const TableView = ({ roadmapId }) => {
 		return (
 			<React.Fragment key={id}>
 				<tr>
-					<td className="px-6 whitespace-nowrap">{calculatePhaseDuration(Object.values(phases[phaseId]))} Days</td>
+					<td className="px-6 whitespace-nowrap">{calculatePhaseDuration(Object.entries(phases[phaseId]))} Days</td>
 					{renderLearningData(phaseId)}
 					<td className="px-6 py-4 whitespace-nowrap">
 						<ul>
-							{phases[phaseId]['project'].map((proj) => (
+							{phases[phaseId]['target'].map((proj) => (
 								<li className="py-5" key={proj}>
-									{projects[proj].title}
+									{targets[proj].title}
 								</li>
 							))}
 						</ul>
@@ -111,7 +123,7 @@ const TableView = ({ roadmapId }) => {
 					<td className="bg-gray-100 py-2 w-24">Evaluation</td>
 					<td colSpan="5" className="bg-gray-100 py-2 w-24">
 						{format(
-							calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))),
+							calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.entries(phases[phaseId]))),
 							'EEEE d MMM yyyy',
 						)}
 					</td>
