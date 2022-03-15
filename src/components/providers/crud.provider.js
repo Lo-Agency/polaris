@@ -10,8 +10,8 @@ const CrudContext = createContext(null);
 const CrudProvider = ({ children }) => {
 	const [change, setChange] = useState(false);
 	const [formValues, setFormValues] = useState(null);
-	const { entityName } = useParams();
-	const [dataState, setDataState] = useState();
+	const { workspaceId, entityName } = useParams();
+	const [userWorkspace, setUserWorkspace] = useState(null);
 
 	//send notifications
 	const sendNotification = (type, message) => {
@@ -38,10 +38,21 @@ const CrudProvider = ({ children }) => {
 
 	//get all data from db
 	useEffect(() => {
-		findAllItems().then((data) => {
-			setDataState(data);
-		});
+		findOneWorkspace(workspaceId);
 	}, [change]);
+
+	// get one workspace
+	const findOneWorkspace = async (id) => {
+		setUserWorkspace(null);
+		const dbRef = ref(getDatabase());
+		await get(child(dbRef, `${id}`))
+			.then((snapshot) => {
+				setUserWorkspace(snapshot.val());
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
 
 	//get all data from db
 	const findAllItems = async () => {
@@ -63,7 +74,7 @@ const CrudProvider = ({ children }) => {
 	//create new data
 	const insertNewItem = async (values, entity) => {
 		try {
-			await push(ref(database, entity), values);
+			await push(ref(database, `${workspaceId}/${entity}`), values);
 			sendNotification('success', `New ${entity} is successfully created.`);
 			setChange(!change);
 		} catch (error) {
@@ -79,7 +90,7 @@ const CrudProvider = ({ children }) => {
 			deleteEntity.forEach((entity) => deleteDependency(entity, id));
 		}
 		try {
-			const response = await remove(ref(database, `${entityName}/${id}`));
+			const response = await remove(ref(database, `${workspaceId}/${entityName}/${id}`));
 			sendNotification('success', 'successfully deleted.');
 			setChange(!change);
 			return response;
@@ -89,10 +100,9 @@ const CrudProvider = ({ children }) => {
 	};
 
 	//delete data from others entities
-
 	const deleteDependency = async (deleteEntity, id) => {
-		let data = dataState.filter((elem) => Object.keys(elem)[0] === deleteEntity);
-		data = data && Object.entries(Object.values(data[0])[0]);
+		let data = Object.entries(userWorkspace).filter((elem) => elem[0] === deleteEntity);
+		data = data && Object.entries(data[0][1]);
 		data = data.map((record) => ({ [record[0]]: record[1] }));
 		const updateData = data.filter((record) => Object.values(record)[0][entityName].includes(id));
 
@@ -100,7 +110,7 @@ const CrudProvider = ({ children }) => {
 			updateData.forEach(async (item, index) => {
 				const newEntityInput = Object.values(item)[0][entityName].filter((entityId) => entityId != id);
 				const updateId = updateData.map((updateItemData) => Object.keys(updateItemData));
-				await set(ref(database, `${deleteEntity}/${updateId[index][0]}/${entityName}`), newEntityInput);
+				await set(ref(database, `${workspaceId}/${deleteEntity}/${updateId[index][0]}/${entityName}`), newEntityInput);
 				setChange(!change);
 			});
 		}
@@ -110,7 +120,7 @@ const CrudProvider = ({ children }) => {
 	const findOneItem = async (item) => {
 		setFormValues(null);
 		const dbRef = ref(getDatabase());
-		await get(child(dbRef, `${entityName}/${item}`))
+		await get(child(dbRef, `${workspaceId}/${entityName}/${item}`))
 			.then((snapshot) => {
 				if (snapshot.exists()) {
 					setFormValues(snapshot.val());
@@ -126,7 +136,7 @@ const CrudProvider = ({ children }) => {
 	//update
 	const updateItem = async (values, entity, editID) => {
 		try {
-			await set(ref(database, `${entity}/${editID}`), values);
+			await set(ref(database, `${workspaceId}/${entity}/${editID}`), values);
 			sendNotification('success', 'successfully updated.');
 			setChange(!change);
 		} catch (error) {
@@ -137,13 +147,14 @@ const CrudProvider = ({ children }) => {
 	return (
 		<CrudContext.Provider
 			value={{
+				findAllItems,
 				insertNewItem,
 				deleteItem,
 				findOneItem,
 				formValues,
 				updateItem,
 				change,
-				dataState,
+				userWorkspace,
 			}}>
 			{children}
 		</CrudContext.Provider>
