@@ -1,14 +1,12 @@
 import Select from 'react-select';
 import { title } from 'case';
-import { extractDataFromEntity } from '../../util/extract-data';
 import LoadingPage from './loading-page';
 import { useCrud } from '../providers/crud.provider';
 
 const ReferenceInput = ({ name, reference, formValues, actionName }) => {
 	const crud = useCrud();
-	const dataState = crud.dataState;
-
-	const referenceData = extractDataFromEntity(reference, dataState);
+	const dataState = crud.userWorkspace;
+	const referenceData = dataState && dataState[reference];
 	const selectBoxData = referenceData && Object.entries(referenceData);
 	const values = [];
 	let defaultValues = null;
@@ -18,7 +16,7 @@ const ReferenceInput = ({ name, reference, formValues, actionName }) => {
 		options = selectBoxData.map((data) => ({ value: data[0], label: data[1].title }));
 	}
 
-	if (formValues) {
+	if (formValues && options) {
 		if (Array.isArray(formValues[name])) {
 			formValues[name].map((id) => values.push(options.filter((option) => option['value'] === id)[0]));
 			if (values.length != 0) {

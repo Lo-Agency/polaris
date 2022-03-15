@@ -25,16 +25,21 @@ export default {
 			isCaseSensitive: false,
 			isProtected: false,
 		},
+		workspace: {
+			pathname: '/:workspaceId',
+			isCaseSensitive: true,
+			isProtected: true,
+		},
 		entity: {
-			pathname: '/admin/:entityName/:actionName',
+			pathname: '/:workspaceId/:entityName/:actionName',
 			isCaseSensitive: true,
 			isProtected: true,
 		},
-		admin: {
-			pathname: '/admin',
-			isCaseSensitive: true,
-			isProtected: true,
-		},
+		// admin: {
+		// 	pathname: '/admin',
+		// 	isCaseSensitive: true,
+		// 	isProtected: true,
+		// },
 		'forgot-password': {
 			pathname: '/forgot-password',
 			isCaseSensitive: true,
@@ -70,7 +75,7 @@ export default {
 					isArray: false,
 					validate: yup.string().required(),
 				},
-				category: {
+				'lesson-category': {
 					type: 'ref',
 					isArray: true,
 					reference: 'lesson-category',
@@ -96,7 +101,7 @@ export default {
 					type: 'ref',
 					isArray: true,
 					reference: 'lesson',
-					validate: yup.array().required(),
+					validate: yup.array(),
 				},
 			},
 			list: ['lesson-category'],
@@ -133,11 +138,11 @@ export default {
 					isArray: false,
 					validate: yup.number().min(1).required(),
 				},
-				type: {
-					type: 'select',
-					isArray: false,
-					value: ['Real', 'Team', 'Personal', 'Optional'],
-					validate: yup.string().required(),
+				'target-type': {
+					type: 'ref',
+					isArray: true,
+					reference: 'target-type',
+					validate: yup.array().required(),
 				},
 				'acceptance-criteria': {
 					type: 'text',
@@ -151,7 +156,7 @@ export default {
 					validate: yup.array().required(),
 				},
 			},
-			list: ['lesson'],
+			list: ['lesson', 'target-type'],
 		},
 
 		phase: {
