@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import config from '../../util/config';
 import addDays from 'date-fns/addDays';
 import { useCrud } from '../providers/crud.provider';
+import { calculatePhaseDuration } from '../../util/extract-data';
 
 const TableView = ({ roadmapId }) => {
 	let startDate = null;
@@ -19,8 +20,10 @@ const TableView = ({ roadmapId }) => {
 
 	// categories title for table
 	const renderCategoriesData = (categoriesId) => {
-		const titles = categoriesId.map((id) => categories[id]['title']);
-		return titles.join(', ');
+		if (categoriesId) {
+			const titles = categoriesId.map((id) => categories[id]['title']);
+			return titles.join(', ');
+		}
 	};
 
 	//lessons data for table
@@ -34,10 +37,10 @@ const TableView = ({ roadmapId }) => {
 			<>
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLessons.map((id) => (
-							<p key={id} className="py-5 h-10 flex items-center">
-								{lessons[id].title}
-							</p>
-						))}
+						<p key={id} className="py-5 h-10 flex items-center">
+							{lessons[id].title}
+						</p>
+					))}
 				</td>
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLessons.map((id) => (
@@ -66,28 +69,6 @@ const TableView = ({ roadmapId }) => {
 		);
 	};
 
-	// calculate lessons of each target duration
-	const calculateLessonsDuration = (projectLessons) => {
-		let duration = 0;
-		projectLessons.forEach((id) => {
-			duration += Number(lessons[id]['duration']);
-		});
-		return duration;
-	};
-
-	//calculate phase duration
-	const calculatePhaseDuration = (phaseData) => {
-		let phaseDuration = 0;
-		console.log(phaseData);
-		let phaseIdTargets = phaseData.filter((field) => field[0] === 'target');
-		phaseIdTargets[0][1].forEach((id) => {
-			let projectId = Object.keys(targets).find((projectID) => projectID === id);
-			phaseDuration +=
-				Number(targets[projectId]['duration']) + Number(calculateLessonsDuration(targets[projectId]['lesson']));
-		});
-		return phaseDuration;
-	};
-
 	//calculate ent date of phase
 	const calculatePhaseEndDate = (date, duration) => {
 		endDate = addDays(new Date(date), duration);
@@ -107,7 +88,9 @@ const TableView = ({ roadmapId }) => {
 		return (
 			<React.Fragment key={id}>
 				<tr>
-					<td className="px-6 whitespace-nowrap">{calculatePhaseDuration(Object.entries(phases[phaseId]))} Days</td>
+					<td className="px-6 whitespace-nowrap">
+						{calculatePhaseDuration(Object.entries(phases[phaseId]), targets, lessons)} Days
+					</td>
 					{renderLearningData(phaseId)}
 					<td className="px-6 py-4 whitespace-nowrap">
 						<ul>
@@ -123,7 +106,10 @@ const TableView = ({ roadmapId }) => {
 					<td className="bg-gray-100 py-2 w-24">Evaluation</td>
 					<td colSpan="5" className="bg-gray-100 py-2 w-24">
 						{format(
-							calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.entries(phases[phaseId]))),
+							calculatePhaseEndDate(
+								startDate,
+								calculatePhaseDuration(Object.entries(phases[phaseId]), targets, lessons),
+							),
 							'EEEE d MMM yyyy',
 						)}
 					</td>
