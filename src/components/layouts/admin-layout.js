@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import config from '../../util/config';
 import { useAuth } from '../providers/auth.provider';
 import { ToastContainer } from 'react-toastify';
+import { useState } from 'react';
 
 const AdminLayout = ({ children }) => {
 	const { workspaceId, entityName } = useParams();
@@ -26,6 +27,29 @@ const AdminLayout = ({ children }) => {
 		return 'w-full hover:bg-gray-800 tracking-wide text-sm py-3 px-4 transition-colors';
 	};
 
+	const [active, setActive] = useState(localStorage.getItem('active'));
+
+	if (active === null) {
+		localStorage.setItem('active', 'false');
+	}
+
+	function toggleAccordion() {
+		if (localStorage.getItem('active') === 'false') {
+			setActive('true');
+			localStorage.setItem('active', 'true');
+		} else {
+			setActive('false');
+			localStorage.setItem('active', 'false');
+		}
+	}
+
+	const getVisibilty = () => {
+		if (active === 'false') {
+			return 'invisible';
+		}
+		return 'visible';
+	};
+
 	return (
 		<>
 			<div className="relative">
@@ -34,7 +58,37 @@ const AdminLayout = ({ children }) => {
 						<Link className="text-center text-2xl m-5" to={'/'}>
 							Polaris.
 						</Link>
-						<ul className="flex justify-start flex-col mt-5">
+
+						<ul onClick={() => toggleAccordion()} className="flex justify-start flex-col mt-5 relative cursor-pointer">
+							<li className="w-full hover:bg-gray-800 tracking-wide text-sm py-3 px-4 transition-colors">
+								My Workspcae
+							</li>
+							<label className="absolute right-3 top-3 cursor-pointer">
+								{active === 'true' && (
+									<svg
+										className="w-5 h-5"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+									</svg>
+								)}
+								{active === 'false' && (
+									<svg
+										className="w-5 h-5"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
+									</svg>
+								)}
+							</label>
+						</ul>
+
+						<ul className={getVisibilty()}>
+							{/* <ul style={{ visibility:  }} className=""> */}
 							{Object.keys(config.entities).map((entity) => (
 								<Link key={entity} to={`/${workspaceId}/${entity.toLowerCase()}/list`}>
 									<li className={getSelectedEntityClassName(entity)}>{title(entity)}</li>

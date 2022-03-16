@@ -44,14 +44,14 @@ function Accordion({ title, content }) {
 						className="bg-grey-lighter overflow-auto transition-max-height duration-700 ease-in-out"
 						ref={contentSpace}
 						style={{ maxHeight: `${height}` }}>
-						{/* <button className="">{content}</button> */}
-						{content.map((item, index) => {
+						<button className="">{content}</button>
+						{/* {content.map((item, index) => {
 							return (
 								<h2 key={index} className="pt-4 pl-4 text-black">
 									{item}
 								</h2>
 							);
-						})}
+						})} */}
 					</div>
 				</div>
 			</div>
