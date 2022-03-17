@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthLayout from '../components/layouts/auth-layout';
 import Button from '../components/atoms/button';
-import * as yup from 'yup';
-import config from '../util/config';
 
 function SignUp() {
 	const [error, setError] = useState(null);
@@ -20,44 +18,14 @@ function SignUp() {
 		const firstname = formData.get('firstname');
 		const lastname = formData.get('lastname');
 		const email = formData.get('email');
+		const workspacename = formData.get('workspacename');
 		const password = formData.get('password');
 
-		const values = [{ firstname: firstname }, { lastname: lastname }];
-
-		for (const value of values) {
-			const form = new FormData(event.target);
-			const field = form.getAll(Object.keys(value));
-			console.log(field, 'k');
-
-			let schema = yup
-				.object()
-				.shape({ [Object.keys(value)]: config.entities['member'].fields[Object.keys(value)].validate });
-
-			const isValid = await schema.isValid({ [Object.keys(value)]: Object.values(value) });
-			if (!isValid) {
-				setError(`${Object.keys(value)} is not valid!`);
-				return;
-			} else {
-				try {
-					await auth.signup(firstname, lastname, email, password);
-				} catch (e) {
-					setError(e.message);
-				}
-			}
+		try {
+			await auth.signup(firstname, lastname, email, workspacename, password);
+		} catch (e) {
+			setError(e.message);
 		}
-
-		// let schema = yup.object().shape({ [field]: config.entities['member'].fields['lastname'].validate });
-
-		// const isValid = await schema.isValid({ [field]: lastname });
-		// if (!isValid) {
-		// 	setError(`${field} is not valid!`);
-		// } else {
-		// 	try {
-		// 		await auth.signup(firstname, lastname, email, password);
-		// 	} catch (e) {
-		// 		setError(e.message);
-		// 	}
-		// }
 	};
 
 	const getTypeOfPassword = () => {
@@ -92,6 +60,15 @@ function SignUp() {
 							className="py-2 px-3 outline-none xsm:w-48 sm:w-60 w-72 border-2 border-black"
 							name="email"
 							type="email"
+						/>
+					</div>
+
+					<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
+						<label className="py-2">Enter name of your workspace:</label>
+						<input
+							className="py-2 px-3 outline-none xsm:w-48 sm:w-60 w-72 border-2 border-black"
+							name="workspacename"
+							type="text"
 						/>
 					</div>
 
