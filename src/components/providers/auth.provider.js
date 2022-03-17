@@ -80,9 +80,8 @@ const AuthProvider = ({ children }) => {
 				await checkUserMetaData(userMetaData.val());
 			} else {
 				await logOut();
-				await set(ref(database, `${userData.uid}`), {
+				await set(ref(database, `${userData.uid}/userinformation`), {
 					email: userData.email,
-					type: 'user',
 				});
 				toast.success('Your are successfully registered. Please wait for admin approval verification.', {
 					position: 'top-center',
@@ -105,12 +104,17 @@ const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const signup = async (email, password) => {
+	const signup = async (firstname, lastname, email, workspacename, password) => {
 		setFunctionIsLoading(true);
 		try {
 			const data = await createUserWithEmailAndPassword(auth, email, password);
 			const userId = data.user.uid;
-			await set(ref(database, `${userId}`), { email, type: 'user' });
+			await set(ref(database, `${userId}/userinformation`), {
+				firstname,
+				lastname,
+				email,
+				workspacename,
+			});
 			await logOut();
 			navigate('/login');
 			setFunctionIsLoading(false);

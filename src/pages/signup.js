@@ -14,11 +14,15 @@ function SignUp() {
 		setError(null);
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
+
+		const firstname = formData.get('firstname');
+		const lastname = formData.get('lastname');
 		const email = formData.get('email');
+		const workspacename = formData.get('workspacename');
 		const password = formData.get('password');
 
 		try {
-			await auth.signup(email, password);
+			await auth.signup(firstname, lastname, email, workspacename, password);
 		} catch (e) {
 			setError(e.message);
 		}
@@ -31,16 +35,51 @@ function SignUp() {
 	return (
 		<AuthLayout>
 			<form onSubmit={handleSubmit}>
-				<div className="flex flex-col p-3 justify-center items-center ">
+				<div className="flex flex-col justify-center text-sm items-center ">
+					<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
+						<label className="py-2">Firstname:</label>
+						<input
+							className="py-2 px-3 outline-none xsm:w-48 sm:w-60 w-72 border-2 border-black"
+							name="firstname"
+							type="text"
+						/>
+					</div>
+
+					<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
+						<label className="py-2">Lastname:</label>
+						<input
+							className="py-2 px-3 outline-none xsm:w-48 sm:w-60 w-72 border-2 border-black"
+							name="lastname"
+							type="text"
+						/>
+					</div>
+
 					<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 						<label className="py-2">Email:</label>
-						<input className="py-2 px-3  xsm:w-48 sm:w-60 w-80 border-2 border-black" name="email" type="email" />
+						<input
+							className="py-2 px-3 outline-none xsm:w-48 sm:w-60 w-72 border-2 border-black"
+							name="email"
+							type="email"
+						/>
+					</div>
+
+					<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
+						<label className="py-2">Enter name of your workspace:</label>
+						<input
+							className="py-2 px-3 outline-none xsm:w-48 sm:w-60 w-72 border-2 border-black"
+							name="workspacename"
+							type="text"
+						/>
 					</div>
 
 					<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 						<label className="py-2">Password:</label>
-						<div className="border-2 border-black w-80 relative">
-							<input type={getTypeOfPassword()} className="py-2 px-3 outline-none w-full" name="password" />
+						<div className="border-2 border-black w-72 relative">
+							<input
+								type={getTypeOfPassword()}
+								className="py-2 px-3 xsm:w-48 sm:w-60 outline-none w-full"
+								name="password"
+							/>
 							<label onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-2 cursor-pointer">
 								{showPassword && (
 									<svg
@@ -80,9 +119,9 @@ function SignUp() {
 					</div>
 
 					<Button
-						className={'btn-form w-2/12 flex justify-center items-center'}
+						className={'btn-form flex justify-center items-center'}
 						loading={auth.functionIsLoading}
-						actionName={'signup'}
+						actionName={'Sign up'}
 					/>
 
 					<Link to="/login" className="py-2">
