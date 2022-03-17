@@ -1,19 +1,19 @@
 import { React, useState, useEffect, useCallback } from 'react';
 import { Gantt } from 'gantt-task-react';
-import { extractDataFromEntity } from '../../util/extract-data';
 import addDays from 'date-fns/addDays';
 import GanttModal from '../molecules/gantt-chart-modal';
 import 'gantt-task-react/dist/index.css';
 import { useCrud } from '../providers/crud.provider';
+import { calculateLessonsDuration, calculatePhaseDuration } from '../../util/extract-data';
 
 const GanttChart = ({ roadmapId }) => {
 	const crud = useCrud();
-	const dataState = crud.dataState;
+	const workspaceData = crud.userWorkspace;
 
 	const ganttData = [];
 	const [tasks, setTasks] = useState(ganttData);
 	const [view, setView] = useState('Month');
-	const [project, setProject] = useState(null);
+	const [target, setTarget] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
@@ -21,20 +21,21 @@ const GanttChart = ({ roadmapId }) => {
 	}, [roadmapId]);
 
 	let phaseStartDate = null;
-	let projectStartDate = null;
+	let targetStartDate = null;
 
 	let phaseEndDate;
-	let projectEndDate;
+	let targetEndDate;
 
 	let phasesEndDates = [];
-	let projectsEndDates = [];
+	let targetsEndDates = [];
 
 	let phasesStartDates = [];
-	let projectsStartDates = [];
+	let targetsStartDates = [];
 
-	const roadmaps = extractDataFromEntity('roadmap', dataState);
-	const projects = extractDataFromEntity('project', dataState);
-	const phases = extractDataFromEntity('phase', dataState);
+	const roadmaps = workspaceData['roadmap'];
+	const targets = workspaceData['target'];
+	const phases = workspaceData['phase'];
+	const lessons = workspaceData['lesson'];
 
 	let columnWidth = 60;
 	if (view === 'Month') {
@@ -45,36 +46,26 @@ const GanttChart = ({ roadmapId }) => {
 
 	const phasesId = roadmaps && roadmapId && roadmaps[roadmapId]['phase'];
 
-	const calculatePhaseDuration = (phaseData) => {
-		let phaseProjects = phaseData[1];
-		let phaseDuration = 0;
-		phaseProjects.forEach((id) => {
-			let projectId = Object.keys(projects).find((projectID) => projectID === id);
-			phaseDuration += Number(projects[projectId]['learningDay']) + Number(projects[projectId]['days']);
-		});
-
-		return phaseDuration;
-	};
-
-	const createStartEndProject = (roadmap, projectDuration) => {
-		if (projectStartDate === null) {
-			projectStartDate = Object.values(roadmap)[1];
+	const calculateStartEndTarget = (roadmap, targetDuration) => {
+		if (targetStartDate === null) {
+			targetStartDate = Object.values(roadmap)[1];
 		} else {
-			projectStartDate = projectEndDate;
+			targetStartDate = targetEndDate;
 		}
 
-		const projectEndDates = calculateProjectEndDate(projectStartDate, projectDuration);
-		return [new Date(projectStartDate), projectEndDates];
+		const targetEndDates = calculateTargetEndDate(targetStartDate, targetDuration);
+		return [new Date(targetStartDate), targetEndDates];
 	};
 
-	const calculateProjectDuration = (phaseProjects, roadmap) => {
+	const calculateTargetDuration = (phasetargets, roadmap) => {
 		const startDates = [];
 		const endDates = [];
-		phaseProjects.forEach((projectId) => {
-			let projectDuration = Number(projects[projectId]['learningDay']) + Number(projects[projectId]['days']);
-			const projectStartDates = createStartEndProject(roadmap, projectDuration);
-			startDates.push(projectStartDates[0]);
-			endDates.push(projectStartDates[1]);
+		phasetargets.forEach((targetId) => {
+			let targetDuration =
+				Number(targets[targetId]['duration']) + calculateLessonsDuration(targets[targetId]['lesson'], lessons);
+			const targetStartDates = calculateStartEndTarget(roadmap, targetDuration);
+			startDates.push(targetStartDates[0]);
+			endDates.push(targetStartDates[1]);
 		});
 
 		return [startDates, endDates];
@@ -85,9 +76,9 @@ const GanttChart = ({ roadmapId }) => {
 		return phaseEndDate;
 	};
 
-	const calculateProjectEndDate = (startDate, duration) => {
-		projectEndDate = addDays(new Date(startDate), duration);
-		return projectEndDate;
+	const calculateTargetEndDate = (startDate, duration) => {
+		targetEndDate = addDays(new Date(startDate), duration);
+		return targetEndDate;
 	};
 
 	const renderPhaseData = (id, roadmap) => {
@@ -99,11 +90,13 @@ const GanttChart = ({ roadmapId }) => {
 			phaseStartDate = phaseEndDate;
 		}
 		phasesStartDates.push(new Date(phaseStartDate));
-		phasesEndDates.push(calculatePhaseEndDate(phaseStartDate, calculatePhaseDuration(Object.values(phases[phaseId]))));
-		const phaseProjects = Object.values(phases[phaseId])[1];
-		const startEndDates = calculateProjectDuration(phaseProjects, roadmap);
-		projectsStartDates.push(startEndDates[0]);
-		projectsEndDates.push(startEndDates[1]);
+		phasesEndDates.push(
+			calculatePhaseEndDate(phaseStartDate, calculatePhaseDuration(Object.entries(phases[phaseId]), targets, lessons)),
+		);
+		const phasetargets = Object.values(phases[phaseId])[1];
+		const startEndDates = calculateTargetDuration(phasetargets, roadmap);
+		targetsStartDates.push(startEndDates[0]);
+		targetsEndDates.push(startEndDates[1]);
 	};
 
 	const handleExpanderClick = (selectedTask) => {
@@ -120,7 +113,7 @@ const GanttChart = ({ roadmapId }) => {
 
 	const handleSelect = (task, isSelected) => {
 		if (task.type === 'task' && isSelected) {
-			setProject(projects[task.projectId]);
+			setTarget(targets[task.targetId]);
 			handleShowModal();
 		}
 	};
@@ -159,23 +152,23 @@ const GanttChart = ({ roadmapId }) => {
 			end: phasesEndDates[phaseIndex],
 		});
 
-		//projects
-		phases[phaseId]['project'].forEach((projectId, projectIndex) => {
+		//targets
+		phases[phaseId]['target'].forEach((targetId, targetIndex) => {
 			ganttData.push({
-				//every id of projects must be unique in this gantt chart
-				id: projectId + phaseId,
-				name: projects[projectId]['title'],
+				//every id of targets must be unique in this gantt chart
+				id: targetId + phaseId,
+				name: targets[targetId]['title'],
 				type: 'task',
-				start: projectsStartDates[phaseIndex][projectIndex],
-				end: projectsEndDates[phaseIndex][projectIndex],
+				start: targetsStartDates[phaseIndex][targetIndex],
+				end: targetsEndDates[phaseIndex][targetIndex],
 				project: phaseId,
-				projectId: projectId,
+				projectId: targetId,
 			});
 		});
 	});
 
 	return (
-		<>
+		<div className="my-5 border-b mx-5 w-full border-gray-200 shadow-md">
 			{createViewButtons()}
 			<Gantt
 				tasks={tasks}
@@ -193,8 +186,8 @@ const GanttChart = ({ roadmapId }) => {
 				barFill={70}
 				barCornerRadius={0}
 			/>
-			{showModal && <GanttModal onCancel={handleCloseModal} project={project} />}
-		</>
+			{showModal && <GanttModal onCancel={handleCloseModal} target={target} />}
+		</div>
 	);
 };
 export default GanttChart;
