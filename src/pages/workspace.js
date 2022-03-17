@@ -87,8 +87,8 @@ const workspace = () => {
 						</Link>
 					</header>
 					{selectedRoadmap && (
-						<div className="px-4 mt-20 mb-10">
-							<div className="flex justify-between mb-3">
+						<div className="flex justify-center items-center left-60 right-0 mx-5 top-20 flex-col absolute">
+							<div className="flex justify-between w-full">
 								<div className="flex self-center">
 									<p> Starting Date {format(new Date(Object.values(roadmaps[selectedRoadmap.value])[1]), 'PPP')} </p>
 								</div>

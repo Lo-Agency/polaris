@@ -4,7 +4,7 @@ import addDays from 'date-fns/addDays';
 import GanttModal from '../molecules/gantt-chart-modal';
 import 'gantt-task-react/dist/index.css';
 import { useCrud } from '../providers/crud.provider';
-import { calculatePhaseDuration } from '../../util/extract-data';
+import { calculateLessonsDuration, calculatePhaseDuration } from '../../util/extract-data';
 
 const GanttChart = ({ roadmapId }) => {
 	const crud = useCrud();
@@ -61,7 +61,8 @@ const GanttChart = ({ roadmapId }) => {
 		const startDates = [];
 		const endDates = [];
 		phasetargets.forEach((targetId) => {
-			let targetDuration = Number(targets[targetId]['learningDay']) + Number(targets[targetId]['days']);
+			let targetDuration =
+				Number(targets[targetId]['duration']) + calculateLessonsDuration(targets[targetId]['lesson'], lessons);
 			const targetStartDates = calculateStartEndTarget(roadmap, targetDuration);
 			startDates.push(targetStartDates[0]);
 			endDates.push(targetStartDates[1]);
@@ -167,7 +168,7 @@ const GanttChart = ({ roadmapId }) => {
 	});
 
 	return (
-		<>
+		<div className="my-5 border-b mx-5 w-full border-gray-200 shadow-md">
 			{createViewButtons()}
 			<Gantt
 				tasks={tasks}
@@ -186,7 +187,7 @@ const GanttChart = ({ roadmapId }) => {
 				barCornerRadius={0}
 			/>
 			{showModal && <GanttModal onCancel={handleCloseModal} target={target} />}
-		</>
+		</div>
 	);
 };
 export default GanttChart;

@@ -33,6 +33,7 @@ const TableView = ({ roadmapId }) => {
 		phaseTargets.forEach((targetId) => {
 			targets[targetId]['lesson'].forEach((id) => phaseLessons.push(id));
 		});
+
 		return (
 			<>
 				<td className="px-6 py-4 whitespace-nowrap">
@@ -119,7 +120,7 @@ const TableView = ({ roadmapId }) => {
 	};
 
 	return (
-		<div className="flex">
+		<div className="my-5 border-b mx-5 w-full border-gray-200 shadow-md">
 			<div className="flex justify-center w-full flex-col">
 				<table className="my-5 border-b border-gray-200 w-l">
 					<thead className="bg-black w-full">
