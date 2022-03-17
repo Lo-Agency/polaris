@@ -41,14 +41,14 @@ function Login() {
 			{!auth.loading ? (
 				<AuthLayout>
 					<form onSubmit={handleSubmit}>
-						<div className="flex flex-col justify-center items-center ">
-							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
+						<div className="flex flex-col justify-center items-center  text-sm">
+							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col ">
 								<label className="py-2">Email:</label>
-								<input className="py-2 px-3 w-80 outline-none border-2 border-black" name="email" type="email" />
+								<input className="py-2 px-3 w-72 border-2 border-black" name="email" type="email" />
 							</div>
 							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 								<label className="py-2">Password:</label>
-								<div className="border-2 border-black w-80 relative">
+								<div className="border-2 border-black w-72 relative">
 									<input type={getTypeOfPassword()} className="py-2 px-3 outline-none w-full" name="password" />
 									<label
 										onClick={() => setShowPassword(!showPassword)}
@@ -98,16 +98,18 @@ function Login() {
 						</div>
 					</form>
 
-					<Link to="/forgot-password" className="pt-2">
+					<Link to="/forgot-password" className="pt-4 text-sm">
 						Forgot Password
 					</Link>
-					<Link to="/signup">Dont have an account yet?</Link>
-					<div className={'w-80 text-gray-500 m-4 h-4 border-b-2 text-center p-1'}>
+					<Link to="/signup" className="text-sm">
+						Dont have an account yet?
+					</Link>
+					<div className={'w-72 text-gray-500 m-4 h-4 border-b-2 text-center pt-1 text-base'}>
 						<span className={'bg-white p-2'}>OR</span>
 					</div>
 					<button
 						className={
-							'py-1 w-80 mt-2 flex justify-center bg-white items-center border-2 border-gray-200 hover:border-black'
+							'text-sm py-1 w-72 mt-2 flex justify-center bg-white items-center border-2 border-gray-200 hover:border-black'
 						}
 						onClick={() => {
 							OAuthLogin('github');
@@ -119,7 +121,7 @@ function Login() {
 					</button>
 					<button
 						className={
-							'py-1 w-80 mt-2 flex justify-center bg-white items-center border-2 border-gray-200 hover:border-black'
+							'text-sm py-1 w-72 mt-2 flex justify-center bg-white items-center border-2 border-gray-200 hover:border-black'
 						}
 						onClick={() => {
 							OAuthLogin('google');
