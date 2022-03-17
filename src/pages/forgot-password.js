@@ -28,15 +28,19 @@ function ForgotPassword() {
 	return (
 		<AuthLayout>
 			<form onSubmit={sendResetPassEmail}>
-				<h1 className="text-xl mb-2">Forgot your password?</h1>
-				<div className="flex flex-col justify-center items-center">
+				<h1 className="text-lg mb-2">Forgot your password?</h1>
+				<div className="flex flex-col justify-center items-center text-sm">
 					<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">
 						<label className="py-2">Your email:</label>
-						<input className="py-2 px-3 xsm:w-48 sm:w-60 w-80 border-2 border-black" name="email" type="email" />
+						<input
+							className="py-2 px-3 xsm:w-48 sm:w-60 w-72 outline-none border-2 border-black"
+							name="email"
+							type="email"
+						/>
 					</div>
 
 					<Button
-						className={'btn-form w-2/12 flex justify-center items-center'}
+						className={'btn-form flex justify-center items-center'}
 						loading={auth.functionIsLoading}
 						actionName={'Reset password'}
 					/>
