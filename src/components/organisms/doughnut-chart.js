@@ -1,19 +1,19 @@
 import React from 'react';
 import { compareDesc, format } from 'date-fns';
 import Charts from '../molecules/doughnut-chart-helper';
-import { extractDataFromEntity } from '../../util/extract-data';
+import { calculatePhaseDuration } from '../../util/extract-data';
 import addDays from 'date-fns/addDays';
 import { useCrud } from '../providers/crud.provider';
 
 const DoughnutChart = ({ selectedRoadmap }) => {
 	const crud = useCrud();
-	const dataState = crud.dataState;
+	const workspaceData = crud.userWorkspace;
+	const roadmaps = workspaceData && workspaceData['roadmap'];
+	const lessons = workspaceData && workspaceData['lesson'];
+	const targets = workspaceData && workspaceData['target'];
+	const phases = workspaceData && workspaceData['phase'];
 
-	const roadmaps = extractDataFromEntity('roadmap', dataState);
-	const phases = extractDataFromEntity('phase', dataState);
-	const projects = extractDataFromEntity('project', dataState);
-
-	let phaseProjectsName = [];
+	let phaseTargetsName = [];
 	let startDate = null;
 	let endDate;
 	let endDates = [];
@@ -25,25 +25,18 @@ const DoughnutChart = ({ selectedRoadmap }) => {
 		} else {
 			startDate = endDate;
 		}
-		endDates.push(calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))));
-		phases[phaseId]['project'].forEach((projectId) => phaseProjectsName.push(projects[projectId]['title']));
+		endDates.push(
+			calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.entries(phases[phaseId]), targets, lessons)),
+		);
+		phases[phaseId]['target'].forEach((targetId) => {
+			phaseTargetsName.push(targets[targetId]['title']);
+		});
 	};
 
 	//calculate ent date of phase
 	const calculatePhaseEndDate = (date, duration) => {
 		endDate = addDays(new Date(date), duration);
 		return endDate;
-	};
-	//calculate phase duration
-	const calculatePhaseDuration = (phaseData) => {
-		let phaseDuration = 0;
-		let projectsPhase = phaseData[1];
-		projectsPhase.forEach((id) => {
-			let projectId = Object.keys(projects).find((projectID) => projectID === id);
-			phaseDuration += Number(projects[projectId]['learningDay']) + Number(projects[projectId]['days']);
-		});
-
-		return phaseDuration;
 	};
 
 	//This function gives the days between two different dates
@@ -57,7 +50,9 @@ const DoughnutChart = ({ selectedRoadmap }) => {
 				})
 				.filter(Boolean)}
 
-			{phaseProjectsName.length !== 0 && <Charts phaseProjects={phaseProjectsName} projectList={projects} />}
+			{phaseTargetsName.length !== 0 && (
+				<Charts phaseTargets={phaseTargetsName} targetList={targets} lessons={lessons} />
+			)}
 
 			<div className="self-center">
 				{endDates.length !== 0 && compareDesc(new Date(endDates[endDates.length - 1]), new Date()) !== 1 && (

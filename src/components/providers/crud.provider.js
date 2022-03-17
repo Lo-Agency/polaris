@@ -44,14 +44,16 @@ const CrudProvider = ({ children }) => {
 	// get one workspace
 	const findOneWorkspace = async (id) => {
 		setUserWorkspace(null);
-		const dbRef = ref(getDatabase());
-		await get(child(dbRef, `${id}`))
-			.then((snapshot) => {
+		const db = getDatabase();
+		return onValue(
+			ref(db, `${id}`),
+			(snapshot) => {
 				setUserWorkspace(snapshot.val());
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+			},
+			{
+				onlyOnce: true,
+			},
+		);
 	};
 
 	//get all data from db

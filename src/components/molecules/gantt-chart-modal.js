@@ -1,4 +1,14 @@
-const GanttChartModal = ({ onCancel, project }) => {
+import { useCrud } from '../providers/crud.provider';
+
+const GanttChartModal = ({ onCancel, target }) => {
+	const { userWorkspace } = useCrud();
+	const targetTypes = userWorkspace['target-type'];
+	const lessons = userWorkspace['lesson'];
+
+	const getTargetLessons = (lessonsId) => {
+		const targetLessons = lessonsId.map((id) => lessons[id]['title']);
+		return targetLessons.join(', ');
+	};
 	return (
 		<>
 			<div onClick={onCancel} className="fixed z-10 inset-0 overflow-y-auto">
@@ -17,15 +27,15 @@ const GanttChartModal = ({ onCancel, project }) => {
 								<tbody>
 									<tr>
 										<td>Type:</td>
-										<td>{project.projectType}</td>
+										<td>{targetTypes[target['target-type']]['title']}</td>
 									</tr>
 									<tr>
-										<td>Learning:</td>
-										<td>{project.learningDay} days</td>
+										<td>Lesson:</td>
+										<td>{getTargetLessons(target.lesson)}</td>
 									</tr>
 									<tr>
-										<td>Project:</td>
-										<td>{project.days} days</td>
+										<td>duration:</td>
+										<td>{target.duration} days</td>
 									</tr>
 								</tbody>
 							</table>
