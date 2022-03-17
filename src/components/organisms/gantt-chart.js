@@ -161,8 +161,8 @@ const GanttChart = ({ roadmapId }) => {
 				type: 'task',
 				start: targetsStartDates[phaseIndex][targetIndex],
 				end: targetsEndDates[phaseIndex][targetIndex],
-				target: phaseId,
-				targetId: targetId,
+				project: phaseId,
+				projectId: targetId,
 			});
 		});
 	});
