@@ -146,7 +146,7 @@ const GanttChart = ({ roadmapId }) => {
 		ganttData.push({
 			id: phaseId,
 			name: phases[phaseId]['title'],
-			type: 'target',
+			type: 'project',
 			hideChildren: false,
 			start: phasesStartDates[phaseIndex],
 			end: phasesEndDates[phaseIndex],
