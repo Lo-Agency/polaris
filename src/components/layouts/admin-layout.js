@@ -28,9 +28,21 @@ const AdminLayout = ({ children }) => {
 	};
 
 	const [active, setActive] = useState(localStorage.getItem('active'));
+	const [activeshared, setActiveShared] = useState(localStorage.getItem('activeshared'));
 
-	if (active === null) {
+	if (active === null || activeshared === null) {
 		localStorage.setItem('active', 'false');
+		localStorage.setItem('activeshared', 'false');
+	}
+
+	function toggleAccordionSharedWorkspace() {
+		if (localStorage.getItem('activeshared') === 'false') {
+			setActiveShared('true');
+			localStorage.setItem('activeshared', 'true');
+		} else {
+			setActiveShared('false');
+			localStorage.setItem('activeshared', 'false');
+		}
 	}
 
 	function toggleAccordion() {
@@ -43,13 +55,6 @@ const AdminLayout = ({ children }) => {
 		}
 	}
 
-	const getVisibilty = () => {
-		if (active === 'false') {
-			return 'invisible';
-		}
-		return 'visible';
-	};
-
 	return (
 		<>
 			<div className="relative">
@@ -58,43 +63,83 @@ const AdminLayout = ({ children }) => {
 						<Link className="text-center text-2xl m-5" to={'/'}>
 							Polaris.
 						</Link>
+						<div>
+							<ul
+								onClick={() => toggleAccordionSharedWorkspace()}
+								className="flex justify-start flex-col mt-5 relative cursor-pointer">
+								<li className="w-full hover:bg-gray-800 tracking-wide text-sm py-3 px-4 transition-colors">
+									Shared Workspcae
+								</li>
+								<label className="absolute right-3 top-3 cursor-pointer">
+									{activeshared === 'true' && (
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+											xmlns="http://www.w3.org/2000/svg">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+										</svg>
+									)}
+									{activeshared === 'false' && (
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+											xmlns="http://www.w3.org/2000/svg">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
+										</svg>
+									)}
+								</label>
+							</ul>
 
-						<ul onClick={() => toggleAccordion()} className="flex justify-start flex-col mt-5 relative cursor-pointer">
-							<li className="w-full hover:bg-gray-800 tracking-wide text-sm py-3 px-4 transition-colors">
-								My Workspcae
-							</li>
-							<label className="absolute right-3 top-3 cursor-pointer">
-								{active === 'true' && (
-									<svg
-										className="w-5 h-5"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-										xmlns="http://www.w3.org/2000/svg">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-									</svg>
-								)}
-								{active === 'false' && (
-									<svg
-										className="w-5 h-5"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-										xmlns="http://www.w3.org/2000/svg">
-										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
-									</svg>
-								)}
-							</label>
-						</ul>
+							<ul className={activeshared === 'true' ? 'block' : 'hidden'}>
+								{Object.keys(config.entities).map((workspacename, index) => (
+									<Link key={index} to={`/${sharedworkspaceId}`}>
+										<li className={getSelectedEntityClassName(workspacename)}>{title(workspacename)}</li>
+									</Link>
+								))}
+							</ul>
+						</div>
 
-						<ul className={getVisibilty()}>
-							{/* <ul style={{ visibility:  }} className=""> */}
-							{Object.keys(config.entities).map((entity) => (
-								<Link key={entity} to={`/${workspaceId}/${entity.toLowerCase()}/list`}>
-									<li className={getSelectedEntityClassName(entity)}>{title(entity)}</li>
-								</Link>
-							))}
-						</ul>
+						<div>
+							<ul onClick={() => toggleAccordion()} className="flex justify-start flex-col relative cursor-pointer">
+								<li className="w-full hover:bg-gray-800 tracking-wide text-sm py-3 px-4 transition-colors">
+									My Workspcae
+								</li>
+								<label className="absolute right-3 top-3 cursor-pointer">
+									{active === 'true' && (
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+											xmlns="http://www.w3.org/2000/svg">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+										</svg>
+									)}
+									{active === 'false' && (
+										<svg
+											className="w-5 h-5"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+											xmlns="http://www.w3.org/2000/svg">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
+										</svg>
+									)}
+								</label>
+							</ul>
+
+							<ul className={active === 'true' ? 'block' : 'hidden'}>
+								{Object.keys(config.entities).map((entity) => (
+									<Link key={entity} to={`/${workspaceId}/${entity.toLowerCase()}/list`}>
+										<li className={getSelectedEntityClassName(entity)}>{title(entity)}</li>
+									</Link>
+								))}
+							</ul>
+						</div>
 					</div>
 					<button className="text-center text-sm p-5 hover:bg-gray-800" onClick={logOut}>
 						Logout
