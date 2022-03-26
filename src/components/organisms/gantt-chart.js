@@ -8,7 +8,7 @@ import { calculateLessonsDuration, calculatePhaseDuration } from '../../util/ext
 
 const GanttChart = ({ roadmapId }) => {
 	const crud = useCrud();
-	const workspaceData = crud.userWorkspace;
+	const workspaceData = crud.curerntsharedroadmap;
 
 	const ganttData = [];
 	const [tasks, setTasks] = useState(ganttData);

@@ -28,13 +28,14 @@ const AuthProvider = ({ children }) => {
 	const signIn = async (email, password) => {
 		setFunctionIsLoading(true);
 		try {
-			const dbRef = ref(getDatabase());
-			let userData;
+			// const dbRef = ref(getDatabase());
+			// let userData;
 			await signInWithEmailAndPassword(auth, email, password);
-			await get(child(dbRef, `${auth.currentUser.uid}`)).then((snapshot) => {
-				userData = snapshot.val();
-			});
-			await checkUserMetaData(userData);
+			// await get(child(dbRef, `${auth.currentUser.uid}`)).then((snapshot) => {
+			// 	userData = snapshot.val();
+			// });
+			navigate(`/${auth.user.uid}/${auth.user.uid}`);
+			// await checkUserMetaData(userData);
 		} catch (error) {
 			setFunctionIsLoading(false);
 			if (error.code === 'auth/user-not-found') {
@@ -45,7 +46,7 @@ const AuthProvider = ({ children }) => {
 				throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
 		}
-		setFunctionIsLoading(false);
+		// setFunctionIsLoading(false);
 	};
 
 	const logOut = async () => {
@@ -77,7 +78,7 @@ const AuthProvider = ({ children }) => {
 			const userData = result.user;
 			const userMetaData = await get(child(dbRef, `${userData.uid}`));
 			if (userMetaData.exists()) {
-				await checkUserMetaData(userMetaData.val());
+				// await checkUserMetaData(userMetaData.val());
 			} else {
 				await logOut();
 				await set(ref(database, `${userData.uid}/userinformation`), {
@@ -135,15 +136,6 @@ const AuthProvider = ({ children }) => {
 				throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
 		}
-	};
-
-	const checkUserMetaData = async () => {
-		setFunctionIsLoading(false);
-		// if (userData.type === 'admin') {
-		// 	navigate('/admin/lesson-category/list');
-		// } else {
-		navigate('/');
-		// }
 	};
 
 	return (

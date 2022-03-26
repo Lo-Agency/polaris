@@ -1,7 +1,8 @@
 import { useCrud } from '../providers/crud.provider';
 
 const GanttChartModal = ({ onCancel, target }) => {
-	const { userWorkspace } = useCrud();
+	const crud = useCrud();
+	const userWorkspace = crud.curerntsharedroadmap;
 	const targetTypes = userWorkspace['target-type'];
 	const lessons = userWorkspace['lesson'];
 

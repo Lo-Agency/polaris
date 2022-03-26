@@ -79,7 +79,7 @@ const Entity = () => {
 		default:
 			return (
 				<AdminLayout>
-					<div className="flex justify-center items-center left-60 right-0 mx-5 top-20 flex-col absolute">
+					<div className="content-sidebar">
 						{entityName === 'member' && (
 							<Select
 								className="w-96 mt-5 self-end max-w-lg absolute"
@@ -165,7 +165,7 @@ const Entity = () => {
 								</tbody>
 							</table>
 						) : (
-							<p className="mt-10">no data!</p>
+							<p className="mt-48">no data!</p>
 						)}
 					</div>
 				</AdminLayout>

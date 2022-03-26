@@ -10,11 +10,6 @@ export default {
 		appId: process.env.REACT_APP_FIREBASE_APP_ID,
 	},
 	routes: {
-		test: {
-			pathname: '/test',
-			isCaseSensitive: false,
-			isProtected: false,
-		},
 		home: {
 			pathname: '/',
 			isCaseSensitive: false,
@@ -26,20 +21,15 @@ export default {
 			isProtected: false,
 		},
 		workspace: {
-			pathname: '/:workspaceId',
+			pathname: ':workspaceId/:sharedworkspaceId',
 			isCaseSensitive: true,
 			isProtected: true,
 		},
 		entity: {
-			pathname: '/:workspaceId/:entityName/:actionName',
+			pathname: ':workspaceId/:entityName/:actionName',
 			isCaseSensitive: true,
 			isProtected: true,
 		},
-		// admin: {
-		// 	pathname: '/admin',
-		// 	isCaseSensitive: true,
-		// 	isProtected: true,
-		// },
 		'forgot-password': {
 			pathname: '/forgot-password',
 			isCaseSensitive: true,

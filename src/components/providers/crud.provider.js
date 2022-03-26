@@ -10,8 +10,10 @@ const CrudContext = createContext(null);
 const CrudProvider = ({ children }) => {
 	const [change, setChange] = useState(false);
 	const [formValues, setFormValues] = useState(null);
-	const { workspaceId, entityName } = useParams();
+	const { workspaceId, entityName, sharedworkspaceId } = useParams();
 	const [userWorkspace, setUserWorkspace] = useState(null);
+	const [userSharedWorkspace, setUserSharedWorkspace] = useState();
+	const [curerntsharedroadmap, setcurerntsharedroadmap] = useState();
 
 	//send notifications
 	const sendNotification = (type, message) => {
@@ -39,7 +41,44 @@ const CrudProvider = ({ children }) => {
 	//get all data from db
 	useEffect(() => {
 		findOneWorkspace(workspaceId);
-	}, [change]);
+		findSharedDetail(sharedworkspaceId);
+	}, [change, workspaceId, sharedworkspaceId]);
+
+	//get all data from db
+	const findOneSharedWorkspace = async (idvalues) => {
+		if (workspaceId) {
+			const allPromises = idvalues.map((id) => {
+				return new Promise((resolve) => {
+					const db = getDatabase();
+					return onValue(
+						ref(db, `${id}`),
+						(snapshot) => {
+							resolve({ [id]: snapshot.val() });
+						},
+						{
+							onlyOnce: true,
+						},
+					);
+				});
+			});
+
+			return Promise.all(allPromises);
+		}
+	};
+
+	const findSharedDetail = async (id) => {
+		setcurerntsharedroadmap(null);
+		const db = getDatabase();
+		return onValue(
+			ref(db, `${id}`),
+			(snapshot) => {
+				setcurerntsharedroadmap(snapshot.val());
+			},
+			{
+				onlyOnce: true,
+			},
+		);
+	};
 
 	// get one workspace
 	const findOneWorkspace = async (id) => {
@@ -49,6 +88,17 @@ const CrudProvider = ({ children }) => {
 			ref(db, `${id}`),
 			(snapshot) => {
 				setUserWorkspace(snapshot.val());
+				let idvalues = [];
+				if (workspaceId && snapshot.val()['sharedworkspace']) {
+					idvalues =
+						workspaceId &&
+						snapshot.val()['sharedworkspace'].map((id) => {
+							return id;
+						});
+				}
+				findOneSharedWorkspace(idvalues).then((data) => {
+					setUserSharedWorkspace(data);
+				});
 			},
 			{
 				onlyOnce: true,
@@ -159,6 +209,9 @@ const CrudProvider = ({ children }) => {
 				updateItem,
 				change,
 				userWorkspace,
+				userSharedWorkspace,
+				findOneSharedWorkspace,
+				curerntsharedroadmap,
 			}}>
 			{children}
 		</CrudContext.Provider>
