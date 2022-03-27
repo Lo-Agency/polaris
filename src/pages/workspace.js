@@ -14,8 +14,6 @@ const workspace = () => {
 	const workspaceData = crud.curerntsharedroadmap;
 	const { sharedworkspaceId } = useParams();
 
-	console.log(workspaceData);
-
 	const roadmaps = workspaceData && workspaceData.roadmap;
 
 	const [selectedRoadmap, setSelectedRoadmap] = useState(null);
@@ -90,11 +88,6 @@ const workspace = () => {
 		<AdminLayout>
 			{workspaceData ? (
 				<div className="flex flex-col">
-					{/* <header className="navbar fixed w-full px-4">
-						<Link className="text-2xl" to={'/'}>
-							Polaris.
-						</Link>
-					</header> */}
 					{selectedRoadmap && roadmaps && (
 						<div className="content-sidebar">
 							<div className="flex justify-between w-full">
@@ -161,7 +154,7 @@ const workspace = () => {
 					{!selectedRoadmap && <div className="content-sidebar mt-48">{createSelectBox()}</div>}
 				</div>
 			) : (
-				<LoadingPage></LoadingPage>
+				<LoadingPage />
 			)}
 		</AdminLayout>
 	);

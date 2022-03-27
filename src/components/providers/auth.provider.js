@@ -28,14 +28,8 @@ const AuthProvider = ({ children }) => {
 	const signIn = async (email, password) => {
 		setFunctionIsLoading(true);
 		try {
-			// const dbRef = ref(getDatabase());
-			// let userData;
 			await signInWithEmailAndPassword(auth, email, password);
-			// await get(child(dbRef, `${auth.currentUser.uid}`)).then((snapshot) => {
-			// 	userData = snapshot.val();
-			// });
 			navigate(`/${auth.user.uid}/${auth.user.uid}`);
-			// await checkUserMetaData(userData);
 		} catch (error) {
 			setFunctionIsLoading(false);
 			if (error.code === 'auth/user-not-found') {
@@ -46,9 +40,8 @@ const AuthProvider = ({ children }) => {
 				throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
 		}
-		// setFunctionIsLoading(false);
+		setFunctionIsLoading(false);
 	};
-
 	const logOut = async () => {
 		await signOut(auth);
 	};
@@ -78,13 +71,13 @@ const AuthProvider = ({ children }) => {
 			const userData = result.user;
 			const userMetaData = await get(child(dbRef, `${userData.uid}`));
 			if (userMetaData.exists()) {
-				// await checkUserMetaData(userMetaData.val());
+				await checkUserMetaData(userMetaData.val());
 			} else {
 				await logOut();
 				await set(ref(database, `${userData.uid}/userinformation`), {
 					email: userData.email,
 				});
-				toast.success('Your are successfully registered. Please wait for admin approval verification.', {
+				toast.success('Your are successfully registered.', {
 					position: 'top-center',
 					autoClose: 5000,
 					hideProgressBar: false,
@@ -119,7 +112,7 @@ const AuthProvider = ({ children }) => {
 			await logOut();
 			navigate('/login');
 			setFunctionIsLoading(false);
-			toast.success('Your Email address is successfully registered. Please wait for admin approval verification.', {
+			toast.success('Your Email address is successfully registered.', {
 				position: 'top-center',
 				autoClose: 5000,
 				hideProgressBar: false,
@@ -136,6 +129,11 @@ const AuthProvider = ({ children }) => {
 				throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
 		}
+	};
+
+	const checkUserMetaData = async () => {
+		setFunctionIsLoading(false);
+		navigate('/');
 	};
 
 	return (

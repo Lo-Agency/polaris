@@ -61,7 +61,6 @@ const AdminLayout = ({ children }) => {
 		}
 	}
 
-	// console.log(idByValues.length);
 	return (
 		<>
 			<div className="relative">

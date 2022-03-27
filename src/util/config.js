@@ -10,8 +10,13 @@ export default {
 		appId: process.env.REACT_APP_FIREBASE_APP_ID,
 	},
 	routes: {
-		home: {
+		landing: {
 			pathname: '/',
+			isCaseSensitive: false,
+			isProtected: false,
+		},
+		home: {
+			pathname: '/home',
 			isCaseSensitive: false,
 			isProtected: true,
 		},
