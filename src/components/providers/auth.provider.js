@@ -28,13 +28,8 @@ const AuthProvider = ({ children }) => {
 	const signIn = async (email, password) => {
 		setFunctionIsLoading(true);
 		try {
-			const dbRef = ref(getDatabase());
-			let userData;
 			await signInWithEmailAndPassword(auth, email, password);
-			await get(child(dbRef, `${auth.currentUser.uid}`)).then((snapshot) => {
-				userData = snapshot.val();
-			});
-			await checkUserMetaData(userData);
+			navigate(`/${auth.user.uid}/${auth.user.uid}`);
 		} catch (error) {
 			setFunctionIsLoading(false);
 			if (error.code === 'auth/user-not-found') {
@@ -47,7 +42,6 @@ const AuthProvider = ({ children }) => {
 		}
 		setFunctionIsLoading(false);
 	};
-
 	const logOut = async () => {
 		await signOut(auth);
 	};
@@ -83,7 +77,7 @@ const AuthProvider = ({ children }) => {
 				await set(ref(database, `${userData.uid}/userinformation`), {
 					email: userData.email,
 				});
-				toast.success('Your are successfully registered. Please wait for admin approval verification.', {
+				toast.success('Your are successfully registered.', {
 					position: 'top-center',
 					autoClose: 5000,
 					hideProgressBar: false,
@@ -118,7 +112,7 @@ const AuthProvider = ({ children }) => {
 			await logOut();
 			navigate('/login');
 			setFunctionIsLoading(false);
-			toast.success('Your Email address is successfully registered. Please wait for admin approval verification.', {
+			toast.success('Your Email address is successfully registered.', {
 				position: 'top-center',
 				autoClose: 5000,
 				hideProgressBar: false,
@@ -139,11 +133,7 @@ const AuthProvider = ({ children }) => {
 
 	const checkUserMetaData = async () => {
 		setFunctionIsLoading(false);
-		// if (userData.type === 'admin') {
-		// 	navigate('/admin/lesson-category/list');
-		// } else {
 		navigate('/');
-		// }
 	};
 
 	return (

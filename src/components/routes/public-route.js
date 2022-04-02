@@ -9,7 +9,7 @@ function PublicRoute({ children }) {
 		if (from) {
 			return <Navigate to={from} state={{ from: location }} />;
 		}
-		return <Navigate to={'/'} state={{ from: location }} />;
+		return <Navigate to={'/home'} state={{ from: location }} />;
 	}
 
 	return children;

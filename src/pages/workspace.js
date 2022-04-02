@@ -2,8 +2,8 @@ import AdminLayout from '../components/layouts/admin-layout';
 import LoadingPage from '../components/molecules/loading-page';
 import { useCrud } from '../components/providers/crud.provider';
 import Select from 'react-select';
-import { React, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import DoughnutChart from '../components/organisms/doughnut-chart';
 import GanttChart from '../components/organisms/gantt-chart';
 import TableView from '../components/molecules/table-view';
@@ -11,8 +11,11 @@ import { format } from 'date-fns';
 
 const workspace = () => {
 	const crud = useCrud();
-	const workspaceData = crud.userWorkspace;
-	const roadmaps = workspaceData && workspaceData['roadmap'];
+	const workspaceData = crud.curerntsharedroadmap;
+	const { sharedworkspaceId } = useParams();
+
+	const roadmaps = workspaceData && workspaceData.roadmap;
+
 	const [selectedRoadmap, setSelectedRoadmap] = useState(null);
 	const [viewType, setViewType] = useState(localStorage.getItem('viewtype'));
 
@@ -35,6 +38,10 @@ const workspace = () => {
 		}
 		return 'view-roadmap-hover';
 	};
+
+	useEffect(() => {
+		setSelectedRoadmap(null);
+	}, [sharedworkspaceId]);
 
 	const createSelectBox = () => {
 		if (options) {
@@ -63,7 +70,7 @@ const workspace = () => {
 				</form>
 			);
 		}
-		return <p>You dont have any group yet!</p>;
+		return <p>There is no roadmap to show!</p>;
 	};
 
 	const createRoadmap = (type) => {
@@ -81,13 +88,8 @@ const workspace = () => {
 		<AdminLayout>
 			{workspaceData ? (
 				<div className="flex flex-col">
-					<header className="navbar fixed w-full px-4">
-						<Link className="text-2xl" to={'/'}>
-							Polaris.
-						</Link>
-					</header>
-					{selectedRoadmap && (
-						<div className="flex justify-center items-center left-60 right-0 mx-5 top-20 flex-col absolute">
+					{selectedRoadmap && roadmaps && (
+						<div className="content-sidebar">
 							<div className="flex justify-between w-full">
 								<div className="flex self-center">
 									<p> Starting Date {format(new Date(Object.values(roadmaps[selectedRoadmap.value])[1]), 'PPP')} </p>
@@ -149,7 +151,7 @@ const workspace = () => {
 							{createRoadmap(viewType)}
 						</div>
 					)}
-					{!selectedRoadmap && <div className="flex h-full items-center justify-center mt-72">{createSelectBox()}</div>}
+					{!selectedRoadmap && <div className="content-sidebar mt-48">{createSelectBox()}</div>}
 				</div>
 			) : (
 				<LoadingPage />
