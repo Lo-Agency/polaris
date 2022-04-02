@@ -7,7 +7,7 @@ import { useCrud } from '../providers/crud.provider';
 
 const DoughnutChart = ({ selectedRoadmap }) => {
 	const crud = useCrud();
-	const workspaceData = crud.userWorkspace;
+	const workspaceData = crud.curerntsharedroadmap;
 	const roadmaps = workspaceData && workspaceData['roadmap'];
 	const lessons = workspaceData && workspaceData['lesson'];
 	const targets = workspaceData && workspaceData['target'];

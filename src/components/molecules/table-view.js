@@ -11,7 +11,7 @@ const TableView = ({ roadmapId }) => {
 	let endDate;
 
 	const crud = useCrud();
-	const workspaceData = crud.userWorkspace;
+	const workspaceData = crud.curerntsharedroadmap;
 	const roadmaps = workspaceData && workspaceData['roadmap'];
 	const categories = workspaceData && workspaceData['lesson-category'];
 	const lessons = workspaceData && workspaceData['lesson'];
