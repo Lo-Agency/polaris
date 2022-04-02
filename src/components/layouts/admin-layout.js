@@ -56,7 +56,7 @@ const AdminLayout = ({ children }) => {
 							</Link>
 							{entityName !== 'user' && (
 								<Link className="py-2 px-4 mr-4 text-center btn" to={`/${workspaceId}/${entityName}/create`}>
-									Create new
+									Add new
 								</Link>
 							)}
 						</div>

@@ -257,16 +257,6 @@ export default {
 
 		member: {
 			fields: {
-				'first-name': {
-					type: 'text',
-					isArray: false,
-					validate: yup.string().required(),
-				},
-				'last-name': {
-					type: 'text',
-					isArray: false,
-					validate: yup.string().required(),
-				},
 				email: {
 					type: 'email',
 					isArray: false,

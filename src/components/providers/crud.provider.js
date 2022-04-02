@@ -1,4 +1,5 @@
 import { push, ref, child, getDatabase, get, remove, set, onValue } from '@firebase/database';
+import axios from 'axios';
 import { useState, createContext, useContext, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
@@ -75,6 +76,14 @@ const CrudProvider = ({ children }) => {
 
 	//create new data
 	const insertNewItem = async (values, entity) => {
+		if (entityName === 'member') {
+			try {
+				const { data } = await axios.post(`/api/email`, { email: values['email'], workspaceId });
+				console.log(data);
+			} catch (err) {
+				console.log(err);
+			}
+		}
 		try {
 			await push(ref(database, `${workspaceId}/${entity}`), values);
 			sendNotification('success', `New ${entity} is successfully created.`);

@@ -1,5 +1,6 @@
 {
 	"name": "polaris",
+	"proxy": "http://localhost:4000/",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
@@ -9,11 +10,15 @@
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.1.0",
 		"@testing-library/user-event": "^12.1.10",
+		"axios": "^0.26.1",
 		"case": "^1.6.3",
 		"date-fns": "^2.26.0",
+		"dotenv": "^16.0.0",
+		"express": "^4.17.3",
 		"firebase": "^9.3.0",
 		"gantt-task-react": "^0.3.7",
 		"history": "5",
+		"mailgun-js": "^0.22.0",
 		"react": "^17.0.2",
 		"react-chartjs-2": "^4.0.0",
 		"react-dom": "^17.0.2",
