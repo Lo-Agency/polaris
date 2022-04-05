@@ -29,7 +29,6 @@ const AuthProvider = ({ children }) => {
 		setFunctionIsLoading(true);
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
-			navigate(`/${auth.user.uid}/${auth.user.uid}`);
 		} catch (error) {
 			setFunctionIsLoading(false);
 			if (error.code === 'auth/user-not-found') {
