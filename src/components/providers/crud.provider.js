@@ -15,6 +15,7 @@ const CrudProvider = ({ children }) => {
 	const [userWorkspace, setUserWorkspace] = useState(null);
 	const [userSharedWorkspace, setUserSharedWorkspace] = useState();
 	const [curerntsharedroadmap, setcurerntsharedroadmap] = useState();
+	const [dataState, setDataState] = useState(null);
 
 	//send notifications
 	const sendNotification = (type, message) => {
@@ -43,6 +44,7 @@ const CrudProvider = ({ children }) => {
 	useEffect(() => {
 		findOneWorkspace(workspaceId);
 		findSharedDetail(sharedworkspaceId);
+		findAllItems();
 	}, [change, workspaceId, sharedworkspaceId]);
 
 	//get all data from db
@@ -109,39 +111,59 @@ const CrudProvider = ({ children }) => {
 
 	//get all data from db
 	const findAllItems = async () => {
-		const allPromises = Object.keys(config.entities).map((entity) => {
-			return new Promise((resolve) => {
-				const db = getDatabase();
-				return onValue(
-					ref(db, `${entity}`),
-					(snapshot) => {
-						resolve({ [entity]: snapshot.val() });
-					},
-					{
-						onlyOnce: true,
-					},
-				);
-			});
-		});
-		return Promise.all(allPromises);
+		const db = getDatabase();
+		onValue(
+			ref(db),
+			(snapshot) => {
+				setDataState(snapshot.val());
+			},
+			{
+				onlyOnce: true,
+			},
+		);
+	};
+
+	// add new member
+	const addNewMember = async (memberId) => {
+		// let newMemberId;
+		// Object.entries(dataState).forEach((workSpaceData) => {
+		// 	if (workSpaceData[1]['userinformation']['email'] == values['email']) {
+		// 		newMemberId = workSpaceData[0];
+		// 	}
+		// });
+
+		// if (newMemberId) {
+		let memberSharedWorkspace = dataState && dataState[memberId]['sharedWorkSpace'];
+		if (memberSharedWorkspace) {
+			memberSharedWorkspace = memberSharedWorkspace.concat(workspaceId);
+		} else {
+			memberSharedWorkspace = [workspaceId];
+		}
+		await set(ref(database, `${memberId}/sharedWorkSpace`), memberSharedWorkspace);
+		// }
 	};
 
 	//create new data
 	const insertNewItem = async (values, entity) => {
 		if (entityName === 'member') {
+			// addNewMember(values);
 			try {
-				const { data } = await axios.post(`/api/email`, { email: values['email'], workspaceId });
-				console.log(data);
+				console.log('ok');
+				await axios.post(`/api/email`, { email: values['email'], workspaceId });
+				await push(ref(database, `${workspaceId}/member`), values);
+				sendNotification('success', `New member is successfully invited.`);
+				setChange(!change);
 			} catch (err) {
 				console.log(err);
 			}
-		}
-		try {
-			await push(ref(database, `${workspaceId}/${entity}`), values);
-			sendNotification('success', `New ${entity} is successfully created.`);
-			setChange(!change);
-		} catch (error) {
-			sendNotification('error', 'Somthing went wrong, please try again.');
+		} else {
+			try {
+				await push(ref(database, `${workspaceId}/${entity}`), values);
+				sendNotification('success', `New ${entity} is successfully created.`);
+				setChange(!change);
+			} catch (error) {
+				sendNotification('error', 'Somthing went wrong, please try again.');
+			}
 		}
 	};
 
@@ -210,7 +232,6 @@ const CrudProvider = ({ children }) => {
 	return (
 		<CrudContext.Provider
 			value={{
-				findAllItems,
 				insertNewItem,
 				deleteItem,
 				findOneItem,
@@ -221,6 +242,7 @@ const CrudProvider = ({ children }) => {
 				userSharedWorkspace,
 				findOneSharedWorkspace,
 				curerntsharedroadmap,
+				addNewMember,
 			}}>
 			{children}
 		</CrudContext.Provider>

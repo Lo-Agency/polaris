@@ -45,6 +45,11 @@ export default {
 			isCaseSensitive: true,
 			isProtected: false,
 		},
+		invite: {
+			pathname: ':workspaceId/invite',
+			isCaseSensitive: true,
+			isProtected: true,
+		},
 	},
 
 	entities: {
