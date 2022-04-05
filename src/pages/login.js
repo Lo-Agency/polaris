@@ -1,12 +1,13 @@
 import { useAuth } from '../components/providers/auth.provider';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AuthLayout from '../components/layouts/auth-layout';
 import Button from '../components/atoms/button';
 import LoadingPage from '../components/molecules/loading-page';
 
 function Login() {
 	const auth = useAuth();
+	const location = useLocation();
 	const [error, setError] = useState(null);
 	const [showPassword, setShowPassword] = useState(false);
 
@@ -18,7 +19,7 @@ function Login() {
 		const password = formData.get('password');
 
 		try {
-			await auth.signIn(email, password);
+			await auth.signIn(email, password, location.search);
 		} catch (e) {
 			setError(e.message);
 		}
@@ -101,7 +102,7 @@ function Login() {
 					<Link to="/forgot-password" className="pt-4 text-sm">
 						Forgot Password
 					</Link>
-					<Link to="/signup" className="text-sm">
+					<Link to={`/signup/${location.search}`} className="text-sm">
 						Dont have an account yet?
 					</Link>
 					<div className={'w-72 text-gray-500 m-4 h-4 border-b-2 text-center pt-1 text-base'}>

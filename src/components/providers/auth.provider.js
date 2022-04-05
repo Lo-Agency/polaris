@@ -25,11 +25,17 @@ const AuthProvider = ({ children }) => {
 	const navigate = useNavigate();
 	const [user, loading] = useAuthState(auth);
 
-	const signIn = async (email, password) => {
+	const signIn = async (email, password, queryParams) => {
 		setFunctionIsLoading(true);
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
-			navigate(`/${auth.user.uid}/${auth.user.uid}`);
+			if (queryParams) {
+				const searchParams = new URLSearchParams(queryParams);
+				const invitedId = searchParams.get('invitedId');
+				navigate(`/${invitedId}/invite`);
+			} else {
+				navigate(`/${auth.user.uid}/${auth.user.uid}`);
+			}
 		} catch (error) {
 			setFunctionIsLoading(false);
 			if (error.code === 'auth/user-not-found') {
@@ -70,24 +76,11 @@ const AuthProvider = ({ children }) => {
 			const result = await signInWithPopup(auth, provider);
 			const userData = result.user;
 			const userMetaData = await get(child(dbRef, `${userData.uid}`));
-			if (userMetaData.exists()) {
-				await checkUserMetaData(userMetaData.val());
-			} else {
-				await logOut();
-				await set(ref(database, `${userData.uid}/userinformation`), {
-					email: userData.email,
-				});
-				toast.success('Your are successfully registered.', {
-					position: 'top-center',
-					autoClose: 5000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-				});
-				setFunctionIsLoading(false);
-			}
+			await checkUserMetaData(userMetaData.val());
+			await set(ref(database, `${userData.uid}/userinformation`), {
+				email: userData.email,
+			});
+			setFunctionIsLoading(false);
 		} catch (error) {
 			setFunctionIsLoading(false);
 			if (error.code === 'auth/account-exists-with-different-credential') {
@@ -109,8 +102,6 @@ const AuthProvider = ({ children }) => {
 				email,
 				workspacename,
 			});
-			await logOut();
-			navigate('/login');
 			setFunctionIsLoading(false);
 			toast.success('Your Email address is successfully registered.', {
 				position: 'top-center',

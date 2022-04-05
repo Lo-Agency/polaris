@@ -92,7 +92,7 @@ const CrudProvider = ({ children }) => {
 			(snapshot) => {
 				setUserWorkspace(snapshot.val());
 				let idvalues = [];
-				if (workspaceId && snapshot.val()['sharedworkspace']) {
+				if (snapshot.val() && snapshot.val()['sharedworkspace']) {
 					idvalues =
 						workspaceId &&
 						snapshot.val()['sharedworkspace'].map((id) => {
@@ -133,7 +133,7 @@ const CrudProvider = ({ children }) => {
 		// });
 
 		// if (newMemberId) {
-		let memberSharedWorkspace = dataState && dataState[memberId]['sharedWorkSpace'];
+		let memberSharedWorkspace = dataState[memberId] && dataState[memberId]['sharedWorkSpace'];
 		if (memberSharedWorkspace) {
 			memberSharedWorkspace = memberSharedWorkspace.concat(workspaceId);
 		} else {
