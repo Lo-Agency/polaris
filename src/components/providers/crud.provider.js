@@ -125,31 +125,21 @@ const CrudProvider = ({ children }) => {
 
 	// add new member
 	const addNewMember = async (memberId) => {
-		// let newMemberId;
-		// Object.entries(dataState).forEach((workSpaceData) => {
-		// 	if (workSpaceData[1]['userinformation']['email'] == values['email']) {
-		// 		newMemberId = workSpaceData[0];
-		// 	}
-		// });
-
-		// if (newMemberId) {
-		let memberSharedWorkspace = dataState[memberId] && dataState[memberId]['sharedWorkSpace'];
+		let memberSharedWorkspace = dataState[memberId] && dataState[memberId]['sharedworkspace'];
 		if (memberSharedWorkspace) {
 			memberSharedWorkspace = memberSharedWorkspace.concat(workspaceId);
 		} else {
 			memberSharedWorkspace = [workspaceId];
 		}
-		await set(ref(database, `${memberId}/sharedWorkSpace`), memberSharedWorkspace);
-		// }
+		await set(ref(database, `${memberId}/sharedworkspace`), memberSharedWorkspace);
 	};
 
 	//create new data
 	const insertNewItem = async (values, entity) => {
 		if (entityName === 'member') {
-			// addNewMember(values);
 			try {
-				console.log('ok');
-				await axios.post(`/api/email`, { email: values['email'], workspaceId });
+				let workspaceName = dataState[workspaceId] && dataState[workspaceId]['userinformation']['workspacename'];
+				await axios.post(`/api/email`, { email: values['email'], workspaceId, workspaceName });
 				await push(ref(database, `${workspaceId}/member`), values);
 				sendNotification('success', `New member is successfully invited.`);
 				setChange(!change);

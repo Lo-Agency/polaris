@@ -19,7 +19,7 @@ function Login() {
 		const password = formData.get('password');
 
 		try {
-			await auth.signIn(email, password, location.search);
+			await auth.signIn(email, password);
 		} catch (e) {
 			setError(e.message);
 		}

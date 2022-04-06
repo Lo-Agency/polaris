@@ -11,7 +11,7 @@ import {
 import { ref, set, child, getDatabase, get } from '@firebase/database';
 import { database } from '../../util/firebase';
 import React, { createContext, useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { WrongCredentialsException } from '../../exceptions/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
@@ -24,17 +24,18 @@ const AuthProvider = ({ children }) => {
 	const auth = getAuth();
 	const navigate = useNavigate();
 	const [user, loading] = useAuthState(auth);
+	const location = useLocation();
 
-	const signIn = async (email, password, queryParams) => {
+	const signIn = async (email, password) => {
 		setFunctionIsLoading(true);
+		const searchParams = new URLSearchParams(location.search);
+		const invitedId = searchParams.get('invitedId');
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
-			if (queryParams) {
-				const searchParams = new URLSearchParams(queryParams);
-				const invitedId = searchParams.get('invitedId');
+			if (invitedId) {
 				navigate(`/${invitedId}/invite`);
 			} else {
-				navigate(`/${auth.user.uid}/${auth.user.uid}`);
+				navigate(`/home`);
 			}
 		} catch (error) {
 			setFunctionIsLoading(false);
@@ -73,6 +74,8 @@ const AuthProvider = ({ children }) => {
 			provider = new GoogleAuthProvider();
 		}
 		try {
+			const searchParams = new URLSearchParams(location.search);
+			const invitedId = searchParams.get('invitedId');
 			const result = await signInWithPopup(auth, provider);
 			const userData = result.user;
 			const userMetaData = await get(child(dbRef, `${userData.uid}`));
@@ -80,6 +83,11 @@ const AuthProvider = ({ children }) => {
 			await set(ref(database, `${userData.uid}/userinformation`), {
 				email: userData.email,
 			});
+			if (invitedId) {
+				navigate(`/${invitedId}/invite`);
+			} else {
+				navigate('/home');
+			}
 			setFunctionIsLoading(false);
 		} catch (error) {
 			setFunctionIsLoading(false);
@@ -94,6 +102,8 @@ const AuthProvider = ({ children }) => {
 	const signup = async (firstname, lastname, email, workspacename, password) => {
 		setFunctionIsLoading(true);
 		try {
+			const searchParams = new URLSearchParams(location.search);
+			const invitedId = searchParams.get('invitedId');
 			const data = await createUserWithEmailAndPassword(auth, email, password);
 			const userId = data.user.uid;
 			await set(ref(database, `${userId}/userinformation`), {
@@ -102,6 +112,11 @@ const AuthProvider = ({ children }) => {
 				email,
 				workspacename,
 			});
+			if (invitedId) {
+				navigate(`/${invitedId}/invite`);
+			} else {
+				navigate('/home');
+			}
 			setFunctionIsLoading(false);
 			toast.success('Your Email address is successfully registered.', {
 				position: 'top-center',

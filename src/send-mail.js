@@ -13,9 +13,8 @@ const mailgun = () =>
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.post('/api/email', (req, res) => {
-	const { email, workspaceId } = req.body;
+	const { email, workspaceId, workspaceName } = req.body;
 	mailgun()
 		.messages()
 		.send(
@@ -23,7 +22,7 @@ app.post('/api/email', (req, res) => {
 				from: 'Polaris <heliahnik77@gmail.com>',
 				to: `${email}`,
 				subject: `polaris`,
-				html: `<p>invite to http://localhost:3000/${workspaceId}/invite </p>`,
+				html: `<p>Hello,</p><p>You have been invited to ${workspaceName} workspace. All you need to do is click <a href='http://localhost:3000/${workspaceId}/invite/${workspaceName}'>here</a>.</p><p>Polaris Team</p>`,
 			},
 			(error, body) => {
 				if (error) {

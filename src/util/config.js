@@ -46,7 +46,7 @@ export default {
 			isProtected: false,
 		},
 		invite: {
-			pathname: ':workspaceId/invite',
+			pathname: ':workspaceId/invite/:workspaceName',
 			isCaseSensitive: true,
 			isProtected: true,
 		},
