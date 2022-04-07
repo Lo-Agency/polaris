@@ -138,8 +138,20 @@ const CrudProvider = ({ children }) => {
 	const insertNewItem = async (values, entity) => {
 		if (entityName === 'member') {
 			try {
+				let userName = '';
+				const adminName = dataState && dataState[workspaceId]['userinformation']['firstname'];
+				dataState &&
+					Object.entries(dataState).forEach((workSpace) => {
+						if (
+							workSpace[1]['userinformation']['email'] === values['email'] &&
+							workSpace[1]['userinformation']['firstname']
+						) {
+							userName = 'dear ' + workSpace[1]['userinformation']['firstname'];
+						}
+					});
+
 				let workspaceName = dataState[workspaceId] && dataState[workspaceId]['userinformation']['workspacename'];
-				await axios.post(`/api/email`, { email: values['email'], workspaceId, workspaceName });
+				await axios.post(`/api/email`, { email: values['email'], workspaceId, workspaceName, userName, adminName });
 				await push(ref(database, `${workspaceId}/member`), values);
 				sendNotification('success', `New member is successfully invited.`);
 				setChange(!change);
@@ -233,6 +245,7 @@ const CrudProvider = ({ children }) => {
 				findOneSharedWorkspace,
 				curerntsharedroadmap,
 				addNewMember,
+				dataState,
 			}}>
 			{children}
 		</CrudContext.Provider>

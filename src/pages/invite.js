@@ -8,12 +8,13 @@ export function Home() {
 	const auth = useAuth();
 	const crud = useCrud();
 	const navigate = useNavigate();
-	const { workspaceId, workspaceName } = useParams();
-
+	const { workspaceId } = useParams();
+	const workspaceName = crud.dataState && crud.dataState[workspaceId]['userinformation']['workspacename'];
 	const handleSubmit = () => {
 		crud.addNewMember(auth.user.uid);
 		navigate(`/${auth.user.uid}/${workspaceId}`);
 	};
+
 	return (
 		<>
 			{auth.user ? (

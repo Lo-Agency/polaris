@@ -14,7 +14,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.post('/api/email', (req, res) => {
-	const { email, workspaceId, workspaceName } = req.body;
+	const { email, workspaceId, workspaceName, userName, adminName } = req.body;
+	console.log(userName, 'in');
 	mailgun()
 		.messages()
 		.send(
@@ -22,7 +23,7 @@ app.post('/api/email', (req, res) => {
 				from: 'Polaris <heliahnik77@gmail.com>',
 				to: `${email}`,
 				subject: `polaris`,
-				html: `<p>Hello,</p><p>You have been invited to ${workspaceName} workspace. All you need to do is click <a href='http://localhost:3000/${workspaceId}/invite/${workspaceName}'>here</a>.</p><p>Polaris Team</p>`,
+				html: `<p>Hello, ${userName}</p><p>You have been invited to join the "${workspaceName}" by ${adminName}.  Please click the <a href='http://localhost:3000/${workspaceId}/invite'>link</a> to accept the invitation.</p><p>Thanks,</p><p>Polaris.</p>`,
 			},
 			(error, body) => {
 				if (error) {
