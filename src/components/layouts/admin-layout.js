@@ -75,7 +75,7 @@ const AdminLayout = ({ children }) => {
 									onClick={() => toggleAccordionSharedWorkspace()}
 									className="flex justify-start flex-col mt-5 relative cursor-pointer">
 									<li className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
-										Shared Workspcae
+										Shared Workspace
 									</li>
 									<label className="absolute right-3 top-3 cursor-pointer">
 										{activeshared === 'true' && (
@@ -122,7 +122,7 @@ const AdminLayout = ({ children }) => {
 
 						<div>
 							<ul onClick={() => toggleAccordion()} className="flex justify-start flex-col relative cursor-pointer">
-								<li className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">My Workspcae</li>
+								<li className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">My Workspace</li>
 								<label className="absolute right-3 top-3 cursor-pointer">
 									{active === 'true' && (
 										<svg

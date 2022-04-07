@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../providers/auth.provider';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../providers/auth.provider';
 
 function PrivateRoute({ children }) {
 	const location = useLocation();

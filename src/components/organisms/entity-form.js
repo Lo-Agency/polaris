@@ -104,7 +104,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 			<form className="flex flex-col h-auto justify-center items-center w-5/6 mt-10" onSubmit={handleSubmit}>
 				{fields}
 				<Button
-					className={'w-2/12 mt-10 flex justify-center items-center transition-colors text-white bg-black py-2'}
+					className={'w-2/12 mt-10 mb-8 flex justify-center items-center transition-colors text-white bg-black py-2'}
 					loading={loading}
 					actionName="Save"
 				/>
