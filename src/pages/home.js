@@ -4,12 +4,12 @@ import LoadingPage from '../components/molecules/loading-page';
 import { useAuth } from '../components/providers/auth.provider';
 
 export function Home() {
-	const auth = useAuth();
+	const { user } = useAuth();
 	return (
 		<>
-			{auth.user ? (
+			{user ? (
 				<header className="navbar fixed w-full px-4">
-					<Link className="text-2xl" to={`/${auth.user.uid}/${auth.user.uid}`}>
+					<Link className="text-2xl" to={`/${user.uid}/${user.uid}`}>
 						dashboard
 					</Link>
 				</header>

@@ -78,6 +78,39 @@ html,body{
 .rotate{
   transform: rotate(90deg);
 }
+
 .hover-list:hover{
   background-color: hsla(0, 0%, 93%, 0.13);
 }
+
+.border-bottom-style {
+  padding-bottom: 5px;
+  position: relative;
+}
+
+.border-bottom-style::after {
+  position: absolute;
+  border-radius: 5px;
+  height: 8px;
+  content: '';
+  bottom: 0;
+  right: 0;
+  left: 30px;
+  background: linear-gradient(to left, rgb(19, 9, 9), rgba(34, 7, 7, 0.24) );
+}
+
+.border-bottom-style h1,.border-bottom-style Link {
+  background: transparent;
+  display: block;
+  outline: none;
+  border: none;
+  width: 100%;
+}
+
+.point1 { left: 733px; top: 93px;}
+.point2 { left: 598px; top: 165px; }
+.point3 { left: 497px; top: 294px; }
+.point4 { left: 369px; top: 161px; }
+.point5 { left: 294px; top: 220px; }
+.point6 { left: 152px; top: 221px; }
+.point7 { left: 52px; top: 361px; }
