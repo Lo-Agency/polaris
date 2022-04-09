@@ -164,15 +164,29 @@ const AdminLayout = ({ children }) => {
 				<div className="absolute">
 					<header className="fixed navbar bg-white min-w-full">
 						<p className="px-4 ml-60">{title(entityName)}</p>
-						<div>
-							<Link className="px-4" to={'/'}>
-								Home
-							</Link>
+						<div className="flex justify-center items-center">
 							{entityName && (
 								<Link className="py-2 px-4 mr-4 text-center btn" to={`/${workspaceId}/${entityName}/create`}>
 									Add new
 								</Link>
 							)}
+							<Link className="px-2" to={'/'}>
+								Home
+							</Link>
+							<Link className="px-2" to={`/${workspaceId}/profile`}>
+								<svg
+									className="w-6 h-6"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg">
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth="2"
+										d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+								</svg>
+							</Link>
 						</div>
 					</header>
 				</div>
