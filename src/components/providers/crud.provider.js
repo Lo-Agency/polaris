@@ -231,6 +231,17 @@ const CrudProvider = ({ children }) => {
 		}
 	};
 
+	//update profile
+	const updateProfile = async (values, userId) => {
+		try {
+			await set(ref(database, `${userId}/userinformation`), values);
+			sendNotification('success', 'Your profile is successfully updated.');
+			setChange(!change);
+		} catch (error) {
+			sendNotification('error', 'Somthing went wrong, please try again.');
+		}
+	};
+
 	return (
 		<CrudContext.Provider
 			value={{
@@ -246,6 +257,7 @@ const CrudProvider = ({ children }) => {
 				curerntsharedroadmap,
 				addNewMember,
 				dataState,
+				updateProfile,
 			}}>
 			{children}
 		</CrudContext.Provider>
