@@ -49,6 +49,11 @@ const AuthProvider = ({ children }) => {
 		}
 		setFunctionIsLoading(false);
 	};
+
+	const test = (x, y) => {
+		if (x > y) return true;
+	}
+
 	const logOut = async () => {
 		await signOut(auth);
 	};
@@ -153,6 +158,7 @@ const AuthProvider = ({ children }) => {
 				functionIsLoading,
 				loading,
 				loginWithOAuthSystem,
+				test,
 			}}>
 			{children}
 		</AuthContext.Provider>
