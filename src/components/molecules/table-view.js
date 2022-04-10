@@ -47,7 +47,9 @@ const TableView = ({ roadmapId }) => {
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLearnings.map((id) => (
 						<p key={id} className="py-5 h-10 truncate max-w-xs flex items-center">
-							<a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>
+							<a
+								className="overflow-ellipsis text-gray-500 underline hover:text-gray-700"
+								href={learnings[id].resources}>
 								{learnings[id].resources}
 							</a>
 						</p>

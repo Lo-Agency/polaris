@@ -1,4 +1,12 @@
-const GanttChartModal = ({ onCancel, project }) => {
+import { extractDataFromEntity } from '../../util/extract-data';
+import { useCrud } from '../providers/crud.provider';
+import { title } from 'case';
+
+const GanttChartModal = ({ onCancel, project, phaseId }) => {
+	const { dataState } = useCrud();
+	const phases = extractDataFromEntity('phase', dataState);
+	const learnings = extractDataFromEntity('learning', dataState);
+	const phaseLearningsIds = phases[phaseId]['learning'];
 	return (
 		<>
 			<div onClick={onCancel} className="fixed z-10 inset-0 overflow-y-auto">
@@ -26,6 +34,16 @@ const GanttChartModal = ({ onCancel, project }) => {
 									<tr>
 										<td>Project:</td>
 										<td>{project.days} days</td>
+									</tr>
+									<tr>
+										<td>Learning courses:</td>
+										<td className="pt-4">
+											{phaseLearningsIds.map((id) => (
+												<p key={id} className="">
+													{title(learnings[id].title)}
+												</p>
+											))}
+										</td>
 									</tr>
 								</tbody>
 							</table>
