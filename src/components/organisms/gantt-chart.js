@@ -193,7 +193,7 @@ const GanttChart = ({ roadmapId }) => {
 				barFill={70}
 				barCornerRadius={0}
 			/>
-			{showModal && <GanttModal onCancel={handleCloseModal} project={project} />}
+			{showModal && <GanttModal onCancel={handleCloseModal} project={project} phaseId={phasesId} />}
 		</>
 	);
 };
