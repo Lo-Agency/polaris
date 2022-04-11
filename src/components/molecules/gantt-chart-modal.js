@@ -5,7 +5,6 @@ const GanttChartModal = ({ onCancel, target }) => {
 	const userWorkspace = crud.curerntsharedroadmap;
 	const targetTypes = userWorkspace['target-type'];
 	const lessons = userWorkspace['lesson'];
-
 	const getTargetLessons = (lessonsId) => {
 		const targetLessons = lessonsId.map((id) => lessons[id]['title']);
 		return targetLessons.join(', ');
@@ -35,7 +34,7 @@ const GanttChartModal = ({ onCancel, target }) => {
 										<td>{getTargetLessons(target.lesson)}</td>
 									</tr>
 									<tr>
-										<td>duration:</td>
+										<td>Duration:</td>
 										<td>{target.duration} days</td>
 									</tr>
 								</tbody>

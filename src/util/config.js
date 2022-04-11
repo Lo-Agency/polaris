@@ -81,7 +81,7 @@ export default {
 					reference: 'lesson-category',
 					validate: yup.array().required(),
 				},
-				resources: {
+				resource: {
 					type: 'text',
 					isArray: false,
 					validate: yup.string().required(),
@@ -214,7 +214,7 @@ export default {
 				category: {
 					type: 'text',
 				},
-				resources: {
+				resource: {
 					type: 'text',
 				},
 				priority: {
@@ -239,7 +239,7 @@ export default {
 					validate: yup.string().required(),
 				},
 				slug: {
-					type: 'text',
+					type: 'slug',
 					isArray: false,
 					validate: yup.string().required(),
 				},

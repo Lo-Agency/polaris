@@ -57,6 +57,13 @@ const Entity = () => {
 		crud.findOneItem(item);
 	};
 
+	const tableItemStyle = (item) => {
+		if (item === 'false') {
+			return 'flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left text-red-700';
+		}
+		return 'flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left';
+	};
+
 	switch (actionName) {
 		case 'create':
 			return (
@@ -127,7 +134,7 @@ const Entity = () => {
 											<tr className="text-center p-4 text-sm" key={index}>
 												{items.map((item, idx) => {
 													return (
-														<td className="flex-shrink-0 mx-10 max-w-xs px-6 py-3 text-left" key={idx}>
+														<td className={tableItemStyle(item)} key={idx}>
 															{item}
 														</td>
 													);
