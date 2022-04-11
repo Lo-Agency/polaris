@@ -47,8 +47,8 @@ const TableView = ({ roadmapId }) => {
 				<td className="px-6 py-4 whitespace-nowrap">
 					{phaseLearnings.map((id) => (
 						<p key={id} className="py-5 h-10 truncate max-w-xs flex items-center">
-							<a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resources}>
-								{learnings[id].resources}
+							<a className="overflow-ellipsis text-gray-500 underline" href={learnings[id].resource}>
+								{learnings[id].resource}
 							</a>
 						</p>
 					))}
@@ -108,7 +108,7 @@ const TableView = ({ roadmapId }) => {
 					</td>
 				</tr>
 				<tr>
-					<td className="bg-gray-100 py-2 w-24">Evaluation</td>
+					<td className="bg-gray-100 py-2 w-24 pl-4">Evaluation</td>
 					<td colSpan="5" className="bg-gray-100 py-2 w-24">
 						{format(
 							calculatePhaseEndDate(startDate, calculatePhaseDuration(Object.values(phases[phaseId]))),

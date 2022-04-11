@@ -1,4 +1,4 @@
-import { push, ref, child, getDatabase, get, remove, set } from '@firebase/database';
+import { push, ref, child, getDatabase, get, remove, set, onValue } from '@firebase/database';
 import { useState, createContext, useContext, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
@@ -46,15 +46,17 @@ const CrudProvider = ({ children }) => {
 	//get all data from db
 	const findAllItems = async () => {
 		const allPromises = Object.keys(config.entities).map((entity) => {
-			return new Promise((resolve, reject) => {
-				const dbRef = ref(getDatabase());
-				get(child(dbRef, `${entity}`))
-					.then((snapshot) => {
+			return new Promise((resolve) => {
+				const db = getDatabase();
+				return onValue(
+					ref(db, `${entity}`),
+					(snapshot) => {
 						resolve({ [entity]: snapshot.val() });
-					})
-					.catch((error) => {
-						reject(error);
-					});
+					},
+					{
+						onlyOnce: true,
+					},
+				);
 			});
 		});
 		return Promise.all(allPromises);

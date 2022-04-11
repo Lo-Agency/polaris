@@ -12,6 +12,7 @@ import Button from '../atoms/button';
 import CheckBox from '../molecules/check-box';
 import * as yup from 'yup';
 import EmailInput from '../molecules/email-input';
+import SlugInput from '../molecules/slug-input';
 
 const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 	const [loading, setLoading] = useState(false);
@@ -36,6 +37,8 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 				);
 			case 'date':
 				return <DateInput name={field} key={field} formValues={formValues} />;
+			case 'slug':
+				return <SlugInput name={field} key={field} formValues={formValues} />;
 			case 'ref':
 				return (
 					<ReferenceInput
