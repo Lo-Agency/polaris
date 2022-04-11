@@ -1,6 +1,12 @@
 {
 	"name": "polaris",
 	"proxy": "http://localhost:4000/",
+	"jest": {
+		"moduleNameMapper": {
+			"\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
+			"\\.(css|less)$": "identity-obj-proxy"
+		}
+	},
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
@@ -35,7 +41,7 @@
 	"scripts": {
 		"start": "craco start",
 		"build": "craco build",
-		"test": "jest",
+		"test": "jest --setupFiles dotenv/config",
 		"eject": "react-scripts eject",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",

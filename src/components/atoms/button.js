@@ -1,3 +1,4 @@
+import React from 'react';
 const Button = ({ className, loading, actionName }) => {
 	return (
 		<button className={className} type="submit">
