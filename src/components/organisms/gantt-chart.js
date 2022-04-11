@@ -113,7 +113,7 @@ const GanttChart = ({ roadmapId }) => {
 
 	const handleSelect = (task, isSelected) => {
 		if (task.type === 'task' && isSelected) {
-			setTarget(targets[task.targetId]);
+			setTarget(targets[task.projectId]);
 			handleShowModal();
 		}
 	};
