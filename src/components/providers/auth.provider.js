@@ -26,10 +26,6 @@ const AuthProvider = ({ children }) => {
 	const [user, loading] = useAuthState(auth);
 	const location = useLocation();
 
-	const test = (x, y) => {
-		if (x > y) return true;
-	};
-
 	const signIn = async (email, password) => {
 		setFunctionIsLoading(true);
 		const searchParams = new URLSearchParams(location.search);
@@ -53,7 +49,6 @@ const AuthProvider = ({ children }) => {
 		}
 		setFunctionIsLoading(false);
 	};
-
 	const logOut = async () => {
 		await signOut(auth);
 	};
@@ -158,7 +153,6 @@ const AuthProvider = ({ children }) => {
 				functionIsLoading,
 				loading,
 				loginWithOAuthSystem,
-				test,
 			}}>
 			{children}
 		</AuthContext.Provider>
