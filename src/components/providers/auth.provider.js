@@ -26,6 +26,10 @@ const AuthProvider = ({ children }) => {
 	const [user, loading] = useAuthState(auth);
 	const location = useLocation();
 
+	const test = (x, y) => {
+		if (x > y) return true;
+	};
+
 	const signIn = async (email, password) => {
 		setFunctionIsLoading(true);
 		const searchParams = new URLSearchParams(location.search);
@@ -49,10 +53,6 @@ const AuthProvider = ({ children }) => {
 		}
 		setFunctionIsLoading(false);
 	};
-
-	const test = (x, y) => {
-		if (x > y) return true;
-	}
 
 	const logOut = async () => {
 		await signOut(auth);
