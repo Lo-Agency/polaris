@@ -50,6 +50,11 @@ export default {
 			isCaseSensitive: true,
 			isProtected: true,
 		},
+		profile: {
+			pathname: '/:workspaceId/profile',
+			isCaseSensitive: true,
+			isProtected: true,
+		},
 	},
 
 	entities: {
