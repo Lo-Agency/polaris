@@ -14,7 +14,7 @@ export function Landing() {
 			opacity: 0,
 			width: 20,
 			height: 20,
-			duration: 2,
+			duration: 0.2,
 			boxShadow: 'inset 0 0 5px 5px white, 0 0 5px 5px black',
 		})
 			.to(boxRef.current, { x: 733, y: 93, ease: 'Circ.ease0ut', opacity: 1, width: 20, height: 20, duration: 2 })
