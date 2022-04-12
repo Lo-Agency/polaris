@@ -1,17 +1,35 @@
 import { title } from 'case';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import config from '../../util/config';
 import { useAuth } from '../providers/auth.provider';
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { useCrud } from '../providers/crud.provider';
 
 const AdminLayout = ({ children }) => {
 	const crud = useCrud();
 	const { workspaceId, entityName } = useParams();
+	const location = useLocation();
 	const auth = useAuth();
 	const navigate = useNavigate();
+	const workspaceData = crud && crud.userWorkspace;
+	const checkWorkspaceName = () => {
+		if (crud.userWorkspace && !workspaceData.userinformation.workspacename && entityName === 'member') {
+			toast.warning('You must complete your profile first', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		} else {
+			navigate(`/${workspaceId}/${entityName}/create`);
+		}
+	};
 
 	const idByValues = workspaceId && crud.userSharedWorkspace;
 
@@ -163,17 +181,18 @@ const AdminLayout = ({ children }) => {
 
 				<div className="absolute">
 					<header className="fixed navbar bg-white min-w-full">
+						{location.pathname.includes('profile') && <p className="px-4 ml-60"> User profile</p>}
 						<p className="px-4 ml-60">{title(entityName)}</p>
 						<div className="flex justify-center items-center">
 							{entityName && (
-								<Link className="py-2 px-4 mr-4 text-center btn" to={`/${workspaceId}/${entityName}/create`}>
+								<p className="py-2 px-4 mr-4 text-center btn" onClick={checkWorkspaceName}>
 									Add new
-								</Link>
+								</p>
 							)}
 							<Link className="px-2" to={'/'}>
 								Home
 							</Link>
-							<Link className="px-2" to={`/${workspaceId}/profile`}>
+							<Link className="px-4" to={`/${workspaceId}/profile`}>
 								<svg
 									className="w-6 h-6"
 									fill="none"
