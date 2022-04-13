@@ -1,14 +1,11 @@
 import { useCrud } from '../providers/crud.provider';
+import { title } from 'case';
 
 const GanttChartModal = ({ onCancel, target }) => {
 	const crud = useCrud();
 	const userWorkspace = crud.curerntsharedroadmap;
 	const targetTypes = userWorkspace['target-type'];
 	const lessons = userWorkspace['lesson'];
-	const getTargetLessons = (lessonsId) => {
-		const targetLessons = lessonsId.map((id) => lessons[id]['title']);
-		return targetLessons.join(', ');
-	};
 	return (
 		<>
 			<div onClick={onCancel} className="fixed z-10 inset-0 overflow-y-auto">
@@ -30,12 +27,16 @@ const GanttChartModal = ({ onCancel, target }) => {
 										<td>{targetTypes[target['target-type']]['title']}</td>
 									</tr>
 									<tr>
-										<td>Lesson:</td>
-										<td>{getTargetLessons(target.lesson)}</td>
+										<td className="pt-1">Duration:</td>
+										<td>{target.duration} days</td>
 									</tr>
 									<tr>
-										<td>Duration:</td>
-										<td>{target.duration} days</td>
+										<td>Lesson(s):</td>
+										<td className="pt-4">
+											{target.lesson.map((id) => (
+												<p key={id}>{title(lessons[id].title)}</p>
+											))}
+										</td>
 									</tr>
 								</tbody>
 							</table>
