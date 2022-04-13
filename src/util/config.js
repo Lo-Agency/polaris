@@ -155,6 +155,9 @@ export default {
 
 			list: ['phase'],
 			readfields: {
+				title: {
+					type: 'text',
+				},
 				duration: {
 					type: 'text',
 				},

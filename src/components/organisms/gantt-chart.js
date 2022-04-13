@@ -14,6 +14,7 @@ const GanttChart = ({ roadmapId }) => {
 	const [tasks, setTasks] = useState(ganttData);
 	const [view, setView] = useState('Month');
 	const [project, setProject] = useState(null);
+	const [phaseProject, setPhaseProject] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
@@ -121,6 +122,7 @@ const GanttChart = ({ roadmapId }) => {
 	const handleSelect = (task, isSelected) => {
 		if (task.type === 'task' && isSelected) {
 			setProject(projects[task.projectId]);
+			setPhaseProject(task.project);
 			handleShowModal();
 		}
 	};
@@ -193,7 +195,7 @@ const GanttChart = ({ roadmapId }) => {
 				barFill={70}
 				barCornerRadius={0}
 			/>
-			{showModal && <GanttModal onCancel={handleCloseModal} project={project} phaseId={phasesId} />}
+			{showModal && <GanttModal onCancel={handleCloseModal} project={project} phaseId={phaseProject} />}
 		</>
 	);
 };
