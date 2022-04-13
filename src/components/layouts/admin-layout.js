@@ -1,14 +1,16 @@
 import { title } from 'case';
 import { useParams, useNavigate, useLocation } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import config from '../../util/config';
 import { useAuth } from '../providers/auth.provider';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useCrud } from '../providers/crud.provider';
 
 const AdminLayout = ({ children }) => {
+	const text = useRef(0);
+	const textShared = useRef(0);
 	const crud = useCrud();
 	const { workspaceId, entityName } = useParams();
 	const location = useLocation();
@@ -79,6 +81,16 @@ const AdminLayout = ({ children }) => {
 		}
 	}
 
+	const onClick = () => {
+		text.current.style.backgroundColor = 'white';
+		text.current.style.color = 'black';
+	};
+
+	const onClickShared = () => {
+		textShared.current.style.backgroundColor = 'white';
+		textShared.current.style.color = 'black';
+	};
+
 	return (
 		<>
 			<div className="relative">
@@ -92,10 +104,13 @@ const AdminLayout = ({ children }) => {
 								<ul
 									onClick={() => toggleAccordionSharedWorkspace()}
 									className="flex justify-start flex-col mt-5 relative cursor-pointer">
-									<li className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
+									<li
+										ref={textShared}
+										onClick={onClickShared}
+										className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
 										Shared Workspace
 									</li>
-									<label className="absolute right-3 top-3 cursor-pointer">
+									<label className="absolute right-3 top-3 cursor-pointer text-gray-500">
 										{activeshared === 'true' && (
 											<svg
 												className="w-5 h-5"
@@ -126,12 +141,16 @@ const AdminLayout = ({ children }) => {
 									{idByValues &&
 										idByValues.map((id, index) => {
 											return (
-												<Link to={`/${workspaceId}/${Object.keys(id)}`} key={index}>
-													<li className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
-														{' '}
-														{Object.values(id)[0].userinformation.workspacename}
-													</li>
-												</Link>
+												<NavLink
+													to={`/${workspaceId}/${Object.keys(id)}`}
+													key={index}
+													className={({ isActive }) =>
+														isActive
+															? 'w-full bg-white text-black tracking-wide text-sm py-3 px-4 transition-color'
+															: 'w-full hover-list tracking-wide text-sm py-3 px-4 transition-color'
+													}>
+													<li> {Object.values(id)[0].userinformation.workspacename}</li>
+												</NavLink>
 											);
 										})}
 								</ul>
@@ -140,8 +159,14 @@ const AdminLayout = ({ children }) => {
 
 						<div>
 							<ul onClick={() => toggleAccordion()} className="flex justify-start flex-col relative cursor-pointer">
-								<li className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">My Workspace</li>
-								<label className="absolute right-3 top-3 cursor-pointer">
+								<li
+									onClick={onClick}
+									style={{ backgroundColor: 'transparent' }}
+									ref={text}
+									className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
+									My Workspace
+								</li>
+								<label className="absolute right-3 top-3 cursor-pointer text-gray-500">
 									{active === 'true' && (
 										<svg
 											className="w-5 h-5"
