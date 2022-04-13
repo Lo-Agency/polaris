@@ -1,5 +1,4 @@
 import AdminLayout from '../components/layouts/admin-layout';
-import LoadingPage from '../components/molecules/loading-page';
 import { useCrud } from '../components/providers/crud.provider';
 import Select from 'react-select';
 import { React, useState, useEffect } from 'react';
@@ -11,7 +10,7 @@ import { format } from 'date-fns';
 
 const workspace = () => {
 	const crud = useCrud();
-	const workspaceData = crud.curerntsharedroadmap;
+	const workspaceData = crud.userWorkspace;
 	const { sharedworkspaceId } = useParams();
 
 	const roadmaps = workspaceData && workspaceData.roadmap;
@@ -86,76 +85,72 @@ const workspace = () => {
 
 	return (
 		<AdminLayout>
-			{workspaceData ? (
-				<div className="flex flex-col">
-					{selectedRoadmap && roadmaps && (
-						<div className="content-sidebar">
-							<div className="flex justify-between w-full">
-								<div className="flex self-center">
-									<p> Starting Date {format(new Date(Object.values(roadmaps[selectedRoadmap.value])[1]), 'PPP')} </p>
-								</div>
-								<div className="flex">
-									{createSelectBox()}
-									<button onClick={() => RoadmapView('table')}>
-										<svg
-											className={getSelectedEntityClassName('table')}
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-											xmlns="http://www.w3.org/2000/svg">
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth="2"
-												d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-										</svg>
-									</button>
-
-									<button className="rotate" onClick={() => RoadmapView('gantt')}>
-										<svg
-											className={getSelectedEntityClassName('gantt')}
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-											xmlns="http://www.w3.org/2000/svg">
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth="2"
-												d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-										</svg>
-									</button>
-
-									<button onClick={() => RoadmapView('doughnut')}>
-										<svg
-											className={getSelectedEntityClassName('doughnut')}
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-											xmlns="http://www.w3.org/2000/svg">
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth="2"
-												d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
-											<path
-												strokeLinecap="round"
-												className=""
-												strokeLinejoin="round"
-												strokeWidth=""
-												d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-										</svg>
-									</button>
-								</div>
+			<div className="flex flex-col">
+				{selectedRoadmap && roadmaps && (
+					<div className="content-sidebar">
+						<div className="flex justify-between w-full">
+							<div className="flex self-center">
+								<p> Starting Date {format(new Date(Object.values(roadmaps[selectedRoadmap.value])[1]), 'PPP')} </p>
 							</div>
-							{createRoadmap(viewType)}
+							<div className="flex">
+								{createSelectBox()}
+								<button onClick={() => RoadmapView('table')}>
+									<svg
+										className={getSelectedEntityClassName('table')}
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg">
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="2"
+											d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+									</svg>
+								</button>
+
+								<button className="rotate" onClick={() => RoadmapView('gantt')}>
+									<svg
+										className={getSelectedEntityClassName('gantt')}
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg">
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="2"
+											d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+									</svg>
+								</button>
+
+								<button onClick={() => RoadmapView('doughnut')}>
+									<svg
+										className={getSelectedEntityClassName('doughnut')}
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg">
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="2"
+											d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
+										<path
+											strokeLinecap="round"
+											className=""
+											strokeLinejoin="round"
+											strokeWidth=""
+											d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+									</svg>
+								</button>
+							</div>
 						</div>
-					)}
-					{!selectedRoadmap && <div className="content-sidebar mt-48">{createSelectBox()}</div>}
-				</div>
-			) : (
-				<LoadingPage />
-			)}
+						{createRoadmap(viewType)}
+					</div>
+				)}
+				{!selectedRoadmap && <div className="content-sidebar mt-48">{createSelectBox()}</div>}
+			</div>
 		</AdminLayout>
 	);
 };
