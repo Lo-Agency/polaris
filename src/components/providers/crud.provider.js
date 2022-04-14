@@ -44,9 +44,7 @@ const CrudProvider = ({ children }) => {
 	useEffect(() => {
 		findOneWorkspace(workspaceId);
 		findSharedDetail(sharedworkspaceId);
-		if (!dataState) {
-			findAllItems();
-		}
+		findAllItems();
 	}, [change, workspaceId, sharedworkspaceId]);
 
 	//get all data from db
