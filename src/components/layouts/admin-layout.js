@@ -18,7 +18,10 @@ const AdminLayout = ({ children }) => {
 	const navigate = useNavigate();
 	const workspaceData = crud && crud.userWorkspace;
 	const checkWorkspaceName = () => {
-		if (crud.userWorkspace && !workspaceData.userinformation.workspacename && entityName === 'member') {
+		if (
+			(crud.userWorkspace && entityName === 'member' && !workspaceData.userinformation.workspacename) ||
+			!workspaceData.userinformation.firstname
+		) {
 			toast.warning('You must complete your profile first', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -28,7 +31,7 @@ const AdminLayout = ({ children }) => {
 				draggable: true,
 				progress: undefined,
 			});
-		} else {
+		} else if (crud.userWorkspace) {
 			navigate(`/${workspaceId}/${entityName}/create`);
 		}
 	};
