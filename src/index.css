@@ -7,7 +7,7 @@
 }
 
 .btn-form {
-  @apply py-2 mt-4 sm:mt-4 xsm:mt-2 text-white bg-black xsm:w-48 sm:w-60 w-72;
+  @apply py-2 mt-4 sm:mt-4 xsm:mt-2 text-white bg-black w-72;
 }
 
 .btn{
