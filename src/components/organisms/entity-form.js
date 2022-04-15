@@ -21,7 +21,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 	const crud = useCrud();
 	const entityFields = entityConfigFiels(entityName);
 	const validations = [];
-	const { workspaceId } = useParams();
+	const { workspaceId, sharedworkspaceId } = useParams();
 	const fields = entityFields.map((field) => {
 		const { type, reference } = config.entities[entityName].fields[field];
 
@@ -96,7 +96,7 @@ const EntityForm = ({ entityName, actionName, editID, formValues }) => {
 				await crud.updateItem(values, entityName, editID);
 			}
 			setLoading(false);
-			navigate(`/${workspaceId}/${entityName}/list`, { replace: true });
+			navigate(`/${workspaceId}/${sharedworkspaceId}/${entityName}/list`, { replace: true });
 			return;
 		}
 		setLoading(false);

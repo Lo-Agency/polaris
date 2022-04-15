@@ -31,7 +31,7 @@ export default {
 			isProtected: true,
 		},
 		entity: {
-			pathname: ':workspaceId/:entityName/:actionName',
+			pathname: ':workspaceId/:sharedworkspaceId/:entityName/:actionName',
 			isCaseSensitive: true,
 			isProtected: true,
 		},

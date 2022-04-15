@@ -4,15 +4,14 @@ import { Link } from 'react-router-dom';
 import config from '../../util/config';
 import { useAuth } from '../providers/auth.provider';
 import { ToastContainer } from 'react-toastify';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useCrud } from '../providers/crud.provider';
 
 const AdminLayout = ({ children }) => {
 	const crud = useCrud();
-	const { workspaceId, entityName } = useParams();
+	const { workspaceId, sharedworkspaceId, entityName } = useParams();
 	const auth = useAuth();
 	const navigate = useNavigate();
-
 	const idByValues = workspaceId && crud.userSharedWorkspace;
 
 	const logOut = async () => {
@@ -24,8 +23,17 @@ const AdminLayout = ({ children }) => {
 		}
 	};
 
-	const getSelectedEntityClassName = (key) => {
-		if (key === entityName) {
+	const userEmail = crud.userWorkspace && crud.userWorkspace['userinformation']['email'];
+	let sharedworkspaceWithRole = {};
+	idByValues &&
+		idByValues.forEach((data) => {
+			sharedworkspaceWithRole[Object.keys(data)] = Object.values(data[Object.keys(data)]['member']).filter((member) => {
+				return member['email'] === userEmail;
+			})[0];
+		});
+
+	const getSelectedEntityClassName = (key, id) => {
+		if (key === entityName && id === sharedworkspaceId) {
 			return 'w-full bg-white text-black tracking-wide text-sm py-3 px-4 transition-colors';
 		}
 		return 'w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors';
@@ -108,12 +116,28 @@ const AdminLayout = ({ children }) => {
 									{idByValues &&
 										idByValues.map((id, index) => {
 											return (
-												<Link to={`/${workspaceId}/${Object.keys(id)}`} key={index}>
-													<li className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
-														{' '}
-														{Object.values(id)[0].userinformation.workspacename}
-													</li>
-												</Link>
+												<Fragment key={index}>
+													<Link to={`/${workspaceId}/${Object.keys(id)}`} key={index}>
+														<li className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
+															{' '}
+															{Object.values(id)[0].userinformation.workspacename}
+														</li>
+													</Link>
+													{sharedworkspaceWithRole[Object.keys(id)[0]] &&
+														sharedworkspaceWithRole[Object.keys(id)[0]]['role'] === 'admin' && (
+															<ul className={active === 'true' ? 'block' : 'hidden'}>
+																{Object.keys(config.entities).map((entity) => (
+																	<Link
+																		key={[entity]}
+																		to={`/${workspaceId}/${Object.keys(id)}/${entity.toLowerCase()}/list`}>
+																		<li className={getSelectedEntityClassName(entity, Object.keys(id)[0])}>
+																			{title(entity)}
+																		</li>
+																	</Link>
+																))}
+															</ul>
+														)}
+												</Fragment>
 											);
 										})}
 								</ul>
@@ -149,8 +173,8 @@ const AdminLayout = ({ children }) => {
 
 							<ul className={active === 'true' ? 'block' : 'hidden'}>
 								{Object.keys(config.entities).map((entity) => (
-									<Link key={entity} to={`/${workspaceId}/${entity.toLowerCase()}/list`}>
-										<li className={getSelectedEntityClassName(entity)}>{title(entity)}</li>
+									<Link key={entity} to={`/${workspaceId}/${workspaceId}/${entity.toLowerCase()}/list`}>
+										<li className={getSelectedEntityClassName(entity, workspaceId)}>{title(entity)}</li>
 									</Link>
 								))}
 							</ul>
@@ -166,7 +190,9 @@ const AdminLayout = ({ children }) => {
 						<p className="px-4 ml-60">{title(entityName)}</p>
 						<div className="flex justify-center items-center">
 							{entityName && (
-								<Link className="py-2 px-4 mr-4 text-center btn" to={`/${workspaceId}/${entityName}/create`}>
+								<Link
+									className="py-2 px-4 mr-4 text-center btn"
+									to={`/${workspaceId}/${sharedworkspaceId}/${entityName}/create`}>
 									Add new
 								</Link>
 							)}
