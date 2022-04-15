@@ -281,7 +281,7 @@ export default {
 				role: {
 					type: 'select',
 					isArray: false,
-					value: ['owner', 'admin', 'user'],
+					value: ['admin', 'user'],
 					validate: yup.string().required(),
 				},
 			},
