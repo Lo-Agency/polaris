@@ -18,7 +18,9 @@ const Entity = () => {
 	if (workspaceId !== sharedworkspaceId) {
 		workspaceData =
 			crud.userSharedWorkspace &&
-			crud.userSharedWorkspace.filter((data) => Object.keys(data)[0] === sharedworkspaceId)[0][sharedworkspaceId];
+			crud.userSharedWorkspace.filter(
+				(sharedWorkspaceData) => Object.keys(sharedWorkspaceData)[0] === sharedworkspaceId,
+			)[0][sharedworkspaceId];
 	}
 
 	const data = workspaceData && workspaceData[entityName];
