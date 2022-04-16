@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 
 const workspace = () => {
 	const crud = useCrud();
-	const workspaceData = crud.userWorkspace;
+	const workspaceData = crud.curerntsharedroadmap;
 	const { sharedworkspaceId } = useParams();
 
 	const roadmaps = workspaceData && workspaceData.roadmap;

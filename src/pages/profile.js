@@ -17,6 +17,7 @@ const Profile = () => {
 			firstname: form.get('firstname'),
 			lastname: form.get('lastname'),
 			workspacename: form.get('workspacename'),
+			email: crud.dataState[user.uid]['userinformation']['email'],
 		};
 		crud.updateProfile(values, user.uid);
 		navigate(`/${user.uid}/${user.uid}`);
