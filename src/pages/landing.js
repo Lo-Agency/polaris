@@ -47,7 +47,7 @@ export function Landing() {
 		<div className="py-10 px-14 h-screen">
 			<header className="h-16 flex items-center justify-between px-8">
 				<div className="border-bottom-style">
-					<h1 className="text-5xl cursor-pointer">polaris.</h1>
+					<h1 className="text-5xl cursor-pointer">Polaris.</h1>
 				</div>
 				<Link className="text-2xl" to={`/login`}>
 					login
@@ -55,8 +55,8 @@ export function Landing() {
 			</header>
 			<div className="flex justify-center">
 				<div className="w-96 mt-16 mr-24">
-					<p className="text-base">
-						Plaris is an open source roadmap creator that help you build your own roadmaps and besides that you can
+					<p className="text-base text-justify">
+						Polaris is an open source roadmap creator that help you build your own roadmaps and besides that you can
 						invite anybody to your workspace to see your roadmaps that had been created. First you have to create some
 						categories for your lessons then create your lessons. Every lesson has duration which calculates the number
 						of days it takes. Lesson has also dependency filed that related to any lesson exist. After you create some

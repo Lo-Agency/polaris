@@ -11,8 +11,8 @@ const Profile = () => {
 	const navigate = useNavigate();
 	const userMetaData = crud.dataState && crud.dataState[user.uid]['userinformation'];
 
-	const saveProfile = () => {
-		const form = new FormData(event.target);
+	const saveProfile = (event) => {
+		const form = new FormData(event.currentTarget);
 		const values = {
 			firstname: form.get('firstname'),
 			lastname: form.get('lastname'),

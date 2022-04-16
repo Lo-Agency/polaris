@@ -1,6 +1,12 @@
 {
 	"name": "polaris",
 	"proxy": "http://localhost:4000/",
+	"jest": {
+		"moduleNameMapper": {
+			"\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
+			"\\.(css|less)$": "identity-obj-proxy"
+		}
+	},
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
@@ -8,7 +14,7 @@
 		"@sentry/react": "^6.14.1",
 		"@sentry/tracing": "^6.14.1",
 		"@testing-library/jest-dom": "^5.11.4",
-		"@testing-library/react": "^11.1.0",
+		"@testing-library/react": "12",
 		"@testing-library/user-event": "^12.1.10",
 		"axios": "^0.26.1",
 		"case": "^1.6.3",
@@ -35,7 +41,7 @@
 	"scripts": {
 		"start": "craco start",
 		"build": "craco build",
-		"test": "craco test",
+		"test": "jest --setupFiles dotenv/config",
 		"eject": "react-scripts eject",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",

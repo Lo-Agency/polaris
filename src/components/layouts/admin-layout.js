@@ -1,26 +1,25 @@
 import { title } from 'case';
 import { useParams, useNavigate, useLocation } from 'react-router';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import config from '../../util/config';
 import { useAuth } from '../providers/auth.provider';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
-import { useRef, useState } from 'react';
+import { useState, Fragment } from 'react';
 import { useCrud } from '../providers/crud.provider';
 
 const AdminLayout = ({ children }) => {
-	const text = useRef(0);
-	const textShared = useRef(0);
 	const crud = useCrud();
-	const { workspaceId, entityName } = useParams();
+	const { workspaceId, sharedworkspaceId, entityName } = useParams();
 	const location = useLocation();
 	const auth = useAuth();
 	const navigate = useNavigate();
 	const workspaceData = crud && crud.userWorkspace;
 	const checkWorkspaceName = () => {
 		if (
-			(crud.userWorkspace && entityName === 'member' && !workspaceData.userinformation.workspacename) ||
-			!workspaceData.userinformation.firstname
+			crud.userWorkspace &&
+			entityName === 'member' &&
+			(!workspaceData.userinformation.workspacename || !workspaceData.userinformation.firstname)
 		) {
 			toast.warning('You must complete your profile first', {
 				position: 'top-center',
@@ -31,12 +30,21 @@ const AdminLayout = ({ children }) => {
 				draggable: true,
 				progress: undefined,
 			});
-		} else if (crud.userWorkspace) {
-			navigate(`/${workspaceId}/${entityName}/create`);
+		} else {
+			navigate(`/${workspaceId}/${sharedworkspaceId}/${entityName}/create`);
 		}
 	};
 
 	const idByValues = workspaceId && crud.userSharedWorkspace;
+	const [menu, setMenu] = useState([]);
+
+	if (menu.length === 0 && localStorage.getItem('menu')) {
+		setMenu(localStorage.getItem('menu').split(','));
+	}
+	const setMenuSituation = (situation) => {
+		setMenu(situation);
+		localStorage.setItem('menu', situation);
+	};
 
 	const logOut = async () => {
 		try {
@@ -47,51 +55,36 @@ const AdminLayout = ({ children }) => {
 		}
 	};
 
-	const getSelectedEntityClassName = (key) => {
-		if (key === entityName) {
+	const userEmail = crud.userWorkspace && crud.userWorkspace['userinformation']['email'];
+	let sharedworkspaceWithRole = {};
+	idByValues &&
+		idByValues.forEach((data) => {
+			sharedworkspaceWithRole[Object.keys(data)] =
+				data[Object.keys(data)]['member'] &&
+				Object.values(data[Object.keys(data)]['member']).filter((member) => {
+					return member['email'] === userEmail;
+				})[0];
+		});
+	const getSelectedEntityClassName = (key, id) => {
+		if (key === entityName && id === sharedworkspaceId) {
 			return 'w-full bg-white text-black tracking-wide text-sm py-3 px-4 transition-colors';
 		}
 		return 'w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors';
 	};
 
-	const [active, setActive] = useState(localStorage.getItem('active'));
-	const [activeshared, setActiveShared] = useState(localStorage.getItem('activeshared'));
-
-	if (active === null || activeshared === null) {
-		localStorage.setItem('active', 'false');
-		localStorage.setItem('activeshared', 'false');
-	}
-
-	function toggleAccordionSharedWorkspace() {
-		if (localStorage.getItem('activeshared') === 'false') {
-			setActiveShared('true');
-			localStorage.setItem('activeshared', 'true');
-		} else {
-			navigate(`/${workspaceId}/${workspaceId}`);
-			setActiveShared('false');
-			localStorage.setItem('activeshared', 'false');
+	const getWorkspaceClassName = (val) => {
+		if (val === menu) {
+			return 'w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors bg-gray-900';
 		}
-	}
-
-	function toggleAccordion() {
-		if (localStorage.getItem('active') === 'false') {
-			navigate(`/${workspaceId}/${workspaceId}`);
-			setActive('true');
-			localStorage.setItem('active', 'true');
-		} else {
-			setActive('false');
-			localStorage.setItem('active', 'false');
-		}
-	}
-
-	const onClick = () => {
-		text.current.style.backgroundColor = 'white';
-		text.current.style.color = 'black';
+		return 'w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors';
 	};
 
-	const onClickShared = () => {
-		textShared.current.style.backgroundColor = 'white';
-		textShared.current.style.color = 'black';
+	const getArrowPosition = (val) => {
+		if (val[0] === menu[0]) {
+			return 'absolute right-3 top-3 cursor-pointer';
+		}
+
+		return 'absolute right-3 rotate-180 transform top-3 cursor-pointer';
 	};
 
 	return (
@@ -105,55 +98,70 @@ const AdminLayout = ({ children }) => {
 						{idByValues && idByValues.length !== 0 && (
 							<div>
 								<ul
-									onClick={() => toggleAccordionSharedWorkspace()}
+									onClick={() => {
+										setMenuSituation(['shared']);
+									}}
 									className="flex justify-start flex-col mt-5 relative cursor-pointer">
-									<li
-										ref={textShared}
-										onClick={onClickShared}
-										className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
-										Shared Workspace
-									</li>
-									<label className="absolute right-3 top-3 cursor-pointer text-gray-500">
-										{activeshared === 'true' && (
-											<svg
-												className="w-5 h-5"
-												fill="none"
-												stroke="currentColor"
-												viewBox="0 0 24 24"
-												xmlns="http://www.w3.org/2000/svg">
-												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-											</svg>
-										)}
-										{activeshared === 'false' && (
-											<svg
-												className="w-5 h-5"
-												fill="none"
-												stroke="currentColor"
-												viewBox="0 0 24 24"
-												xmlns="http://www.w3.org/2000/svg">
-												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
-											</svg>
-										)}
+									<li className={getWorkspaceClassName(['shared'])}>Shared Workspace</li>
+									<label className={getArrowPosition(['shared'])}>
+										<svg
+											className="w-6 h-6"
+											fill="none"
+											stroke="currentColor"
+											viewBox="0 0 24 24"
+											xmlns="http://www.w3.org/2000/svg">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
+										</svg>
 									</label>
 								</ul>
 
 								<ul
 									className={
-										activeshared === 'true' ? 'flex justify-start flex-col relative cursor-pointer' : 'hidden'
+										menu.includes('shared') ? 'flex justify-start flex-col relative cursor-pointer' : 'hidden'
 									}>
 									{idByValues &&
 										idByValues.map((id, index) => {
 											return (
-												<NavLink
-													to={`/${workspaceId}/${Object.keys(id)}`}
-													key={index}
-													className={({ isActive }) =>
-														isActive
-															? 'w-full bg-white text-black tracking-wide text-sm py-3 px-4 transition-color'
-															: 'w-full hover-list tracking-wide text-sm py-3 px-4 transition-color'
-													}>
-													<li> {Object.values(id)[0].userinformation.workspacename}</li>
-												</NavLink>
+												<Fragment key={index}>
+													<Link to={`/${workspaceId}/${Object.keys(id)}`} key={index}>
+														<li
+															onClick={() => {
+																setMenuSituation(['shared', Object.keys(id)[0]]);
+															}}
+															className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
+															{' '}
+															{Object.values(id)[0].userinformation.workspacename}
+														</li>
+														<label className={getArrowPosition(['shared', Object.keys(id)[0]])}>
+															<svg
+																className="w-6 h-6"
+																fill="none"
+																stroke="currentColor"
+																viewBox="0 0 24 24"
+																xmlns="http://www.w3.org/2000/svg">
+																<path
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																	strokeWidth="2"
+																	d="M5 15l7-7 7 7"></path>
+															</svg>
+														</label>
+													</Link>
+													{sharedworkspaceWithRole[Object.keys(id)[0]] &&
+														sharedworkspaceWithRole[Object.keys(id)[0]]['role'] === 'admin' && (
+															<ul className={menu[1] === Object.keys(id)[0] ? 'block' : 'hidden'}>
+																{Object.keys(config.entities).map((entity) => (
+																	<Link
+																		key={[entity]}
+																		to={`/${workspaceId}/${Object.keys(id)}/${entity.toLowerCase()}/list`}>
+																		<li className={getSelectedEntityClassName(entity, Object.keys(id)[0])}>
+																			{title(entity)}
+																		</li>
+																	</Link>
+																))}
+															</ul>
+														)}
+												</Fragment>
 											);
 										})}
 								</ul>
@@ -161,42 +169,30 @@ const AdminLayout = ({ children }) => {
 						)}
 
 						<div>
-							<ul onClick={() => toggleAccordion()} className="flex justify-start flex-col relative cursor-pointer">
-								<li
-									onClick={onClick}
-									style={{ backgroundColor: 'transparent' }}
-									ref={text}
-									className="w-full hover-list tracking-wide text-sm py-3 px-4 transition-colors">
-									My Workspace
-								</li>
-								<label className="absolute right-3 top-3 cursor-pointer text-gray-500">
-									{active === 'true' && (
-										<svg
-											className="w-5 h-5"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-											xmlns="http://www.w3.org/2000/svg">
-											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-										</svg>
-									)}
-									{active === 'false' && (
-										<svg
-											className="w-5 h-5"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-											xmlns="http://www.w3.org/2000/svg">
-											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
-										</svg>
-									)}
+							<ul
+								onClick={() => {
+									setMenuSituation(['ownWorkspace']);
+								}}
+								className="flex justify-start flex-col relative cursor-pointer">
+								<Link to={`/${workspaceId}/${workspaceId}`}>
+									<li className={getWorkspaceClassName(['ownWorkspace'])}>My Workspace</li>
+								</Link>
+								<label className={getArrowPosition(['ownWorkspace'])}>
+									<svg
+										className="w-6 h-6"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7"></path>
+									</svg>
 								</label>
 							</ul>
 
-							<ul className={active === 'true' ? 'block' : 'hidden'}>
+							<ul className={menu.includes('ownWorkspace') ? 'block' : 'hidden'}>
 								{Object.keys(config.entities).map((entity) => (
-									<Link key={entity} to={`/${workspaceId}/${entity.toLowerCase()}/list`}>
-										<li className={getSelectedEntityClassName(entity)}>{title(entity)}</li>
+									<Link key={entity} to={`/${workspaceId}/${workspaceId}/${entity.toLowerCase()}/list`}>
+										<li className={getSelectedEntityClassName(entity, workspaceId)}>{title(entity)}</li>
 									</Link>
 								))}
 							</ul>
@@ -213,9 +209,9 @@ const AdminLayout = ({ children }) => {
 						<p className="px-4 ml-60">{title(entityName)}</p>
 						<div className="flex justify-center items-center">
 							{entityName && (
-								<p className="py-2 px-4 mr-4 text-center btn" onClick={checkWorkspaceName}>
+								<button onClick={checkWorkspaceName} className="py-2 px-4 mr-4 text-center btn">
 									Add new
-								</p>
+								</button>
 							)}
 							<Link className="px-2" to={'/'}>
 								Home

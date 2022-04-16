@@ -92,7 +92,7 @@ function Login() {
 							</div>
 
 							<Button
-								className={'btn-form w-2/12 flex justify-center items-center'}
+								className={'btn-form flex justify-center items-center'}
 								loading={auth.functionIsLoading}
 								actionName={'Login'}
 							/>

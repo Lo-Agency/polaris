@@ -44,9 +44,7 @@ const CrudProvider = ({ children }) => {
 	useEffect(() => {
 		findOneWorkspace(workspaceId);
 		findSharedDetail(sharedworkspaceId);
-		if (!dataState) {
-			findAllItems();
-		}
+		findAllItems();
 	}, [change, workspaceId, sharedworkspaceId]);
 
 	//get all data from db
@@ -97,8 +95,8 @@ const CrudProvider = ({ children }) => {
 				if (snapshot.val() && snapshot.val()['sharedworkspace']) {
 					idvalues =
 						workspaceId &&
-						snapshot.val()['sharedworkspace'].map((id) => {
-							return id;
+						snapshot.val()['sharedworkspace'].map((item) => {
+							return item;
 						});
 				}
 				findOneSharedWorkspace(idvalues).then((data) => {
