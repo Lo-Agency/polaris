@@ -31,7 +31,7 @@ export default {
 			isProtected: true,
 		},
 		entity: {
-			pathname: ':workspaceId/:entityName/:actionName',
+			pathname: ':workspaceId/:sharedworkspaceId/:entityName/:actionName',
 			isCaseSensitive: true,
 			isProtected: true,
 		},
@@ -281,7 +281,7 @@ export default {
 				role: {
 					type: 'select',
 					isArray: false,
-					value: ['owner', 'admin', 'user'],
+					value: ['admin', 'user'],
 					validate: yup.string().required(),
 				},
 			},

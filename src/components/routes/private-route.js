@@ -16,15 +16,15 @@ function PrivateRoute({ children }) {
 			return <Navigate to={`/${auth.user.uid}/${auth.user.uid}`} state={{ from: location }} />;
 		}
 		const userEmail = crud.dataState && crud.dataState[auth.user.uid]['userinformation']['email'];
-		let members;
+		let members = [];
 		if (crud.dataState?.sharedworkspaceId?.member) {
 			members = Object.values(crud.dataState[sharedworkspaceId]['member']).map((member) => member['email']);
 		}
 
-		if (!sharedworkspaceId || sharedworkspaceId === auth.user.uid || (members && members.includes(userEmail))) {
-			return children;
+		if (sharedworkspaceId && sharedworkspaceId !== auth.user.uid && members.includes(userEmail)) {
+			return <Navigate to={`/${auth.user.uid}/${auth.user.uid}`} state={{ from: location }} />;
 		}
-		return <Navigate to={`/${auth.user.uid}/${auth.user.uid}`} state={{ from: location }} />;
+		return children;
 	}
 
 	if (from.includes('/invite')) {
