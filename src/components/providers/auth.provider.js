@@ -8,7 +8,7 @@ import {
 	GithubAuthProvider,
 	GoogleAuthProvider,
 } from 'firebase/auth';
-import { ref, set, child, getDatabase, get } from '@firebase/database';
+import { ref, set } from '@firebase/database';
 import { database } from '../../util/firebase';
 import React, { createContext, useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -66,7 +66,6 @@ const AuthProvider = ({ children }) => {
 
 	const loginWithOAuthSystem = async (providerName) => {
 		setFunctionIsLoading(true);
-		const dbRef = ref(getDatabase());
 		let provider;
 		if (providerName === 'github') {
 			provider = new GithubAuthProvider();
@@ -78,8 +77,6 @@ const AuthProvider = ({ children }) => {
 			const invitedId = searchParams.get('invitedId');
 			const result = await signInWithPopup(auth, provider);
 			const userData = result.user;
-			const userMetaData = await get(child(dbRef, `${userData.uid}`));
-			await checkUserMetaData(userMetaData.val());
 			await set(ref(database, `${userData.uid}/userinformation`), {
 				email: userData.email,
 			});
@@ -135,11 +132,6 @@ const AuthProvider = ({ children }) => {
 				throw new WrongCredentialsException('Something went Wrong contact admin!');
 			}
 		}
-	};
-
-	const checkUserMetaData = async () => {
-		setFunctionIsLoading(false);
-		navigate('/');
 	};
 
 	return (

@@ -95,8 +95,8 @@ const CrudProvider = ({ children }) => {
 				if (snapshot.val() && snapshot.val()['sharedworkspace']) {
 					idvalues =
 						workspaceId &&
-						snapshot.val()['sharedworkspace'].map((id) => {
-							return id;
+						snapshot.val()['sharedworkspace'].map((item) => {
+							return item;
 						});
 				}
 				findOneSharedWorkspace(idvalues).then((data) => {
