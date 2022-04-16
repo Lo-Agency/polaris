@@ -1,21 +1,44 @@
 import { title } from 'case';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import config from '../../util/config';
 import { useAuth } from '../providers/auth.provider';
 import { ToastContainer } from 'react-toastify';
-import { Fragment, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useState, Fragment } from 'react';
 import { useCrud } from '../providers/crud.provider';
 
 const AdminLayout = ({ children }) => {
 	const crud = useCrud();
 	const { workspaceId, sharedworkspaceId, entityName } = useParams();
+	const location = useLocation();
 	const auth = useAuth();
 	const navigate = useNavigate();
+	const workspaceData = crud && crud.userWorkspace;
+	const checkWorkspaceName = () => {
+		if (
+			crud.userWorkspace &&
+			entityName === 'member' &&
+			(!workspaceData.userinformation.workspacename || !workspaceData.userinformation.firstname)
+		) {
+			toast.warning('You must complete your profile first', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+			});
+		} else {
+			navigate(`/${workspaceId}/${sharedworkspaceId}/${entityName}/create`);
+		}
+	};
+
 	const idByValues = workspaceId && crud.userSharedWorkspace;
 	const [menu, setMenu] = useState([]);
 
-	if (menu.length === 0) {
+	if (menu.length === 0 && localStorage.getItem('menu')) {
 		setMenu(localStorage.getItem('menu').split(','));
 	}
 	const setMenuSituation = (situation) => {
@@ -36,11 +59,12 @@ const AdminLayout = ({ children }) => {
 	let sharedworkspaceWithRole = {};
 	idByValues &&
 		idByValues.forEach((data) => {
-			sharedworkspaceWithRole[Object.keys(data)] = Object.values(data[Object.keys(data)]['member']).filter((member) => {
-				return member['email'] === userEmail;
-			})[0];
+			sharedworkspaceWithRole[Object.keys(data)] =
+				data[Object.keys(data)]['member'] &&
+				Object.values(data[Object.keys(data)]['member']).filter((member) => {
+					return member['email'] === userEmail;
+				})[0];
 		});
-
 	const getSelectedEntityClassName = (key, id) => {
 		if (key === entityName && id === sharedworkspaceId) {
 			return 'w-full bg-white text-black tracking-wide text-sm py-3 px-4 transition-colors';
@@ -150,7 +174,9 @@ const AdminLayout = ({ children }) => {
 									setMenuSituation(['ownWorkspace']);
 								}}
 								className="flex justify-start flex-col relative cursor-pointer">
-								<li className={getWorkspaceClassName(['ownWorkspace'])}>My Workspace</li>
+								<Link to={`/${workspaceId}/${workspaceId}`}>
+									<li className={getWorkspaceClassName(['ownWorkspace'])}>My Workspace</li>
+								</Link>
 								<label className={getArrowPosition(['ownWorkspace'])}>
 									<svg
 										className="w-6 h-6"
@@ -179,19 +205,18 @@ const AdminLayout = ({ children }) => {
 
 				<div className="absolute">
 					<header className="fixed navbar bg-white min-w-full">
+						{location.pathname.includes('profile') && <p className="px-4 ml-60"> User profile</p>}
 						<p className="px-4 ml-60">{title(entityName)}</p>
 						<div className="flex justify-center items-center">
 							{entityName && (
-								<Link
-									className="py-2 px-4 mr-4 text-center btn"
-									to={`/${workspaceId}/${sharedworkspaceId}/${entityName}/create`}>
+								<button onClick={checkWorkspaceName} className="py-2 px-4 mr-4 text-center btn">
 									Add new
-								</Link>
+								</button>
 							)}
 							<Link className="px-2" to={'/'}>
 								Home
 							</Link>
-							<Link className="px-2" to={`/${workspaceId}/profile`}>
+							<Link className="px-4" to={`/${workspaceId}/profile`}>
 								<svg
 									className="w-6 h-6"
 									fill="none"

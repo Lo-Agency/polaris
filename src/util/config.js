@@ -66,7 +66,7 @@ export default {
 					validate: yup.string().required(),
 				},
 				slug: {
-					type: 'text',
+					type: 'slug',
 					isArray: false,
 					validate: yup.string().required(),
 				},
@@ -119,7 +119,7 @@ export default {
 					validate: yup.string().required(),
 				},
 				slug: {
-					type: 'text',
+					type: 'slug',
 					isArray: false,
 					validate: yup.string().required(),
 				},
