@@ -27,7 +27,6 @@ const Profile = () => {
 		<AdminLayout>
 			{userMetaData ? (
 				<div className="content-sidebar">
-					<h3>Edit Profile</h3>
 					<form onSubmit={saveProfile}>
 						<div className="flex flex-col justify-center text-sm items-center mt-8 ">
 							<div className="m-2 sm:m-1 xsm:m-1 flex flex-col">

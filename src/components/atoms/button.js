@@ -1,6 +1,7 @@
+import React from 'react';
 const Button = ({ className, loading, actionName }) => {
 	return (
-		<button className={className} type="submit">
+		<button className={className} type="submit" data-testid="btn-form">
 			{!loading ? (
 				actionName
 			) : (
